@@ -1,0 +1,30 @@
+div(id='data-left' class='content-left')
+    ul( class='nav nav-pills nav-stacked' role='tablist')
+        li(class='nav-item')
+            a( class='nav-link active' data-toggle='tab' href='#data-order') 訂單數據
+        li(class='nav-item')
+            a( class='nav-link' data-toggle='tab' href='#data-user') 用戶數據
+        li(class='nav-item')
+            a( class='nav-link' data-toggle='tab' href='#data-goods') 商品數據
+div(id='data-right' class='content-right')
+    div( class='tab-content')
+        div( class='tab-pane  active' id='data-order' role='tabpanel')
+        div( class='tab-pane ' id='data-user' role='tabpanel')
+        div( class='tab-pane ' id='data-goods' role='tabpanel')
+script.
+    (function () {
+        $('#data-left a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+            var type = $(this).attr('href').replace('#data-', '')
+            $.get("/data/" + type, function (result) {
+                if (result.code == 200) {
+                    $('#data-' + type).empty()
+                    $('#data-' + type).append(result.content)
+                } else {
+                    alert(result.msg);
+                }
+            });
+        })
+        $('#data-left .nav-link.active').click()
+    }())

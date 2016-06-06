@@ -1,0 +1,56 @@
+b  我的信息
+div(class='tab-content')
+    table
+        tbody
+            tr
+                td 用戶名:
+                td {{user.name}}
+            tr
+                td 員工名:
+                td {{user.realName}}
+            tr
+                td 使用權限:
+                td
+                    span(v-for='item in user.permission')
+                        span(v-if="item=='order'") 訂單管理,
+                        span(v-if="item=='activity'") 活動管理 ,
+                        span(v-if="item=='data'") 基礎數據 ,
+                        span(v-if="item=='user'") 帳號信息
+            tr
+                td 帳號類型:
+                td {{user.type}}
+            tr
+                td 手機號碼:
+                td
+                    input( type='text' class='form-control' id='phone' name='phone' placeholder='請輸入有效手機號碼' v-model='user.phone' )
+            tr
+                td
+                td
+                    button(type='button' id='submit' v-on:click='editPhone' class='btn btn-primary' style='width:195px') 確認修改
+script.
+    (function () {
+        var vue = new Vue({
+            el: '#user-info',
+            data: {
+                user: !{JSON.stringify(user)}
+            },
+            methods: {
+                editPhone: function (event) {
+                    event.preventDefault()
+                    var phone = this.user.phone;
+                    var phoneReg = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+                    if (!phoneReg.test(phone)) {
+                        alert('請輸入有效手機號碼');
+                        return;
+                    }
+                    $.post('/user/edit/phone', {phone: phone}, function (result) {
+                        if (result.code == 200) {
+                            alert('修改成功')
+                        } else {
+                            alert(result.msg)
+                        }
+                    });
+                }
+            }
+        });
+    }())

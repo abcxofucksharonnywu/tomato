@@ -1,0 +1,141 @@
+b {{title}}
+div(class='tab-content')
+    #modal-order-cancel.modal.fade
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    button.close(type='button' data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true') ×
+                    h4.modal-title 取消訂單
+                .modal-body
+                    p 一旦取消將無法恢複,將會通知用戶訂單取消
+                .modal-footer
+                    button.model-close.btn.btn-secondary(type='button' data-dismiss='modal') 關閉
+                    button.btn.btn-primary(type='button' v-on:click='cancelOrder') 確認
+    .input-group
+        input.form-control(type='text' placeholder='輸入搜索手機號碼' v-model='search')
+    ul(id='order-list')
+        li(class='order-item' v-for="order in orders | filterBy search in 'address.phone'")
+            div(class='card')
+                div(class='card-header')
+                    big {{order.date | date}}
+                div(class='card-block')
+                    div(class='card-text')
+                        b 訂單號:&nbsp;&nbsp;
+                        span {{order._id}}
+                    div(class='card-text')
+                        b 姓名:&nbsp;&nbsp;
+                        span {{order.address.name}}
+                    div(class='card-text')
+                        b 手機號碼:&nbsp;&nbsp;
+                        span {{order.address.phone}}
+                    div(class='card-text')
+                        b 詳細地址:&nbsp;&nbsp;
+                        span {{order.address.content}}
+                    div(class='card-text')
+                        table
+                            tbody
+                                tr
+                                    th 商品名稱
+                                    th 數量x單價
+                                    th 金額
+                                tr(v-for='item in order.items')
+                                    td {{item.title}}
+                                    td {{item.quantity}}x{{item.price}}
+                                    td
+                                        span(style='color:#FD1C7A') ${{item.quantity*item.price}}
+                div(class='card-footer')
+                    div
+                        b 合計總價:&nbsp;&nbsp;
+                        big(style='color:#FD1C7A') ${{order.price}}
+                    div(v-if="type!='completion'")
+                        button.btn.btn-secondary(type='button'  data-toggle='modal' v-on:click='cancelOrderModal' data-target='#modal-order-cancel' value='{{$index}}') 取消
+                        button.btn.btn-primary(type='button' style='margin-left:10px;'  v-on:click='confirmOrder' value='{{$index}}') 確定
+
+script.
+    (function () {
+        Vue.filter('date', function (value) {
+            return new Date(parseInt(value)).format('yyyy年MM月dd日 hh時mm分ss秒')
+        })
+        var vue = new Vue({
+                    el: '#order-#{type}',
+                    data: {
+                        type: '#{type}',
+                        orders: !{JSON.stringify(orders)},
+                        title: '',
+                        order: {},
+                        nextType: ''
+
+                    },
+                    methods: {
+                        init: function () {
+                            switch (this.type) {
+                                case 'receipt':
+                                    this.title = '待接單'
+                                    this.nextType = 'delivery'
+                                    break;
+                                case 'delivery':
+                                    this.title = '待配送'
+                                    this.nextType = 'sign'
+                                    break;
+                                case 'sign':
+                                    this.title = '待簽收'
+                                    this.nextType = 'completion'
+                                    break;
+                                case 'completion':
+                                    this.title = '完成訂單'
+                                    break;
+                                default:
+                                    this.title = '訂單列表'
+                                    break
+                            }
+                        },
+                        changeOrderState: function (event, order) {
+                            var vue = this
+                            $.post('/order/edit/state', this.order, function (result) {
+                                if (result.code == 200) {
+                                    $('.model-close').click()
+                                    vue.orders.$remove(vue.order)
+                                } else {
+                                    alert(result.msg)
+                                }
+                            });
+                        },
+                        cancelOrderModal: function (event) {
+                            event.preventDefault()
+                            var index = $(event.target).attr('value')
+                            this.order = this.orders[index]
+                        },
+                        cancelOrder: function (event) {
+                            event.preventDefault()
+                            this.order.state = 'canceled'
+                            this.changeOrderState(event, this.order)
+                        },
+                        confirmOrder: function (event) {
+                            event.preventDefault()
+                            var index = $(event.target).attr('value')
+                            this.order = this.orders[index]
+                            this.order.state = this.nextType
+                            this.changeOrderState(event, this.order)
+
+                        }
+
+
+                    }
+                })
+                ;
+        vue.init()
+        function onData(data) {
+            if (data.orders != null) {
+                for (var index in  data.orders) {
+                    console.log(data.orders[index])
+                    vue.orders.push(data.orders[index])
+                }
+            }
+        }
+
+        socket.on('order-#{type}', onData)
+        $('#order-right .tab-pane.active').bind('inactive', function () {
+            socket.removeListener('order-#{type}', onData);
+        })
+    }())

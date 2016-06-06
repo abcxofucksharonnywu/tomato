@@ -1,0 +1,64 @@
+extends layout
+block content
+    div(class='header')
+        nav(id='navbar' class='navbar navbar-dark bg-faded')
+            a(class='navbar-brand' href='#order') 番茄
+    div(id='content')
+        div#user-login
+            big 用戶登錄
+            div(class='tab-content')
+                table
+                    tbody
+                        tr
+                            td 用戶名:
+                            td
+                                input( type='text' class='form-control' id='name' name='name' v-model='name' placeholder='請輸入3-12位用戶名')
+                        tr
+                            td 密碼:
+                            td
+                                input( type='password' class='form-control' id='password' name='password' v-model='password' placeholder='請輸入6-12位密碼')
+                        tr
+                            td
+                            td
+                                button(type='button' id='submit' v-on:click='login' class='btn btn-primary' style='width:100%') 登錄
+                                div
+                                    small( class='text-muted') 員工首次登錄係統需要上級進行申請開通帳號
+
+    script.
+        (function () {
+            var vue = new Vue({
+                el: '#user-login',
+                data: {
+                    name: '',
+                    password: ''
+                },
+                methods: {
+                    login: function (event) {
+                        event.preventDefault()
+                        var nameReg = /[0-9a-zA-Z]{3,12}/;
+                        var passwordReg = /^[0-9a-zA-Z]{6,12}$/;
+                        if (!nameReg.test(this.name)) {
+                            alert('請輸入3-12位的數字或字母用戶名');
+                            return;
+                        }
+                        if (!passwordReg.test(this.password)) {
+                            alert('請輸入6-12位的數字或字母密碼');
+                            return;
+                        }
+                        $.post('/user/login', {name: this.name, password: $.md5(this.password)}, function (result) {
+                            if (result.code == 302) {
+                                window.location.href = result.url;
+                            } else {
+                                alert(result.msg);
+
+                            }
+                        });
+                    }
+                }
+            });
+        }())
+
+  
+  
+  
+  

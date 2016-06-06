@@ -1,0 +1,203 @@
+b 帳號列表
+div(class='tab-content')
+    #modal-user-edit.modal.fade
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                        span(aria-hidden='true') ×
+                    h4.modal-title {{title}}
+                .modal-body
+                    table
+                        tbody
+                            tr
+                                td 用戶名:
+                                td
+                                    input( type='text' class='form-control' id='name' name='name' placeholder='請輸入3-12位數字字母用戶名' v-model='user.name' v-bind:disabled="type!='add'" )
+
+                            tr
+                                td 員工名:
+                                td
+                                    input( type='text' class='form-control' id='realName' name='realName' placeholder='請輸入綁定員工名' v-model='user.realName')
+                            tr
+                                td 密碼:
+                                td
+                                    input( type='password' class='form-control' id='password' name='password' placeholder='請輸入6-12位密碼' v-model='user.password')
+                            tr
+                                td 使用權限:
+                                td
+                                    label.checkbox-inline
+                                        input#inlineCheckbox1(type='checkbox'  value='order' v-model='user.permission')
+                                        |  訂單管理
+                                    label.checkbox-inline
+                                        input#inlineCheckbox2(type='checkbox'  value='activity' v-model='user.permission')
+                                        |  活動管理
+                                    label.checkbox-inline
+                                        input#inlineCheckbox3(type='checkbox'  value='data' v-model='user.permission')
+                                        |  基礎數據
+                                    label.checkbox-inline
+                                        input#inlineCheckbox4(type='checkbox'  value='user' v-model='user.permission')
+                                        |  帳號信息
+                            tr
+                                td 帳號類型:
+                                td
+                                    input( type='text' class='form-control' id='type' name='type' placeholder='請輸入帳號類型' v-model='user.type' disabled='true')
+                            tr
+                                td 手機號碼:
+                                td
+                                    input( type='text' class='form-control' id='phone' name='phone' placeholder='請輸入手機號碼' v-model='user.phone')
+                .modal-footer
+                    button.model-close.btn.btn-secondary(type='button' data-dismiss='modal') 關閉
+                    button.btn.btn-primary(type='button'  v-on:click='add'  v-if="type=='add'") 保存
+                    button.btn.btn-primary(type='button'  v-on:click='edit'  v-else) 保存
+    #modal-user-delete.modal.fade
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    button.close(type='button' data-dismiss='modal', aria-label='Close')
+                        span(aria-hidden='true') ×
+                    h4.modal-title {{title}}
+                .modal-body
+                    p 一旦刪除帳號,將無法找回,是否確定刪除?
+                .modal-footer
+                    button.model-close.btn.btn-secondary(type='button' data-dismiss='modal') 關閉
+                    button.btn.btn-primary(type='button' v-on:click='delete') 刪除
+    .input-group
+        input.form-control(type='text' placeholder='輸入搜索用戶名' v-model='search')
+        span.input-group-btn
+            button.btn.btn-primary(type='button' data-toggle='modal' v-on:click='addModel' data-target='#modal-user-edit') 新建
+    table.list
+        tbody
+            tr
+                th 用戶名
+                th 員工名
+                th 手機號碼
+                th 帳號類型
+                th 操作
+            tr(class='order-item' v-for="user in users | filterBy search in 'name'")
+                td {{user.name}}
+                td {{user.realName}}
+                td {{user.phone}}
+                td {{user.type}}
+                td(v-if="user.type!='master'")
+                    button.btn.btn-link(type='button' data-toggle='modal' v-on:click='editModel' data-target='#modal-user-edit' value='{{$index}}') 修改
+                    button.btn.btn-link(type='button' data-toggle='modal' v-on:click='deleteModel' data-target='#modal-user-delete' value='{{$index}}') 刪除
+                td(v-else) 無
+
+script.
+    (function () {
+        var vue = new Vue({
+            el: '#user-list',
+            data: {
+                users: !{JSON.stringify(users)},
+                user: {
+                    name: '',
+                    realName: '',
+                    phone: '',
+                    password: '',
+                    permission: [],//order ,activity ,data ,user
+                    type: 'staff',//master,staff,
+                    date: ''
+                },
+                type: '',
+                title: ''
+            },
+            methods: {
+                addModel: function (event) {
+                    event.preventDefault()
+                    this.title = '新增用戶'
+                    this.user = {
+                        name: '',
+                        realName: '',
+                        phone: '',
+                        password: '',
+                        permission: ['order'],//order ,activity ,data ,user
+                        type: 'staff',//master,staff,
+                        date: ''
+                    }
+                    this.type = 'add'
+
+                },
+                editModel: function (event) {
+                    event.preventDefault()
+                    var index = $(event.target).attr('value')
+                    this.title = '修改用戶'
+                    this.user = this.users[index]
+                    this.type = 'edit'
+                },
+                deleteModel: function (event) {
+                    event.preventDefault()
+                    var index = $(event.target).attr('value')
+                    this.title = '刪除用戶'
+                    this.user = this.users[index]
+                    this.type = 'delete'
+                },
+                add: function (event) {
+                    event.preventDefault()
+                    var phoneReg = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+                    var passwordReg = /^[0-9a-zA-Z]{6,12}$/;
+                    if (this.user.name.length > 0
+                            && this.user.realName.length > 0
+                            && phoneReg.test(this.user.phone)
+                            && passwordReg.test(this.user.password)) {
+                        var password = $.md5(this.user.password)
+                        var userData = JSON.parse(JSON.stringify(this.user))
+                        userData['password'] = password;
+                        $.post('/user/add', userData, function (result) {
+                            if (result.code == 200) {
+                                $('.model-close').click()
+                                setTimeout(function () {
+                                    $('#user-left .nav-link.active').click()
+                                }, 500);
+
+                            } else {
+                                alert(result.msg)
+                            }
+                        });
+                    } else {
+                        alert('請填寫正確信息')
+                    }
+                },
+                edit: function (event) {
+                    event.preventDefault()
+                    var phoneReg = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+                    var passwordReg = /^[0-9a-zA-Z]{6,12}$/;
+                    if (this.user.name.length > 0
+                            && this.user.realName.length > 0
+                            && phoneReg.test(this.user.phone)
+                            && passwordReg.test(this.user.password)) {
+                        var password = this.user.password.length > 12 ? this.user.password : $.md5(this.user.password)
+                        var userData = JSON.parse(JSON.stringify(this.user))
+                        userData['password'] = password;
+                        $.post('/user/edit', userData, function (result) {
+                            if (result.code == 200) {
+                                $('.model-close').click()
+                                setTimeout(function () {
+                                    $('#user-left .nav-link.active').click()
+                                }, 500);
+
+                            } else {
+                                alert(result.msg)
+                            }
+                        });
+                    } else {
+                        alert('請填寫正確信息')
+                    }
+                },
+                delete: function (event) {
+                    event.preventDefault()
+                    $.post('/user/delete', this.user, function (result) {
+                        if (result.code == 200) {
+                            $('.model-close').click()
+                            setTimeout(function () {
+                                $('#user-left .nav-link.active').click()
+                            }, 500);
+                        } else {
+                            alert(result.msg)
+                        }
+                    });
+                }
+
+            }
+        });
+    }())

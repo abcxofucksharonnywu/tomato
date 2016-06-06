@@ -1,0 +1,38 @@
+div(id='order-left' class='content-left')
+    ul( class='nav nav-pills nav-stacked' role='tablist')
+        li(class='nav-item')
+            a( class='nav-link default' data-toggle='tab' href='#order-receipt') 待接單
+        li(class='nav-item')
+            a( class='nav-link' data-toggle='tab' href='#order-delivery') 待配送
+        li(class='nav-item')
+            a( class='nav-link' data-toggle='tab' href='#order-sign') 待簽收
+        li(class='nav-item')
+            a( class='nav-link' data-toggle='tab' href='#order-completion') 完成訂單
+div(id='order-right' class='content-right')
+    div( class='tab-content')
+        div( class='tab-pane  active' id='order-receipt' role='tabpanel')
+
+        div( class='tab-pane ' id='order-delivery' role='tabpanel')
+
+        div( class='tab-pane ' id='order-sign' role='tabpanel')
+
+        div( class='tab-pane ' id='order-completion' role='tabpanel')
+script.
+    (function () {
+        $('#order-left a').click(function (e) {
+            e.preventDefault()
+            $('#order-right .tab-pane.active').trigger('inactive')
+            $(this).tab('show')
+            var type = $(this).attr('href').replace('#order-', '')
+            $.get("/order/list?type=" + type, function (result) {
+                if (result.code == 200) {
+                    $('#order-' + type).empty()
+                    $('#order-' + type).append(result.content)
+                } else {
+                    alert(result.msg);
+
+                }
+            });
+        })
+        $('#order-left .nav-link.default').click()
+    }())

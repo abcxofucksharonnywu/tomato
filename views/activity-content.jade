@@ -1,0 +1,47 @@
+b {{activity.title}}&nbsp;&nbsp;{{activity.content}}
+a( data-toggle='modal' data-target='#modal-activity-delete' v-if="activity.url!=null && activity.name!='home'") 刪除活動
+div(class='tab-content')
+    form.input-type
+        div
+            label.radio-inline
+                input(type='radio' name='optionsRadios' value='layout' v-model='activity.type' v-bind:vaule='layout')
+                |       自定義模塊
+        div(v-if="activity.name!='home'")
+            label.radio-inline
+                input(type='radio' name='optionsRadios'  value='url' v-model='activity.type' v-bind:vaule='url')
+                |       自定義Url
+        .input-group
+            span
+                input.form-control(type='text' placeholder='輸入自定義Url' v-model='activity.url' v-bind:disabled="activity.type!='url'" )
+            span.input-group-btn
+                button.btn.btn-primary(type='button' v-on:click='edit') 保存活動
+    .phone-layout
+        .phone
+            iframe.activity-phone(src='{{activity.url}}' id='activity-phone-{{activity.name}}')
+        .layout(v-if="activity.type=='layout'")
+            b 添加模塊
+            ul
+                li
+                    div
+                        span 1.模塊 輪播
+                        a( data-toggle='modal' data-target='#modal-activity-edit' v-on:click='addLayoutModal' value='banner') + 添加
+                    div
+                        img(src='img/bg_layout_banner.jpg')
+                li
+                    div
+                        span 2.模塊 多圖
+                        a( data-toggle='modal' data-target='#modal-activity-edit' v-on:click='addLayoutModal' value='multiRect') + 添加
+                    div
+                        img(src='img/bg_layout_multiRect.jpg')
+                li
+                    div
+                        span 3.模塊 單品
+                        a( data-toggle='modal' data-target='#modal-activity-edit' v-on:click='addLayoutModal' value='rect') + 添加
+                    div
+                        img(src='img/bg_layout_rect.jpg')
+                li
+                    div
+                        span 4.模塊 推薦
+                        a( data-toggle='modal' data-target='#modal-activity-edit' v-on:click='addLayoutModal' value='double') + 添加
+                    div
+                        img(src='img/bg_layout_double.jpg')

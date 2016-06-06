@@ -1,0 +1,549 @@
+#modal-activity-delete.modal.fade
+    .modal-dialog(role='document')
+        .modal-content
+            .modal-header
+                button.close(type='button' data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') ×
+                h4.modal-title 刪除活動
+            .modal-body
+                p 一旦刪除將無法恢復,是否確認要刪除
+            .modal-footer
+                button.model-close.btn.btn-secondary(type='button' data-dismiss='modal') 關閉
+                button.btn.btn-primary(type='button' v-on:click='delete') 確認
+#modal-activity-edit.modal.fade(style='display:block;visibility:hidden')
+    .modal-dialog(role='document')
+        .modal-content
+            .modal-header
+                button.close(type='button' data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') ×
+                h4.modal-title {{layoutType=='add'?'新增模塊':'修改模塊'}}
+            .modal-body
+                .framework7.output
+                    link(rel='stylesheet', href='m/css/framework7.ios.namespace.min.css')
+                    link(rel='stylesheet', href='m/css/framework7.ios.colors.min.css')
+                    link(rel='stylesheet', href='m/css/iconfont.css')
+                    link(rel='stylesheet', href='m/css/kitchen-sink.ios.css')
+                    .views
+                        .view.view-main
+                            .pages.navbar-through
+                                .page(data-page="activity-preview")
+                                    .page-content
+                                        .list-block
+                                            ul
+                                                li
+                                                    .content
+                                                        .layout.banner.swiper-container.swiper-init.ks-demo-slider.swiper-container-horizontal(data-pagination='.swiper-pagination', data-loop='true' v-if="layout.type=='banner'")
+                                                            .swiper-pagination.swiper-pagination-bullets
+                                                                span.swiper-pagination-bullet(v-for='item in layout.items')
+                                                            .swiper-wrapper
+                                                                .swiper-slide(:data-swiper-slide-index='$index' v-for='item in layout.items')
+                                                                    a
+                                                                        img(:src='item.img' onerror="this.src='img/bg_image.png'")
+                                                        .layout.multiRect(v-if="layout.type=='multiRect'")
+                                                            div
+                                                                div
+                                                                    a
+                                                                        img(:src='layout.items[0].img' onerror="this.src='img/bg_image.png'")
+                                                                div
+                                                                    a
+                                                                        img(:src='layout.items[1].img' onerror="this.src='img/bg_image.png'")
+                                                            div
+                                                                div
+                                                                    a
+                                                                        img(:src='layout.items[2].img' onerror="this.src='img/bg_image.png'")
+                                                                div
+                                                                    a
+                                                                        img(:src='layout.items[3].img' onerror="this.src='img/bg_image.png'")
+                                                                div
+                                                                    a
+                                                                        img(:src='layout.items[4].img' onerror="this.src='img/bg_image.png'")
+                                                        .layout.rect(v-if="layout.type=='rect'")
+                                                            div
+                                                                a
+                                                                    img(:src='layout.items[0].img' onerror="this.src='img/bg_image.png'")
+                                                        .layout.double(v-if="layout.type==='double'")
+                                                            .list-block.media-list.goods
+                                                                ul
+                                                                    li(v-for='item in layout.items')
+                                                                        a.item-content
+                                                                            .item-media
+                                                                                img(:src='item.goods.images[0]' onerror="this.src='img/bg_image.png'")
+                                                                            .item-inner
+                                                                                .item-text.text {{item.goods.title}}
+                                                                                .item-title-row
+                                                                                    .price ${{item.goods.price}}
+                                                                                    i.iconfont.icon-gouwuche.price
+                    script(type='text/javascript', src='m/js/framework7.min.js')
+                table
+                    tbody
+                        tr(v-for='item in layout.items')
+                            td
+                                .img
+                                    input(type='file' accept='image/*')
+                                    img(src="{{item.img !=''?item.img:'img/bg_upload.jpg'}}"  v-on:click='upload' value='{{$index}}')
+                                span {{item.size}}
+                            td
+                                select.form-control(v-model="item.type" v-bind:disabled="layout.type=='double'" )
+                                    option(value='activity') 活動
+                                    option(value='goods') 商品
+
+                            td
+                                .activity(v-if="item.type=='activity'")
+                                    select.form-control(v-model="item.url")
+                                        option(value='') 無
+                                        option(v-for="activity in activities | notHome" v-bind:value='activity.url') {{activity.title}}
+                                    span {{item.url}}
+                                .goods(v-if="item.type=='goods'")
+                                    input( type='text' class='form-control'  v-model='item._id' placeholder='請輸入商品條形碼')
+                                    i.fa.fa-qrcode.fa-2x(style='padding-left: 0.5rem;')
+                        tr(v-if="layout.type=='double'")
+                            td
+                            td
+                                button(type='button'  v-on:click='deleteItem' class='btn btn-primary') 刪除一項
+                            td
+                                button(type='button'  v-on:click='addItem' class='btn btn-primary') 添加一項
+            .modal-footer
+                button.model-close.btn.btn-secondary(type='button' data-dismiss='modal') 關閉
+                button.btn.btn-primary(type='button' v-on:click="deleteLayout" v-if="layoutType=='edit'") 刪除
+                button.btn.btn-primary(type='button' v-on:click="editLayout" v-if="layoutType=='edit'") 確認
+                button.btn.btn-primary(type='button' v-on:click="addLayout" v-else) 確認
+#modal-activity-add.modal.fade
+    .modal-dialog(role='document')
+        .modal-content
+            .modal-header
+                button.close(type='button' data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') ×
+                h4.modal-title 新建活動
+            .modal-body
+                table
+                    tbody
+                        tr
+                            td 活動標題:
+                            td
+                                input( type='text' class='form-control'  v-model='activity.title' placeholder='請輸入12字內標題')
+                        tr
+                            td 活動名稱:
+                            td
+                                input( type='text' class='form-control'  v-model='activity.name' placeholder='請輸入單個小寫英文單詞')
+                        tr
+                            td 活動描述:
+                            td
+                                input( type='text' class='form-control'  v-model='activity.content' placeholder='請輸入30字內活動描述')
+            .modal-footer
+                button.model-close.btn.btn-secondary(type='button' data-dismiss='modal' v-on:click='cancel') 關閉
+                button.btn.btn-primary(type='button'  v-on:click='add') 確認
+div(id='activity-left' class='content-left')
+    ul( class='nav nav-pills nav-stacked' role='tablist')
+        li(class='nav-item' v-for='activity in activities')
+            a( class='nav-link' data-toggle='tab' href='#activity-{{activity.name}}' value='{{$index}}' v-on:click='info') {{activity.title}}
+        li(class='nav-item')
+            a( class='nav-link' data-toggle='tab' href='#activity-add' v-on:click='addModal') 新建活動
+div(id='activity-right' class='content-right')
+    div( class='tab-content')
+        div( class='tab-pane ' class ='activity-content' id='activity-{{activity.name}}' role='tabpanel' v-for='activity in activities')
+            include activity-content
+        div( class='tab-pane ' class ='activity-content' id='activity-add' role='tabpanel'  )
+            include activity-content
+
+script.
+    (function () {
+        Vue.filter('notHome', function (value) {
+            var list = []
+            for(var index in value){
+                var activity = value[index]
+                if(activity.name!='home'){
+                    list.push(activity)
+                }
+            }
+            return list
+        })
+        var vue = new Vue({
+            el: '#activity',
+            data: {
+                layoutType: '',
+                activities: !{JSON.stringify(activities)},
+                activity: {},
+                layout: {},
+                index: 0
+            },
+            watch: {
+                'activity.type': function (val, oldVal) {
+                    if (val == 'layout') {
+                        this.activity.url = 'http://' + window.location.host + '/m/activity-preview.html'
+                    }
+                },
+                'activity': function (val, oldVal) {
+                    var frame = $('#activity-phone-' + this.activity.name)
+                    var vue = this
+                    function ready() {
+                        console.log('frame ready ' + vue.activity.name)
+                        frame[0].contentWindow.vue.onClick = function (event) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                            var index = $(this).attr('value')
+                            vue.index = index
+                            vue.layoutType = 'edit'
+                            vue.layout = JSON.parse(JSON.stringify(frame[0].contentWindow.vue.activity.layouts[index]))
+                            $('#modal-activity-edit').css({visibility: "visible"})
+                            $('#modal-activity-edit').modal('show')
+
+                        }
+                        frame[0].contentWindow.vue.activity = JSON.parse(JSON.stringify(vue.activity))
+
+                    }
+
+                    frame.load(function () {
+                        ready()
+                    });
+
+                },
+                'layout': function (val, oldVal) {
+                    console.log('layout ready ')
+                    var el = ".page[data-page='activity-preview'] "
+                    var width = 568
+                    var ratio = width / 375.0
+                    var height
+                    if (val.type == 'banner') {
+                        height = 120 * ratio
+                        $(el + ".page-content .banner").height(height)
+                    } else if (val.type == 'multiRect') {
+                        height = 165 * ratio
+                        $(el + ".page-content .multiRect >div").height(height)
+                        height = height * 2
+                    } else if (val.type == 'rect') {
+                        height = 140 * ratio
+                        $(el + ".page-content .rect >div").height(height)
+                    } else if (val.type == 'double') {
+                        height = 400
+                        $(el + ".page-content .double img").height((width - 1) / 2)
+                    }
+
+                    $('.framework7').height(height)
+                }
+
+            },
+            methods: {
+                init: function () {
+                    $('#activity-left .nav-link')[0].click()
+                },
+                info: function (event) {
+                    event.preventDefault()
+                    console.log('info')
+                    var index = $(event.target).attr('value')
+                    this.activity = this.activities[index]
+                    if (this.activity != 'url') {
+                        this.activity.url = 'http://' + window.location.host + '/m/activity-preview.html'
+                    }
+                    $(event.target).tab('show')
+                },
+                addModal: function (event) {
+                    event.preventDefault()
+                    this.activity = {}
+                    $('#modal-activity-add').modal('show')
+                },
+
+                add: function (event) {
+                    event.preventDefault()
+                    var titleReg = /^.{1,12}$/;
+                    if (!titleReg.test(this.activity.title)) {
+                        alert('請輸入12字內標題');
+                        return
+                    }
+
+                    var nameReg = /^.{1,30}$/;
+                    if (!nameReg.test(this.activity.name)) {
+                        alert('請輸入12字內標題');
+                        return
+                    }
+
+                    var contentReg = /^.{1,30}$/;
+                    if (!contentReg.test(this.activity.content)) {
+                        alert('請輸入30字內活動描述');
+                        return
+                    }
+
+                    for (var index in this.activities) {
+                        var ac = this.activities[index]
+                        if (ac.title == this.activity.title || ac.name == this.activity.name || ac.name == 'add') {
+                            alert('已存在同名活動');
+                            return
+                        }
+                    }
+                    this.activity.type = 'layout'
+                    this.activity.layouts = [];
+                    var vue = this
+                    $.post('/activity/add', this.activity, function (result) {
+                        if (result.code == 200) {
+                            vue.activities.push(vue.activity)
+                            $('#modal-activity-add').modal('hide')
+                            setTimeout(function () {
+                                $('#activity-left .nav-link')[vue.activities.length - 1].click()
+                            }, 500)
+                        } else {
+                            alert(result.msg)
+                        }
+                    });
+
+                },
+                edit: function (event) {
+                    event.preventDefault()
+                    $.post('/activity/edit', this.activity, function (result) {
+                        if (result.code == 200) {
+                            alert('保存成功')
+                        } else {
+                            alert(result.msg)
+                        }
+                    });
+                },
+                delete: function (event) {
+                    event.preventDefault()
+                    var vue = this;
+                    $.post('/activity/delete', this.activity, function (result) {
+                        if (result.code == 200) {
+                            $('#modal-activity-delete').modal('hide')
+                            setTimeout(function () {
+                                vue.activities.$remove(vue.activity)
+                                $('#activity-left .nav-link')[0].click()
+                            }, 500);
+                        } else {
+                            alert(result.msg)
+                        }
+                    });
+                }
+                ,
+                cancel: function (event) {
+                    event.preventDefault()
+                    $('#activity-left .nav-link')[0].click()
+                }
+                ,
+                addLayoutModal: function (event) {
+                    event.preventDefault()
+                    $('#modal-activity-edit').css({visibility: "visible"})
+                    this.layoutType = 'add'
+                    var type = $(event.target).attr('value')
+                    console.log('add layout '+type)
+                    var _id = $.randomString()
+                    switch (type) {
+                        case 'banner':
+                            this.layout = {
+                                _id: _id,
+                                type: type,
+                                items: [
+                                    {
+                                        img: '',
+                                        type: 'activity',
+                                        url: '',
+                                        size: '750x240'
+                                    },
+                                    {
+                                        img: '',
+                                        type: 'activity',
+                                        url: '',
+                                        size: '750x240'
+                                    },
+                                    {
+                                        img: '',
+                                        type: 'activity',
+                                        url: '',
+                                        size: '750x240'
+                                    },
+                                    {
+                                        img: '',
+                                        type: 'activity',
+                                        url: '',
+                                        size: '750x240'
+                                    }
+                                ]
+                            }
+                            break
+                        case 'multiRect':
+                            this.layout = {
+                                _id: _id,
+                                type: type,
+                                items: [
+                                    {
+                                        img: '',
+                                        type: 'activity',
+                                        url: '',
+                                        size: '500x330'
+                                    },
+                                    {
+                                        img: '',
+                                        type: 'activity',
+                                        url: '',
+                                        size: '250x330'
+                                    },
+                                    {
+                                        img: '',
+                                        type: 'activity',
+                                        url: '',
+                                        size: '250x330'
+                                    },
+                                    {
+                                        img: '',
+                                        type: 'activity',
+                                        url: '',
+                                        size: '250x330'
+                                    },
+                                    {
+                                        img: '',
+                                        type: 'activity',
+                                        url: '',
+                                        size: '250x330'
+                                    }
+                                ]
+                            }
+                            break
+                        case 'rect':
+                            this.layout = {
+                                _id: _id,
+                                type: type,
+                                items: [
+                                    {
+                                        img: '',
+                                        type: 'activity',
+                                        url: '',
+                                        size: '750x280'
+                                    }
+                                ]
+                            }
+                            break
+                        case 'double':
+                            this.layout = {
+                                _id: _id,
+                                type: type,
+                                items: [
+                                    {
+                                        img: 'https://gd4.alicdn.com/imgextra/i4/TB16XXlKFXXXXXTXFXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg_.webp',
+                                        type: 'goods',
+                                        url: 'detail.html',
+                                        size: '375x528',
+                                        goods: {
+                                            categoryId: '',
+                                            title: '日本GLICO 卡通妖怪手表曲奇饼干 焦糖味 69g本GLICO 卡通妖怪手表曲奇饼干 焦糖味 69g',
+                                            content: '',
+                                            images: ['https://gd4.alicdn.com/imgextra/i4/TB16XXlKFXXXXXTXFXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg_.webp',
+                                                'https://gd3.alicdn.com/imgextra/i3/111448750/TB2zHK4cpXXXXX.XXXXXXXXXXXX_!!111448750.jpg_400x400.jpg_.webp',
+                                                'https://gd1.alicdn.com/imgextra/i1/TB1_gFWHXXXXXcFaXXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg_.webp',
+                                                'https://gd3.alicdn.com/imgextra/i3/111448750/TB2zT1VcpXXXXabXpXXXXXXXXXX_!!111448750.jpg_400x400.jpg_.webp'],
+                                            quantity: '2',
+                                            price: '20.2',
+                                            sale: '100',
+                                            date: '1462196014850'
+                                        }
+
+                                    },
+                                    {
+                                        img: 'https://gd4.alicdn.com/imgextra/i4/TB16XXlKFXXXXXTXFXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg_.webp',
+                                        type: 'goods',
+                                        url: 'detail.html',
+                                        size: '375x528',
+                                        goods: {
+                                            categoryId: '',
+                                            title: '日本GLICO 卡通妖怪手表曲奇饼干 焦糖味 69g本GLICO 卡通妖怪手表曲奇饼干 焦糖味 69g',
+                                            content: '',
+                                            images: ['https://gd4.alicdn.com/imgextra/i4/TB16XXlKFXXXXXTXFXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg_.webp',
+                                                'https://gd3.alicdn.com/imgextra/i3/111448750/TB2zHK4cpXXXXX.XXXXXXXXXXXX_!!111448750.jpg_400x400.jpg_.webp',
+                                                'https://gd1.alicdn.com/imgextra/i1/TB1_gFWHXXXXXcFaXXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg_.webp',
+                                                'https://gd3.alicdn.com/imgextra/i3/111448750/TB2zT1VcpXXXXabXpXXXXXXXXXX_!!111448750.jpg_400x400.jpg_.webp'],
+                                            quantity: '2',
+                                            price: '20.2',
+                                            sale: '100',
+                                            date: '1462196014850'
+                                        }
+
+                                    }
+
+                                ]
+                            }
+                            break
+                    }
+                },
+                addLayout: function (event) {
+                    event.preventDefault()
+                    if (this.activity.layouts == null) {
+                        this.activity.layouts = []
+                    }
+                    this.activity.layouts.push(this.layout)
+                    $('#activity-phone-' + this.activity.name)[0].contentWindow.vue.activity = JSON.parse(JSON.stringify(vue.activity))
+                    $('#modal-activity-edit').modal('hide')
+
+                },
+                editLayout: function (event) {
+                    event.preventDefault()
+                    this.activity.layouts.$set(this.index, this.layout)
+                    $('#activity-phone-' + this.activity.name)[0].contentWindow.vue.activity = JSON.parse(JSON.stringify(vue.activity))
+                    $('#modal-activity-edit').modal('hide')
+
+                },
+                deleteLayout: function (event) {
+                    this.activity.layouts.$remove(this.activity.layouts[this.index])
+                    $('#activity-phone-' + this.activity.name)[0].contentWindow.vue.activity = JSON.parse(JSON.stringify(vue.activity))
+                    $('#modal-activity-edit').modal('hide')
+
+                },
+                deleteItem: function (event) {
+                    event.preventDefault()
+                    this.layout.items.splice(this.layout.items.length > 2 ? this.layout.items.length - 3 : 0, 2)
+                },
+                addItem: function (event) {
+                    event.preventDefault()
+                    this.layout.items.push({
+                        img: '',
+                        type: 'goods',
+                        url: '',
+                        size: '375x528'
+                    })
+                    this.layout.items.push({
+                        img: '',
+                        type: 'goods',
+                        url: '',
+                        size: '375x528'
+                    })
+                },
+                upload: function (event) {
+                    event.preventDefault()
+                    var img = $(event.target)
+                    var input = $(event.target).siblings('input')
+                    var index = $(event.target).attr('value')
+                    var item = this.layout.items[index]
+                    var vue = this;
+                    input.click()
+                    input.change(function () {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            var dir =vue.activity.name+'/img/'
+                            var name = vue.layout.type + '-' + vue.layout._id + '-' + index + '.jpg';
+
+                            // File or Blob named mountains.jpg
+                            var file = new Blob([e.target.result]);
+                            // Create the file metadata
+                            var metadata = {
+                                contentType: 'image/jpeg'
+                            };
+                            var uploadTask = storageRef.child('activity/'+dir + name).put(file, metadata);
+
+                            // Listen for state changes, errors, and completion of the upload.
+                            uploadTask.on('state_changed', // or 'state_changed'
+                                    function (snapshot) {
+                                        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                                        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                                        console.log('Upload is ' + progress + '% done');
+                                    }, function (error) {
+                                        alert(error.message)
+                                    }, function () {
+                                        // Upload completed successfully, now we can get the download URL
+                                        item.img  = uploadTask.snapshot.downloadURL;
+                                    });
+
+                        };
+                        reader.readAsArrayBuffer(this.files[0]);
+                    });
+
+
+                }
+            }
+        })
+        vue.init()
+
+    }())

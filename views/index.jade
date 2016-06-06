@@ -1,0 +1,89 @@
+extends layout
+
+block content
+    div(class='header')
+        nav(id='navbar' class='navbar navbar-dark bg-faded')
+            a(class='navbar-brand' href='#order') 大吉
+            ul(class='nav navbar-nav')
+                li( class='nav-item')
+                    a( class='nav-link default nav-link-tab'  href='#order') 訂單管理
+                li( class='nav-item ')
+                    a( class='nav-link nav-link-tab'  href='#activity') 活動管理
+                li( class='nav-item ')
+                    a( class='nav-link nav-link-tab'  href='#data') 基礎數據
+                li( class='nav-item ')
+                    a( class='nav-link nav-link-tab'  href='#user') 帳號信息
+                li( class='nav-item nav-item-right')
+                    a( class='nav-link-logout nav-link nav-link-right' id='logout') 退出登錄
+                li( class='nav-item nav-item-right')
+                    a( class='nav-link  nav-link-right'  id='info' href='#') #{name}
+                li( class='nav-item nav-item-right')
+                    a( class='nav-link  nav-link-right'  id='notification')
+                        i(class='fa fa-bell' style='padding-right: 0.5rem;')
+                        span(id='notification-count') 0
+
+    div( id='content' class='tab-content')
+        div( class='tab-pane active ' id='order' role='tabpanel')
+        div( class='tab-pane ' id='activity' role='tabpanel')
+        div( class='tab-pane ' id='data' role='tabpanel')
+        div( class='tab-pane ' id='user' role='tabpanel')
+
+    script.
+        /*$("body").bind("DOMSubtreeModified", function () {
+            $('body').s2t();
+        })
+        var socket = io.connect('http://' + window.location.hostname + ':3001');
+        socket.on('connect', function () {
+            console.log('client connected')
+            toastr.success('Are you the 6 fingered man?')
+        });*/
+        var config = {
+            apiKey: 'AIzaSyDN-KMDn_IWYcDV7Z7ALTYSMR5RJyW4M5I',
+            authDomain: 'tomato-18eae.firebaseapp.com',
+            databaseURL: 'https://tomato-18eae.firebaseio.com',
+            storageBucket: 'tomato-18eae.appspot.com'
+        };
+        firebase.initializeApp(config);
+        var storage = firebase.storage();
+        var storageRef = storage.ref();
+
+        (function () {
+            $('#navbar .nav-link-tab').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+                var type = $(this).attr('href').replace('#', '')
+                $.get("/" + type, function (result) {
+                    if (result.code == 200) {
+                        if ($('#' + type).is(':empty')) {
+                            $('#' + type).append(result.content)
+                        }
+                    } else {
+                        alert(result.msg);
+                    }
+                });
+            })
+            $('#navbar .nav-link-tab.default').click()
+
+            $('#notification').click(function (e) {
+                e.preventDefault()
+                $('#navbar .nav-link-tab.default').click()
+                $('#notification-count').attr('text', 0);
+            })
+
+            $('#info').click(function (e) {
+                e.preventDefault()
+                $("#navbar .nav-link-tab[href='#user']").click()
+            })
+
+            $('#logout').click(function (e) {
+                e.preventDefault()
+                $.get("/user/logout", function (result) {
+                    if (result.code == 302) {
+                        window.location.href = result.url;
+                    } else {
+                        alert(result.msg);
+                    }
+                });
+            })
+        }())
+

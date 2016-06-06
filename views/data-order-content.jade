@@ -1,0 +1,29 @@
+table.list
+    tbody
+        tr
+            th 訂單號
+            th 用戶名
+            th 手機號碼
+            th 訂單日期
+            th 操作
+        tr(class='order-item' v-for='order in orders')
+            td {{order._id}}
+            td {{order.address.name}}
+            td {{order.address.phone}}
+            td {{order.date | date}}
+            td
+                button.btn.btn-link(type='button' data-toggle='modal' v-on:click='editModel' data-target='#modal-user-edit' value='{{$index}}') 修改
+                button.btn.btn-link(type='button' data-toggle='modal' v-on:click='deleteModel' data-target='#modal-user-delete' value='{{$index}}') 刪除
+script.
+    (function () {
+        Vue.filter('date', function (value) {
+            return new Date(parseInt(value)).format('yyyy年MM月dd日 hh時mm分ss秒')
+        })
+        var vue = new Vue({
+            el: '#data-order-content',
+            data: {
+                orders: !{JSON.stringify(orders)}
+            },
+            methods: {}
+        });
+    }())

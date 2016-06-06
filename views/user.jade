@@ -1,0 +1,32 @@
+div(id='user-left' class='content-left')
+    ul( class='nav nav-pills nav-stacked' role='tablist')
+        li(class='nav-item')
+            a( class='nav-link active' data-toggle='tab' href='#user-info') 我的信息
+        li(class='nav-item')
+            a( class='nav-link' data-toggle='tab' href='#user-password') 修改密碼
+        li(class='nav-item')
+            a( class='nav-link' data-toggle='tab' href='#user-list') 帳號列表
+div(class='content-right')
+    div( class='tab-content')
+        div( class='tab-pane  active' id='user-info' role='tabpanel')
+
+        div( class='tab-pane ' id='user-password' role='tabpanel')
+
+        div( class='tab-pane ' id='user-list' role='tabpanel')
+script.
+    (function () {
+        $('#user-left a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+            var type = $(this).attr('href').replace('#user-', '')
+            $.get("/user/" + type, function (result) {
+                if (result.code == 200) {
+                    $('#user-' + type).empty()
+                    $('#user-' + type).append(result.content)
+                } else {
+                    alert(result.msg);
+                }
+            });
+        })
+        $('#user-left .nav-link.active').click()
+    }())
