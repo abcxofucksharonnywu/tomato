@@ -68,7 +68,8 @@ service.search = service.db.get('search')
 
 var model = {
     name: '',
-    deviceId: '',
+    device: '',
+    token:'',
     phone: '',
     password: '',
     type: '',//unreachable
@@ -76,7 +77,7 @@ var model = {
 }
 service.user = service.db.get('user')
 service.user.index('name', {unique: true}) // unique
-service.user.index('deviceId', {unique: true}) // unique
+service.user.index('device', {unique: true}) // unique
 
 
 var model = {

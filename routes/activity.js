@@ -84,7 +84,7 @@ router.get('/query', function (req, res, next) {
     var name = req.query.name
     if (name) {
         service.activity.findOne({name: name}, function (err, doc) {
-            if (!err) {
+            if (!err && doc) {
                 res.send({code: 200, content: doc})
             } else {
                 res.send({code: 400, msg: "活動獲取失敗"})

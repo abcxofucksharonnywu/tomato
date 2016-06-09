@@ -37,6 +37,8 @@ app.use(session({
 
 //请求拦截器
 app.use('*', function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     var url = req.originalUrl
     if (!url.startWith("/m")) {
         var isLogin = req.session != null && req.session.user != null
