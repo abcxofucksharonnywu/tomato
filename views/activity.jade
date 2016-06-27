@@ -36,38 +36,38 @@
                                                             .swiper-pagination.swiper-pagination-bullets
                                                                 span.swiper-pagination-bullet(v-for='item in layout.items')
                                                             .swiper-wrapper
-                                                                .swiper-slide(:data-swiper-slide-index='$index' v-for='item in layout.items')
+                                                                .swiper-slide(id='' v-bind:data-swiper-slide-index='$index' v-for='item in layout.items')
                                                                     a
-                                                                        img(:src='item.img' onerror="this.src='img/bg_image.png'")
+                                                                        img(id='' v-bind:src='item.img' onerror="this.src='img/bg_image.png'")
                                                         .layout.multiRect(v-if="layout.type=='multiRect'")
                                                             div
                                                                 div
                                                                     a
-                                                                        img(:src='layout.items[0].img' onerror="this.src='img/bg_image.png'")
+                                                                        img(id='' v-bind:src='layout.items[0].img' onerror="this.src='img/bg_image.png'")
                                                                 div
                                                                     a
-                                                                        img(:src='layout.items[1].img' onerror="this.src='img/bg_image.png'")
+                                                                        img(id='' v-bind:src='layout.items[1].img' onerror="this.src='img/bg_image.png'")
                                                             div
                                                                 div
                                                                     a
-                                                                        img(:src='layout.items[2].img' onerror="this.src='img/bg_image.png'")
+                                                                        img(id='' v-bind:src='layout.items[2].img' onerror="this.src='img/bg_image.png'")
                                                                 div
                                                                     a
-                                                                        img(:src='layout.items[3].img' onerror="this.src='img/bg_image.png'")
+                                                                        img(id='' v-bind:src='layout.items[3].img' onerror="this.src='img/bg_image.png'")
                                                                 div
                                                                     a
-                                                                        img(:src='layout.items[4].img' onerror="this.src='img/bg_image.png'")
+                                                                        img(id='' v-bind:src='layout.items[4].img' onerror="this.src='img/bg_image.png'")
                                                         .layout.rect(v-if="layout.type=='rect'")
                                                             div
                                                                 a
-                                                                    img(:src='layout.items[0].img' onerror="this.src='img/bg_image.png'")
+                                                                    img(id='' v-bind:src='layout.items[0].img' onerror="this.src='img/bg_image.png'")
                                                         .layout.double(v-if="layout.type==='double'")
                                                             .list-block.media-list.goods
                                                                 ul
                                                                     li(v-for='item in layout.items')
                                                                         a.item-content
                                                                             .item-media
-                                                                                img(:src='item.goods.images[0]' onerror="this.src='img/bg_image.png'")
+                                                                                img(id='' v-bind:src='item.goods.images[0]' onerror="this.src='img/bg_image.png'")
                                                                             .item-inner
                                                                                 .item-text.text {{item.goods.title}}
                                                                                 .item-title-row
@@ -89,13 +89,14 @@
 
                             td
                                 .activity(v-if="item.type=='activity'")
-                                    select.form-control(v-model="item.url")
+                                    select.form-control(v-model="item.name")
                                         option(value='') 無
-                                        option(v-for="activity in activities | notHome" v-bind:value='activity.url') {{activity.title}}
-                                    span {{item.url}}
-                                .goods(v-if="item.type=='goods'")
-                                    input( type='text' class='form-control'  v-model='item._id' placeholder='請輸入商品條形碼')
-                                    i.fa.fa-qrcode.fa-2x(style='padding-left: 0.5rem;')
+                                        option(v-for="activity in activities | notHome" v-bind:value='activity.name') {{activity.title}}
+                                    span {{item.name}}
+                                .goods(v-if="item.type=='goods'" data-toggle='modal' data-target='#modal-activity-search' v-on:click='searchGoodsModal($event,$index)')
+                                    img(id='' v-bind:src='item.goods.images[0]' onerror="this.src='img/bg_image.png'")
+                                    span.title {{item.goods.title?item.goods.title:'請綁定商品'}}
+                                    span.price ${{item.goods.price}}
                         tr(v-if="layout.type=='double'")
                             td
                             td
@@ -107,6 +108,24 @@
                 button.btn.btn-primary(type='button' v-on:click="deleteLayout" v-if="layoutType=='edit'") 刪除
                 button.btn.btn-primary(type='button' v-on:click="editLayout" v-if="layoutType=='edit'") 確認
                 button.btn.btn-primary(type='button' v-on:click="addLayout" v-else) 確認
+#modal-activity-search.modal.fade
+    .modal-dialog(role='document')
+        .modal-content
+            .modal-header
+                button.close(type='button' data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') ×
+                h4.modal-title 綁定商品
+            .modal-body
+                input( type='text' class='form-control' v-on:keyup.enter='search'  placeholder='請輸入商品名稱後鍵入Enter')
+                ul
+                    li(v-for='goods in goodss')
+                        .goods
+                            img(id='' v-bind:src='goods.images[0]' onerror="this.src='img/bg_image.png'")
+                            span.title {{goods.title}}
+                            span.price ${{goods.price}}
+                        button.btn.btn-link(type='button'  v-on:click='chose($event,goods)' data-dismiss='modal') 選擇
+            .modal-footer
+                button.model-close.btn.btn-secondary(type='button' data-dismiss='modal') 關閉
 #modal-activity-add.modal.fade
     .modal-dialog(role='document')
         .modal-content
@@ -132,6 +151,7 @@
             .modal-footer
                 button.model-close.btn.btn-secondary(type='button' data-dismiss='modal' v-on:click='cancel') 關閉
                 button.btn.btn-primary(type='button'  v-on:click='add') 確認
+
 div(id='activity-left' class='content-left')
     ul( class='nav nav-pills nav-stacked' role='tablist')
         li(class='nav-item' v-for='activity in activities')
@@ -149,9 +169,9 @@ script.
     (function () {
         Vue.filter('notHome', function (value) {
             var list = []
-            for(var index in value){
+            for (var index in value) {
                 var activity = value[index]
-                if(activity.name!='home'){
+                if (activity.name != 'home') {
                     list.push(activity)
                 }
             }
@@ -164,6 +184,8 @@ script.
                 activities: !{JSON.stringify(activities)},
                 activity: {},
                 layout: {},
+                goodss: null,
+                itemIndex: 0,
                 index: 0
             },
             watch: {
@@ -175,6 +197,7 @@ script.
                 'activity': function (val, oldVal) {
                     var frame = $('#activity-phone-' + this.activity.name)
                     var vue = this
+
                     function ready() {
                         console.log('frame ready ' + vue.activity.name)
                         frame[0].contentWindow.vue.onClick = function (event) {
@@ -321,7 +344,7 @@ script.
                     $('#modal-activity-edit').css({visibility: "visible"})
                     this.layoutType = 'add'
                     var type = $(event.target).attr('value')
-                    console.log('add layout '+type)
+                    console.log('add layout ' + type)
                     var _id = $.randomString()
                     switch (type) {
                         case 'banner':
@@ -331,26 +354,30 @@ script.
                                 items: [
                                     {
                                         img: '',
+                                        goods: {},
                                         type: 'activity',
-                                        url: '',
+                                        name: '',
                                         size: '750x240'
                                     },
                                     {
                                         img: '',
+                                        goods: {},
                                         type: 'activity',
-                                        url: '',
+                                        name: '',
                                         size: '750x240'
                                     },
                                     {
                                         img: '',
+                                        goods: {},
                                         type: 'activity',
-                                        url: '',
+                                        name: '',
                                         size: '750x240'
                                     },
                                     {
                                         img: '',
+                                        goods: {},
                                         type: 'activity',
-                                        url: '',
+                                        name: '',
                                         size: '750x240'
                                     }
                                 ]
@@ -363,32 +390,38 @@ script.
                                 items: [
                                     {
                                         img: '',
+                                        goods: {},
                                         type: 'activity',
-                                        url: '',
+                                        name: '',
                                         size: '500x330'
+
                                     },
                                     {
                                         img: '',
+                                        goods: {},
                                         type: 'activity',
-                                        url: '',
+                                        name: '',
                                         size: '250x330'
                                     },
                                     {
                                         img: '',
+                                        goods: {},
                                         type: 'activity',
-                                        url: '',
+                                        name: '',
                                         size: '250x330'
                                     },
                                     {
                                         img: '',
+                                        goods: {},
                                         type: 'activity',
-                                        url: '',
+                                        name: '',
                                         size: '250x330'
                                     },
                                     {
                                         img: '',
+                                        goods: {},
                                         type: 'activity',
-                                        url: '',
+                                        name: '',
                                         size: '250x330'
                                     }
                                 ]
@@ -401,8 +434,9 @@ script.
                                 items: [
                                     {
                                         img: '',
+                                        goods: {},
                                         type: 'activity',
-                                        url: '',
+                                        name: '',
                                         size: '750x280'
                                     }
                                 ]
@@ -414,43 +448,19 @@ script.
                                 type: type,
                                 items: [
                                     {
-                                        img: 'https://gd4.alicdn.com/imgextra/i4/TB16XXlKFXXXXXTXFXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg_.webp',
+                                        img: '',
                                         type: 'goods',
-                                        url: 'detail.html',
+                                        name: '',
                                         size: '375x528',
-                                        goods: {
-                                            categoryId: '',
-                                            title: '日本GLICO 卡通妖怪手表曲奇饼干 焦糖味 69g本GLICO 卡通妖怪手表曲奇饼干 焦糖味 69g',
-                                            content: '',
-                                            images: ['https://gd4.alicdn.com/imgextra/i4/TB16XXlKFXXXXXTXFXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg_.webp',
-                                                'https://gd3.alicdn.com/imgextra/i3/111448750/TB2zHK4cpXXXXX.XXXXXXXXXXXX_!!111448750.jpg_400x400.jpg_.webp',
-                                                'https://gd1.alicdn.com/imgextra/i1/TB1_gFWHXXXXXcFaXXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg_.webp',
-                                                'https://gd3.alicdn.com/imgextra/i3/111448750/TB2zT1VcpXXXXabXpXXXXXXXXXX_!!111448750.jpg_400x400.jpg_.webp'],
-                                            quantity: '2',
-                                            price: '20.2',
-                                            sale: '100',
-                                            date: '1462196014850'
-                                        }
+                                        goods: {}
 
                                     },
                                     {
-                                        img: 'https://gd4.alicdn.com/imgextra/i4/TB16XXlKFXXXXXTXFXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg_.webp',
+                                        img: '',
                                         type: 'goods',
-                                        url: 'detail.html',
+                                        name: '',
                                         size: '375x528',
-                                        goods: {
-                                            categoryId: '',
-                                            title: '日本GLICO 卡通妖怪手表曲奇饼干 焦糖味 69g本GLICO 卡通妖怪手表曲奇饼干 焦糖味 69g',
-                                            content: '',
-                                            images: ['https://gd4.alicdn.com/imgextra/i4/TB16XXlKFXXXXXTXFXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg_.webp',
-                                                'https://gd3.alicdn.com/imgextra/i3/111448750/TB2zHK4cpXXXXX.XXXXXXXXXXXX_!!111448750.jpg_400x400.jpg_.webp',
-                                                'https://gd1.alicdn.com/imgextra/i1/TB1_gFWHXXXXXcFaXXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg_.webp',
-                                                'https://gd3.alicdn.com/imgextra/i3/111448750/TB2zT1VcpXXXXabXpXXXXXXXXXX_!!111448750.jpg_400x400.jpg_.webp'],
-                                            quantity: '2',
-                                            price: '20.2',
-                                            sale: '100',
-                                            date: '1462196014850'
-                                        }
+                                        goods: {}
 
                                     }
 
@@ -490,16 +500,39 @@ script.
                     event.preventDefault()
                     this.layout.items.push({
                         img: '',
+                        goods: {},
                         type: 'goods',
-                        url: '',
+                        name: '',
                         size: '375x528'
                     })
                     this.layout.items.push({
                         img: '',
+                        goods: {},
                         type: 'goods',
-                        url: '',
+                        name: '',
                         size: '375x528'
                     })
+                },
+                searchGoodsModal: function (event, index) {
+                    event.preventDefault()
+                    this.itemIndex = index
+                },
+                search: function (event) {
+                    var text = $(event.currentTarget).val()
+                    var vue = this
+                    $.get('/activity/queryGoods', {text: text}, function (result) {
+                        if (result.code == 200) {
+                            vue.goodss = result.content
+                        } else {
+                            alert(result.msg)
+                        }
+                    });
+
+                },
+                chose: function (event, goods) {
+                    event.preventDefault()
+                    this.layout.items[this.itemIndex].type = 'goods'
+                    this.layout.items[this.itemIndex].goods = goods
                 },
                 upload: function (event) {
                     event.preventDefault()
@@ -512,7 +545,7 @@ script.
                     input.change(function () {
                         var reader = new FileReader();
                         reader.onload = function (e) {
-                            var dir =vue.activity.name+'/img/'
+                            var dir = vue.activity.name + '/img/'
                             var name = vue.layout.type + '-' + vue.layout._id + '-' + index + '.jpg';
 
                             // File or Blob named mountains.jpg
@@ -521,7 +554,7 @@ script.
                             var metadata = {
                                 contentType: 'image/jpeg'
                             };
-                            var uploadTask = storageRef.child('activity/'+dir + name).put(file, metadata);
+                            var uploadTask = storageRef.child('activity/' + dir + name).put(file, metadata);
 
                             // Listen for state changes, errors, and completion of the upload.
                             uploadTask.on('state_changed', // or 'state_changed'
@@ -533,7 +566,7 @@ script.
                                         alert(error.message)
                                     }, function () {
                                         // Upload completed successfully, now we can get the download URL
-                                        item.img  = uploadTask.snapshot.downloadURL;
+                                        item.img = uploadTask.snapshot.downloadURL;
                                     });
 
                         };

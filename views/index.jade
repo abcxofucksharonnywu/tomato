@@ -1,7 +1,7 @@
 extends layout
 
 block content
-    div(class='header')
+    div(id='header')
         nav(id='navbar' class='navbar navbar-dark bg-faded')
             a(class='navbar-brand' href='#order') 大吉
             ul(class='nav navbar-nav')
@@ -29,14 +29,10 @@ block content
         div( class='tab-pane ' id='user' role='tabpanel')
 
     script.
-        /*$("body").bind("DOMSubtreeModified", function () {
-            $('body').s2t();
-        })
         var socket = io.connect('http://' + window.location.hostname + ':3001');
         socket.on('connect', function () {
             console.log('client connected')
-            toastr.success('Are you the 6 fingered man?')
-        });*/
+        });
         var config = {
             apiKey: 'AIzaSyDN-KMDn_IWYcDV7Z7ALTYSMR5RJyW4M5I',
             authDomain: 'tomato-18eae.firebaseapp.com',

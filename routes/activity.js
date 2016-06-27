@@ -1,10 +1,9 @@
 var express = require('express')
 var router = express.Router()
 var service = require('../services/service')
-var utils = require('../utils/utils')
 
 router.get('/', function (req, res, next) {
-    service.activity.find({}, {sort: {date: 1}}, function (err, doc) {
+    service.activity.find({}, {sort: {date: -1}}, function (err, doc) {
         if (!err) {
             res.render('activity', {
                     activities: doc
@@ -24,8 +23,8 @@ router.get('/', function (req, res, next) {
     })
 })
 
-router.post('/delete', function (req, res, next) {
-    var name = req.body.name
+router.get('/delete', function (req, res, next) {
+    var name = req.query.name
     if (name) {
         service.activity.remove({
             name: name
@@ -51,7 +50,7 @@ router.post('/add', function (req, res, next) {
         activity.date = Date.now()
         service.activity.insert(activity, function (err, doc) {
             if (!err) {
-                res.send({code: 200})
+                res.send({code: 200, content: doc})
             } else {
                 res.send({code: 400, msg: err.message})
             }
@@ -69,7 +68,7 @@ router.post('/edit', function (req, res, next) {
         }
         service.activity.findAndModify({name: activity.name}, activity, function (err, doc) {
             if (!err) {
-                res.send({code: 200})
+                res.send({code: 200, content: activity})
             } else {
                 res.send({code: 400, msg: err.message})
             }
@@ -84,14 +83,30 @@ router.get('/query', function (req, res, next) {
     var name = req.query.name
     if (name) {
         service.activity.findOne({name: name}, function (err, doc) {
-            if (!err && doc) {
+            if (!err) {
                 res.send({code: 200, content: doc})
             } else {
-                res.send({code: 400, msg: "活動獲取失敗"})
+                res.send({code: 400, msg: err.message})
             }
         })
     } else {
         res.send({code: 400, msg: "活動獲取失敗"})
+    }
+})
+
+
+router.get('/queryGoods', function (req, res, next) {
+    var text = req.query.text
+    if (text) {
+        service.goods.find({title: {'$regex': '.*' + text + '.*'}}, {sort: {date: -1}}, function (err, doc) {
+            if (!err) {
+                res.send({code: 200, content: doc})
+            } else {
+                res.send({code: 400, msg: err.message})
+            }
+        })
+    } else {
+        res.send({code: 400, msg: "商品獲取失敗"})
     }
 })
 

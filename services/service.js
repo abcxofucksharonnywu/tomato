@@ -27,7 +27,6 @@ var model = {
     date: ''
 }
 service.category = service.db.get('category')
-service.category.index('title', {unique: true}) // unique
 
 var model = {
     categoryId: '',
@@ -39,7 +38,6 @@ var model = {
     date: ''
 }
 service.goods = service.db.get('goods')
-service.goods.index('title', {unique: true}) // unique
 
 var model = {
     userId: '',
@@ -69,14 +67,13 @@ service.search = service.db.get('search')
 var model = {
     name: '',
     device: '',
-    token:'',
+    token: '',
     phone: '',
     password: '',
     type: '',//unreachable
     date: ''
 }
 service.user = service.db.get('user')
-service.user.index('name', {unique: true}) // unique
 service.user.index('device', {unique: true}) // unique
 
 
@@ -85,17 +82,9 @@ var model = {
     name: 'home',
     content: '番茄app的主页',
     type: 'layout',
-    url: 'http://localhost:3000/m/home.html',
+    url: 'http://localhost:3000/m/activity-preview.html',
     date: '1460982447980',
-    layouts: [{
-        type: 'multiRect',
-        items: [{img: '', type: 'goods', url: '', size: '375x528'}, {
-            img: '',
-            type: 'activity',
-            url: '',
-            size: '375x528'
-        }]
-    }]
+    layouts: []
 }
 service.activity = service.db.get('activity')
 service.activity.index('title', {unique: true}) // unique

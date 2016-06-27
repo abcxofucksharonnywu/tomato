@@ -6,6 +6,16 @@ var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 var session = require('express-session')
 
+String.prototype.startWith = function (str) {
+    var reg = new RegExp("^" + str)
+    return reg.test(this)
+}
+
+String.prototype.endWith = function (str) {
+    var reg = new RegExp(str + "$")
+    return reg.test(this)
+}
+
 
 var app = express()
 
@@ -19,7 +29,7 @@ app.use(logger('dev'))
 // app.use(bodyParser.json())
 // app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json({limit: "50mb"}));
-app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
+app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit: 50000}));
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'm')))
@@ -56,8 +66,7 @@ app.use('*', function (req, res, next) {
 })
 
 app.use('/test', function (req, res, next) {
-    res.render('test', {
-    })
+    res.render('test', {})
 })
 
 
@@ -77,8 +86,7 @@ app.use('/m/category', require('./routes/m/category'))
 app.use('/m/goods', require('./routes/m/goods'))
 app.use('/m/order', require('./routes/m/order'))
 app.use('/m/user', require('./routes/m/user'))
-
-
+app.use('/m/search', require('./routes/m/search'))
 
 
 // 404处理
@@ -100,7 +108,6 @@ if (app.get('env') === 'development') {
     })
 
 }
-
 
 
 app.use(function (err, req, res, next) {

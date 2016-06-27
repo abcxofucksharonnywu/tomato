@@ -53,6 +53,16 @@ router.post('/edit/state', function (req, res, next) {
     if (order) {
         service.order.findAndModify({_id: order._id}, {$set: {state: order.state}}, function (err, doc) {
             if (!err) {
+                if (order.state == 'completion') {
+                    for (var i in order.items) {
+                        var item = order.items[i]
+                        service.goods.findAndModify({goodsId: item.goodsId}, {$set: {sale: item.quantity}}, function (err, doc) {
+                            if (err) {
+                                console.log(err.message)
+                            }
+                        })
+                    }
+                }
                 service.io.emit('order-' + order.state, {
                     orders: [order]
                 })

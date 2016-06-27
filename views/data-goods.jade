@@ -1,4 +1,5 @@
-b 訂單數據
+b 商品數據
+a.sync(id='' v-on:click='onSync') 同步倉庫數據
 div(class='tab-content')
     .input-group
         input.form-control(type='text' placeholder='請輸入搜索訂單號')
@@ -42,6 +43,15 @@ script.
 
             },
             methods: {
+                onSync: function (event) {
+                    $.get("/data/goods/sync", function (result) {
+                        if (result.code == 200) {
+                            alert('同步成功');
+                        } else {
+                            alert(result.msg);
+                        }
+                    });
+                },
                 onSearch: function (event) {
                     event.preventDefault()
                     this.index = 1
