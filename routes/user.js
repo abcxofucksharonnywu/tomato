@@ -5,16 +5,31 @@ var service = require('../services/service')
 
 
 router.get('/', function (req, res, next) {
-    res.render('user', {}, function (err, output) {
-            if (!err) {
-                res.json({
-                    code: 200, content: output
-                })
-            } else {
-                res.send({code: 400, msg: err.message})
+    var user = req.session.user
+    if (user.permission && user.permission.contains('user')) {
+        res.render('user', {}, function (err, output) {
+                if (!err) {
+                    res.json({
+                        code: 200, content: output
+                    })
+                } else {
+                    res.send({code: 400, msg: err.message})
+                }
             }
-        }
-    )
+        )
+    } else {
+        res.render('permission', {}, function (err, output) {
+                if (!err) {
+                    res.json({
+                        code: 200, content: output
+                    })
+                } else {
+                    res.send({code: 400, msg: err.message})
+                }
+            }
+        )
+    }
+
 })
 
 
@@ -55,8 +70,7 @@ router.post('/add', function (req, res, next) {
     var user = req.body
     if (user) {
         user.date = Date.now()
-        user.permission = user['permission[]']
-        delete user['permission[]']
+        if (!user.permission) user.permission = []
         service.user_manager.insert(user, function (err, doc) {
             if (!err) {
                 res.send({code: 200})
@@ -72,8 +86,7 @@ router.post('/add', function (req, res, next) {
 router.post('/edit', function (req, res, next) {
     var user = req.body
     if (user) {
-        user.permission = user['permission[]']
-        delete user['permission[]']
+        if (!user.permission) user.permission = []
         service.user_manager.findAndModify({name: user.name}, user, function (err, doc) {
             if (!err) {
                 res.send({code: 200})

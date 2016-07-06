@@ -16,3 +16,41 @@ html
         script(src='http://localhost:3000/js/web.js')
     body
         block content
+        #modal-loading.modal.fade
+            .modal-dialog(role='document')
+                .modal-content
+                    .modal-header
+                        h1 進行中...
+                    .modal-body
+                        progress.progress.progress-striped.progress-animated(value='100', max='100') 100%
+        #modal-tips.modal.fade
+            .modal-dialog(role='document')
+                .modal-content
+                    .modal-body
+                        h1
+    script.
+        function showLoading() {
+            $('#modal-loading').modal()
+        }
+
+        function dismissLoading() {
+            $('#modal-loading').modal('hide')
+        }
+
+        function showTips(message) {
+            setTimeout(function () {
+                $('#modal-tips h1').text(message)
+                $('#modal-tips').modal()
+                setTimeout(function () {
+                    $('#modal-tips').modal('hide')
+                }, 1300)
+            }, 500)
+
+        }
+
+        $.ajaxSetup({
+            error: function (xhr, status, error) {
+                dismissLoading()
+                showTips(xhr.statusText)
+            }
+        });

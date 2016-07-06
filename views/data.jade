@@ -22,7 +22,7 @@ script.
                     $('#data-' + type).empty()
                     $('#data-' + type).append(result.content)
                 } else {
-                    alert(result.msg);
+                    showTips(result.msg)
                 }
             });
         })

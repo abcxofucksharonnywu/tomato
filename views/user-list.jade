@@ -90,15 +90,7 @@ script.
             el: '#user-list',
             data: {
                 users: !{JSON.stringify(users)},
-                user: {
-                    name: '',
-                    realName: '',
-                    phone: '',
-                    password: '',
-                    permission: [],//order ,activity ,data ,user
-                    type: 'staff',//master,staff,
-                    date: ''
-                },
+                user: null,
                 type: '',
                 title: ''
             },
@@ -134,16 +126,14 @@ script.
                 },
                 add: function (event) {
                     event.preventDefault()
+                    console.log(this.user)
                     var phoneReg = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
                     var passwordReg = /^[0-9a-zA-Z]{6,12}$/;
                     if (this.user.name.length > 0
                             && this.user.realName.length > 0
                             && phoneReg.test(this.user.phone)
                             && passwordReg.test(this.user.password)) {
-                        var password = $.md5(this.user.password)
-                        var userData = JSON.parse(JSON.stringify(this.user))
-                        userData['password'] = password;
-                        $.post('/user/add', userData, function (result) {
+                        $.post('/user/add', this.user, function (result) {
                             if (result.code == 200) {
                                 $('.model-close').click()
                                 setTimeout(function () {
@@ -151,11 +141,11 @@ script.
                                 }, 500);
 
                             } else {
-                                alert(result.msg)
+                                showTips(result.msg)
                             }
                         });
                     } else {
-                        alert('請填寫正確信息')
+                        showTips('請填寫正確信息')
                     }
                 },
                 edit: function (event) {
@@ -166,10 +156,9 @@ script.
                             && this.user.realName.length > 0
                             && phoneReg.test(this.user.phone)
                             && passwordReg.test(this.user.password)) {
-                        var password = this.user.password.length > 12 ? this.user.password : $.md5(this.user.password)
-                        var userData = JSON.parse(JSON.stringify(this.user))
-                        userData['password'] = password;
-                        $.post('/user/edit', userData, function (result) {
+                        showLoading()
+                        $.post('/user/edit', this.user, function (result) {
+                            dismissLoading()
                             if (result.code == 200) {
                                 $('.model-close').click()
                                 setTimeout(function () {
@@ -177,23 +166,25 @@ script.
                                 }, 500);
 
                             } else {
-                                alert(result.msg)
+                                showTips(result.msg)
                             }
                         });
                     } else {
-                        alert('請填寫正確信息')
+                        showTips('請填寫正確信息')
                     }
                 },
                 delete: function (event) {
                     event.preventDefault()
+                    showLoading()
                     $.post('/user/delete', this.user, function (result) {
+                        dismissLoading()
                         if (result.code == 200) {
                             $('.model-close').click()
                             setTimeout(function () {
                                 $('#user-left .nav-link.active').click()
                             }, 500);
                         } else {
-                            alert(result.msg)
+                            showTips(result.msg)
                         }
                     });
                 }

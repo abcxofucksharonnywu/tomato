@@ -8,6 +8,8 @@ div(id='order-left' class='content-left')
             a( class='nav-link' data-toggle='tab' href='#order-sign') 待簽收
         li(class='nav-item')
             a( class='nav-link' data-toggle='tab' href='#order-completion') 完成訂單
+        li(class='nav-item')
+            a( class='nav-link' data-toggle='tab' href='#order-canceled') 取消訂單
 div(id='order-right' class='content-right')
     div( class='tab-content')
         div( class='tab-pane  active' id='order-receipt' role='tabpanel')
@@ -17,6 +19,8 @@ div(id='order-right' class='content-right')
         div( class='tab-pane ' id='order-sign' role='tabpanel')
 
         div( class='tab-pane ' id='order-completion' role='tabpanel')
+
+        div( class='tab-pane ' id='order-canceled' role='tabpanel')
 script.
     (function () {
         $('#order-left a').click(function (e) {
@@ -29,7 +33,7 @@ script.
                     $('#order-' + type).empty()
                     $('#order-' + type).append(result.content)
                 } else {
-                    alert(result.msg);
+                    showTips(result.msg)
 
                 }
             });

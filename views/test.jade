@@ -12,7 +12,7 @@ block content
                 date: ''
             }
             $.post('/m/user/add', model, function (result) {
-                alert(JSON.stringify(result))
+                showTips(JSON.stringify(result))
             });
         }
     button(type = 'button' id = 'submit' onclick = 'addUser()' class= 'btn btn-primary' style = 'width:195px') 添加用戶

@@ -3,7 +3,7 @@ extends layout
 block content
     div(id='header')
         nav(id='navbar' class='navbar navbar-dark bg-faded')
-            a(class='navbar-brand' href='#order') 大吉
+            a(class='navbar-brand') 大吉
             ul(class='nav navbar-nav')
                 li( class='nav-item')
                     a( class='nav-link default nav-link-tab'  href='#order') 訂單管理
@@ -27,7 +27,6 @@ block content
         div( class='tab-pane ' id='activity' role='tabpanel')
         div( class='tab-pane ' id='data' role='tabpanel')
         div( class='tab-pane ' id='user' role='tabpanel')
-
     script.
         var socket = io.connect('http://' + window.location.hostname + ':3001');
         socket.on('connect', function () {
@@ -54,7 +53,7 @@ block content
                             $('#' + type).append(result.content)
                         }
                     } else {
-                        alert(result.msg);
+                        showTips(result.msg)
                     }
                 });
             })
@@ -63,7 +62,7 @@ block content
             $('#notification').click(function (e) {
                 e.preventDefault()
                 $('#navbar .nav-link-tab.default').click()
-                $('#notification-count').attr('text', 0);
+                $('#notification-count').text(0);
             })
 
             $('#info').click(function (e) {
@@ -73,11 +72,13 @@ block content
 
             $('#logout').click(function (e) {
                 e.preventDefault()
+                showLoading()
                 $.get("/user/logout", function (result) {
+                    dismissLoading()
                     if (result.code == 302) {
                         window.location.href = result.url;
                     } else {
-                        alert(result.msg);
+                        showTips(result.msg)
                     }
                 });
             })

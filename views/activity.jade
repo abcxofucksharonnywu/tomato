@@ -269,33 +269,35 @@ script.
                     event.preventDefault()
                     var titleReg = /^.{1,12}$/;
                     if (!titleReg.test(this.activity.title)) {
-                        alert('請輸入12字內標題');
+                        showTips('請輸入12字內標題');
                         return
                     }
 
                     var nameReg = /^.{1,30}$/;
                     if (!nameReg.test(this.activity.name)) {
-                        alert('請輸入12字內標題');
+                        showTips('請輸入12字內標題');
                         return
                     }
 
                     var contentReg = /^.{1,30}$/;
                     if (!contentReg.test(this.activity.content)) {
-                        alert('請輸入30字內活動描述');
+                        showTips('請輸入30字內活動描述');
                         return
                     }
 
                     for (var index in this.activities) {
                         var ac = this.activities[index]
                         if (ac.title == this.activity.title || ac.name == this.activity.name || ac.name == 'add') {
-                            alert('已存在同名活動');
+                            showTips('已存在同名活動');
                             return
                         }
                     }
                     this.activity.type = 'layout'
                     this.activity.layouts = [];
                     var vue = this
+                    showLoading()
                     $.post('/activity/add', this.activity, function (result) {
+                        dismissLoading()
                         if (result.code == 200) {
                             vue.activities.push(vue.activity)
                             $('#modal-activity-add').modal('hide')
@@ -303,25 +305,29 @@ script.
                                 $('#activity-left .nav-link')[vue.activities.length - 1].click()
                             }, 500)
                         } else {
-                            alert(result.msg)
+                            showTips(result.msg)
                         }
                     });
 
                 },
                 edit: function (event) {
                     event.preventDefault()
+                    showLoading()
                     $.post('/activity/edit', this.activity, function (result) {
+                        dismissLoading()
                         if (result.code == 200) {
-                            alert('保存成功')
+                            showTips('保存成功')
                         } else {
-                            alert(result.msg)
+                            showTips(result.msg)
                         }
                     });
                 },
                 delete: function (event) {
                     event.preventDefault()
                     var vue = this;
+                    showLoading()
                     $.post('/activity/delete', this.activity, function (result) {
+                        dismissLoading()
                         if (result.code == 200) {
                             $('#modal-activity-delete').modal('hide')
                             setTimeout(function () {
@@ -329,7 +335,7 @@ script.
                                 $('#activity-left .nav-link')[0].click()
                             }, 500);
                         } else {
-                            alert(result.msg)
+                            showTips(result.msg)
                         }
                     });
                 }
@@ -520,11 +526,13 @@ script.
                 search: function (event) {
                     var text = $(event.currentTarget).val()
                     var vue = this
+                    showLoading()
                     $.get('/activity/queryGoods', {text: text}, function (result) {
+                        dismissLoading()
                         if (result.code == 200) {
                             vue.goodss = result.content
                         } else {
-                            alert(result.msg)
+                            showTips(result.msg)
                         }
                     });
 
@@ -563,7 +571,7 @@ script.
                                         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                                         console.log('Upload is ' + progress + '% done');
                                     }, function (error) {
-                                        alert(error.message)
+                                        showTips(error.message)
                                     }, function () {
                                         // Upload completed successfully, now we can get the download URL
                                         item.img = uploadTask.snapshot.downloadURL;

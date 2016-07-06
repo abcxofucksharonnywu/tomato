@@ -48,7 +48,7 @@ div(class='tab-content')
                     div
                         b 合計總價:&nbsp;&nbsp;
                         big(style='color:#FD1C7A') ${{order.price}}
-                    div(v-if="type!='completion'")
+                    div(v-if="type!='completion'&&type!='canceled'")
                         button.btn.btn-secondary(type='button'  data-toggle='modal' v-on:click='cancelOrderModal' data-target='#modal-order-cancel' value='{{$index}}') 取消
                         button.btn.btn-primary(type='button' style='margin-left:10px;'  v-on:click='confirmOrder' value='{{$index}}') 確定
 
@@ -85,6 +85,9 @@ script.
                                 case 'completion':
                                     this.title = '完成訂單'
                                     break;
+                                case 'canceled':
+                                    this.title = '取消訂單'
+                                    break;
                                 default:
                                     this.title = '訂單列表'
                                     break
@@ -97,7 +100,7 @@ script.
                                     $('.model-close').click()
                                     vue.orders.$remove(vue.order)
                                 } else {
-                                    alert(result.msg)
+                                    showTips(result.msg)
                                 }
                             });
                         },
@@ -120,16 +123,29 @@ script.
 
                         }
 
-
                     }
                 })
                 ;
         vue.init()
         function onData(data) {
-            if (data.orders != null) {
-                for (var index in  data.orders) {
-                    console.log(data.orders[index])
-                    vue.orders.push(data.orders[index])
+            if (data.order != null) {
+                if (vue.type = 'receipt' && data.type == 'canceled') {
+                    vue.orders.forEach(function (o) {
+                        if (data.order._id == o._id)
+                            vue.orders.$remove(o)
+                    })
+                } else {
+                    vue.orders.push(data.order)
+                }
+
+                if (data.type == 'receipt' || data.type == 'canceled') {
+                    if (data.type == 'receipt') {
+                        toastr.success('有一筆新訂單,總價:$' + data.order.price + '<br/>用戶:' + data.order.address.name + '<br/>手機號碼:' + data.order.address.phone + '<br/>詳細地址:' + data.order.address.content)
+                    } else {
+                        toastr.success('有一筆訂單已取消,總價:$' + data.order.price + '<br/>用戶:' + data.order.address.name + '<br/>手機號碼:' + data.order.address.phone + '<br/>詳細地址:' + data.order.address.content)
+                    }
+                    var count = parseInt($('#notification-count').text()) + 1
+                    $('#notification-count').text(count);
                 }
             }
         }

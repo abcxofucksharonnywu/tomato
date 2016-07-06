@@ -3,24 +3,39 @@ var router = express.Router()
 var service = require('../services/service')
 
 router.get('/', function (req, res, next) {
-    service.activity.find({}, {sort: {date: -1}}, function (err, doc) {
-        if (!err) {
-            res.render('activity', {
-                    activities: doc
-                }, function (err, output) {
-                    if (!err) {
-                        res.json({
-                            code: 200, content: output
-                        })
-                    } else {
-                        res.send({code: 400, msg: err.message})
+    var user = req.session.user
+    if (user.permission && user.permission.contains('activity')) {
+        service.activity.find({}, {sort: {date: 1}}, function (err, doc) {
+            if (!err) {
+                res.render('activity', {
+                        activities: doc
+                    }, function (err, output) {
+                        if (!err) {
+                            res.json({
+                                code: 200, content: output
+                            })
+                        } else {
+                            res.send({code: 400, msg: err.message})
+                        }
                     }
+                )
+            } else {
+                res.send({code: 400, msg: err.message})
+            }
+        })
+    } else {
+        res.render('permission', {}, function (err, output) {
+                if (!err) {
+                    res.json({
+                        code: 200, content: output
+                    })
+                } else {
+                    res.send({code: 400, msg: err.message})
                 }
-            )
-        } else {
-            res.send({code: 400, msg: err.message})
-        }
-    })
+            }
+        )
+    }
+
 })
 
 router.get('/delete', function (req, res, next) {

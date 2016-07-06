@@ -1,0 +1,110 @@
+div(id = 'data-goods-content')
+    include data-goods-content
+nav
+    ul.pagination
+        li.page-item
+            a.page-link.previous(aria-label='Previous' v-on:click='previous')
+                span(aria-hidden='true') «
+                span.sr-only Previous
+        li.page-item(v-for='n in (end+1-start)' v-bind:class="index==start+n?'active':''")
+            a.page-link(class='' v-on:click='jump') {{ start+n }}
+        li.page-item
+            a.page-link.next(aria-label='Next' v-on:click='next')
+                span(aria-hidden='true') »
+                span.sr-only Next
+script.
+    (function () {
+        var vue = new Vue({
+            el: '#data-goods',
+            data: {
+                search: '',
+                count: #{count},
+                index: 1,
+                start: 1,
+                end: #{count} > 5 ? 5 : #{count}
+            },
+            watch: {
+                'index': function (val, oldVal) {
+                    var end = parseInt(val) + 2;
+                    end = end > 5 ? end : 5
+                    this.end = end > this.count ? this.count : end
+                },
+                'end': function (val, oldVal) {
+                    var start = parseInt(val) - 4
+                    this.start = start > 0 ? start : 1
+                }
+
+            },
+            methods: {
+                onSync: function (event) {
+                    showLoading()
+                    $.get("/data/goods/sync", function (result) {
+                        dismissLoading()
+                        if (result.code == 200) {
+                            showTips('同步成功');
+                        } else {
+                            showTips(result.msg)
+
+                        }
+                    });
+                },
+                onSearch: function (event) {
+                    event.preventDefault()
+                    this.index = 1
+                    this.search = $('#data-goods input').val()
+                    var data = {
+                        search: this.search
+                    }
+                    showLoading()
+                    $.get("/data/goods/list", data, function (result) {
+                        dismissLoading()
+                        if (result.code == 200) {
+                            $('#data-goods-list').empty()
+                            $('#data-goods-list').append(result.content)
+                        } else {
+                            showTips(result.msg)
+                        }
+                    });
+
+                },
+                previous: function (event) {
+                    if (this.index > 1) {
+                        this.index--;
+                        this.page(event)
+                    }
+
+                },
+                next: function (event) {
+                    if (this.index < this.count) {
+                        this.index++;
+                        this.page(event)
+                    }
+
+                },
+                jump: function (event) {
+                    this.index = $(event.target).text()
+                    this.page(event)
+                },
+                page: function (event) {
+                    this.query(event)
+                },
+                query: function (event) {
+                    event.preventDefault()
+                    var data = {
+                        index: this.index,
+                        search: this.search
+                    }
+                    $.get("/data/goods/content", data, function (result) {
+                        if (result.code == 200) {
+                            $('#data-goods-content').empty()
+                            $('#data-goods-content').append(result.content)
+                        } else {
+                            showTips(result.msg)
+                        }
+                    });
+                }
+
+            }
+        });
+
+    }())

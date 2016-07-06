@@ -1,19 +1,15 @@
 table.list
     tbody
         tr
-            th 訂單號
-            th 用戶名
-            th 手機號碼
-            th 訂單日期
-            th 操作
+            th 商品名
+            th 商品價格
+            th 商品分類
+            th 商品日期
         tr(class='goods-item' v-for='goods in goodss')
             td {{goods.title}}
-            td {{goods.price}}
-            td {{goods.content}}
+            td ${{goods.price}}
+            td {{goods.categoryName}}
             td {{goods.date | date}}
-            td
-                button.btn.btn-link(type='button' data-toggle='modal' v-on:click='editModel' data-target='#modal-user-edit' value='{{$index}}') 修改
-                button.btn.btn-link(type='button' data-toggle='modal' v-on:click='deleteModel' data-target='#modal-user-delete' value='{{$index}}') 刪除
 script.
     (function () {
         Vue.filter('date', function (value) {
