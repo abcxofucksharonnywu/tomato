@@ -1,0 +1,19 @@
+.navbar
+    .navbar-inner
+        .left
+            a(href="#").back.link.icon-only
+                i.iconfont.icon-fanhui
+        .center.sliding 修改暱稱
+        .right
+            a.link.icon-only
+                i.iconfont.icon-dui
+.pages.navbar-through
+    .page.no-tabbar(data-page="setting-name")
+        .page-content
+            .list-block
+                ul
+                    li
+                        .item-content
+                            .item-inner
+                                .item-input
+                                    input.text(type='text', placeholder='請輸入暱稱' v-model='user.name')

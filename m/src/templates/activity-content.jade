@@ -1,0 +1,55 @@
+.page-content.pull-to-refresh-content
+    .pull-to-refresh-layer
+        .preloader
+        .pull-to-refresh-arrow
+    iframe(id='' v-bind:src='activity.url'  frameborder="0" v-if="activity.type=='url'")
+    .list-block(v-if="activity.type!='url'&&activity.layouts.length>0")
+        ul
+            li(v-for='layout in activity.layouts')
+                .content(id='' v-bind:value='$index')
+                    .layout.banner.swiper-container.swiper-init.ks-demo-slider.swiper-container-horizontal(data-pagination='.swiper-pagination', data-loop='true' v-if="layout.type=='banner'")
+                        .swiper-pagination.swiper-pagination-bullets
+                            span.swiper-pagination-bullet(v-for='item in layout.items')
+                        .swiper-wrapper
+                            .swiper-slide(id='' v-bind:data-swiper-slide-index='$index' v-for='item in layout.items')
+                                a(id='' v-on:click='onItemClick($event,item)')
+                                    img(id='' v-bind:src='item.img' onerror="this.src='img/bg_image.png'")
+                    .layout.multiRect(v-if="layout.type=='multiRect'")
+                        div
+                            div
+                                a(id='' v-on:click='onItemClick($event,item)')
+                                    img(id='' v-bind:src='layout.items[0].img' onerror="this.src='img/bg_image.png'")
+                            div
+                                a(id='' v-on:click='onItemClick($event,item)')
+                                    img(id='' v-bind:src='layout.items[1].img' onerror="this.src='img/bg_image.png'")
+                        div
+                            div
+                                a(id='' v-on:click='onItemClick($event,item)')
+                                    img(id='' v-bind:src='layout.items[2].img' onerror="this.src='img/bg_image.png'")
+                            div
+                                a(id='' v-on:click='onItemClick($event,item)')
+                                    img(id='' v-bind:src='layout.items[3].img' onerror="this.src='img/bg_image.png'")
+                            div
+                                a(id='' v-on:click='onItemClick($event,item)')
+                                    img(id='' v-bind:src='layout.items[4].img' onerror="this.src='img/bg_image.png'")
+                    .layout.rect(v-if="layout.type=='rect'")
+                        div
+                            a(id='' v-on:click='onItemClick($event,item)')
+                                img(id='' v-bind:src='layout.items[0].img' onerror="this.src='img/bg_image.png'")
+                    .layout.double(v-if="layout.type==='double'")
+                        .list-block.media-list.goods
+                            ul
+                                li(v-for='item in layout.items')
+                                    a.item-content(id='' v-on:click='onItemClick($event,item)')
+                                        .item-media
+                                            img.lazy.lazy-fadeIn.ks-demo-lazy(id='' v-bind:src='item.goods.images[0]' onerror="this.src='img/bg_image.png'")
+                                        .item-inner
+                                            .item-text.text {{item.goods.title}}
+                                            .item-title-row
+                                                .price ${{item.goods.price}}
+                                                i.iconfont.icon-gouwuche.price(id = '' v-on:click='onCartClick($event,item.goods)')
+
+    .empty(v-else)
+        img(src='img/icon_empty.png')
+        .des 空空如也~
+

@@ -1,0 +1,29 @@
+.navbar
+    .navbar-inner
+        .left
+            a(href="#").back.link.icon-only
+                i.iconfont.icon-fanhui
+        .center.fixed.search
+            i.iconfont.icon-sousuo
+            input.search.text(type='text' placeholder='請輸入搜索商品名')
+.pages.navbar-through
+    .page.no-tabbar(data-page="search-detail")
+        .page-content
+            .list-block.media-list.goods(v-if='goodss.length>0')
+                ul
+                    li(v-for='goods in goodss')
+                        a.item-content(id='' v-on:click='onGoodsClick($event,goods)')
+                            .item-media
+                                img.lazy.lazy-fadeIn.ks-demo-lazy(id='' v-bind:src='goods.images[0]' onerror="this.src='img/bg_image.png'")
+                            .item-inner
+                                .item-text.text {{goods.title}}
+                                .item-title-row
+                                    .price ${{goods.price}}
+                                    i.iconfont.icon-gouwuche.price(id = '' v-on:click='onCartClick($event,goods)')
+            .empty(v-else)
+                img(src='img/icon_empty.png')
+                .des 空空如也~
+
+
+
+

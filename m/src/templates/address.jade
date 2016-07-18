@@ -1,0 +1,31 @@
+.navbar
+    .navbar-inner
+        .left
+            a(href="#").back.link.icon-only
+                i.iconfont.icon-fanhui
+        .center.sliding 地址管理
+        .right.add
+            a.link.icon-only
+                i.iconfont.icon-add
+.pages.navbar-through
+    .page.no-tabbar(data-page="address")
+        .page-content.pull-to-refresh-content
+            .pull-to-refresh-layer
+                .preloader
+                .pull-to-refresh-arrow
+            .list-block.media-list(v-if='addresses.length>0')
+                ul
+                    li.swipeout(v-for='address in addresses')
+                        .swipeout-content
+                            a.item-link.item-content(id='' v-on:click='onItemClick($event,address)')
+                                .item-inner
+                                    .item-title-row
+                                        .subtitle {{address.name}}
+                                        .subtitle {{address.phone}}
+                                    .text {{address.content}}
+                        .swipeout-actions-right
+                            a.swipeout-edit(href='#' v-on:click = 'onItemEdit($event,address)' v-if='select') 編輯
+                            a.swipeout-delete(href='#' v-on:click = 'onItemDelete($event,address)') 刪除
+            .empty(v-else)
+                img(src='img/icon_empty.png')
+                .des 空空如也~

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="css/framework7.ios.min.css">
+    <link rel="stylesheet" href="css/framework7.ios.colors.min.css">
+    <link rel="stylesheet" href="css/iconfont.css">
+    <link rel="stylesheet" href="css/toast.css">
+    <link rel="stylesheet" href="css/kitchen-sink.ios.css">
+    <script type="text/javascript " src="js/jquery.min.js "></script>
+    <script type="text/javascript " src="js/jquery.transit.min.js "></script>
+    <script type="text/javascript " src="js/jquery.qrcode.min.js "></script>
+    <script type="text/javascript " src="js/vue.min.js "></script>
+  </head>
+  <body>
+    <div class="statusbar-overlay"></div>
+    <div class="views tabs tabbar-labels-through">
+      <div id="view-1" class="view view-main tab active">
+        <div class="navbar">
+          <div class="navbar-inner"><a href="search.html" class="center fixed home"><i class="iconfont icon-sousuo"></i><span class="search text">搜索熱門暢銷商品</span></a>
+            <div class="right scan"><a class="link icon-only"><i class="iconfont icon-iconfontsaoyisao"></i></a></div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <div data-page="home" class="page">
+            <div class="page-content pull-to-refresh-content">
+              <div class="pull-to-refresh-layer">
+                <div class="preloader"></div>
+                <div class="pull-to-refresh-arrow"></div>
+              </div>
+              <iframe id="" v-bind:src="activity.url" frameborder="0" v-if="activity.type=='url'"></iframe>
+              <div v-if="activity.type!='url'&amp;&amp;activity.layouts.length&gt;0" class="list-block">
+                <ul>
+                  <li v-for="layout in activity.layouts">
+                    <div id="" v-bind:value="$index" class="content">
+                      <div data-pagination=".swiper-pagination" data-loop="true" v-if="layout.type=='banner'" class="layout banner swiper-container swiper-init ks-demo-slider swiper-container-horizontal">
+                        <div class="swiper-pagination swiper-pagination-bullets"><span v-for="item in layout.items" class="swiper-pagination-bullet"></span></div>
+                        <div class="swiper-wrapper">
+                          <div id="" v-bind:data-swiper-slide-index="$index" v-for="item in layout.items" class="swiper-slide"><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="item.img" onerror="this.src='img/bg_image.png'"></a></div>
+                        </div>
+                      </div>
+                      <div v-if="layout.type=='multiRect'" class="layout multiRect">
+                        <div>
+                          <div><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="layout.items[0].img" onerror="this.src='img/bg_image.png'"></a></div>
+                          <div><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="layout.items[1].img" onerror="this.src='img/bg_image.png'"></a></div>
+                        </div>
+                        <div>
+                          <div><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="layout.items[2].img" onerror="this.src='img/bg_image.png'"></a></div>
+                          <div><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="layout.items[3].img" onerror="this.src='img/bg_image.png'"></a></div>
+                          <div><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="layout.items[4].img" onerror="this.src='img/bg_image.png'"></a></div>
+                        </div>
+                      </div>
+                      <div v-if="layout.type=='rect'" class="layout rect">
+                        <div><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="layout.items[0].img" onerror="this.src='img/bg_image.png'"></a></div>
+                      </div>
+                      <div v-if="layout.type==='double'" class="layout double">
+                        <div class="list-block media-list goods">
+                          <ul>
+                            <li v-for="item in layout.items"><a id="" v-on:click="onItemClick($event,item)" class="item-content">
+                                <div class="item-media"><img id="" v-bind:src="item.goods.images[0]" onerror="this.src='img/bg_image.png'" class="lazy lazy-fadeIn ks-demo-lazy"></div>
+                                <div class="item-inner">
+                                  <div class="item-text text">{{item.goods.title}}</div>
+                                  <div class="item-title-row">
+                                    <div class="price">${{item.goods.price}}</div><i id="" v-on:click="onCartClick($event,item.goods)" class="iconfont icon-gouwuche price"></i>
+                                  </div>
+                                </div></a></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div v-else class="empty"><img src="img/icon_empty.png">
+                <div class="des">空空如也~</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-2" class="view tab">
+        <div class="navbar">
+          <div class="navbar-inner"><a href="search.html" class="center fixed home"><i class="iconfont icon-sousuo"></i><span class="search text">搜索熱門暢銷商品</span></a>
+            <div class="right"><a class="link icon-only"><i class="iconfont icon-iconfontsaoyisao"></i></a></div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <div data-page="category" class="page">
+            <div class="page-content">
+              <div class="list-block category">
+                <ul>
+                  <li v-for="category in categories" v-on:click="onItemClick($event,category)">
+                    <label class="label-radio item-content">
+                      <!-- Checked by default-->
+                      <input type="radio" name="my-radio" value="Books" checked="checked" v-if="$index==0">
+                      <input type="radio" name="my-radio" value="Books" v-else>
+                      <div class="item-inner">
+                        <div class="item-title">{{category.title}}</div>
+                      </div>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+              <div class="list-block media-list goods">
+                <ul>
+                  <li v-for="goods in category.goodss"><a id="" v-on:click="onGoodsClick($event,goods)" class="item-content">
+                      <div class="item-media"><img id="" v-bind:src="goods.images[0]" onerror="this.src='img/bg_image.png'" class="lazy lazy-fadeIn ks-demo-lazy"></div>
+                      <div class="item-inner">
+                        <div class="item-text text">{{goods.title}}</div>
+                        <div class="item-title-row">
+                          <div class="price">${{goods.price}}</div><i id="" v-on:click="onCartClick($event,goods)" class="iconfont icon-gouwuche price"></i>
+                        </div>
+                      </div></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-3" class="view tab">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="center fixed">購物車</div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <div data-page="cart" class="page">
+            <div class="page-content pull-to-refresh-content">
+              <div class="pull-to-refresh-layer">
+                <div class="preloader"></div>
+                <div class="pull-to-refresh-arrow"></div>
+              </div>
+              <div v-if="carts.length&gt;0" class="list-block media-list goods">
+                <ul>
+                  <li v-for="cart in carts" class="swipeout">
+                    <div class="swipeout-content">
+                      <div class="item-content">
+                        <label class="label-checkbox item-content check">
+                          <input type="checkbox" name="ks-checkbox" value="{{cart._id}}" v-model="checks">
+                          <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                        </label><a id="" v-on:click="onGoodsClick($event,cart)" class="item-content">
+                          <div class="item-media"><img id="" v-bind:src="cart.image" onerror="this.src='img/bg_image.png'" class="lazy lazy-fadeIn ks-demo-lazy"></div>
+                          <div class="item-inner">
+                            <div class="item-text text">{{cart.title}}</div>
+                            <div class="item-title-row">
+                              <div class="title">${{cart.price*cart.quantity}}</div>
+                              <div class="quantity-content">
+                                <div id="" v-on:click="onQuantityDecrease($event,cart)" class="decrease hint">-</div>
+                                <input type="number" v-model="cart.quantity" v-on:click="onQuantityInput($event,cart)" class="quantity text">
+                                <div id="" v-on:click="onQuantityIncrease($event,cart)" class="increase hint">+</div>
+                              </div>
+                            </div>
+                          </div></a>
+                      </div>
+                    </div>
+                    <div class="swipeout-actions-right"><a href="#" v-on:click="onItemDelete($event,cart)" class="swipeout-delete">刪除</a></div>
+                  </li>
+                </ul>
+              </div>
+              <div v-else class="empty"><img src="img/icon_empty.png">
+                <div class="des">空空如也~</div>
+              </div>
+            </div>
+            <div v-if="carts.length&gt;0" class="toolbar">
+              <div class="toolbar-inner">
+                <div class="total">
+                  <label id="" v-on:click="onCheckAll" class="label-checkbox item-content check">
+                    <input type="checkbox" name="ks-checkbox" v-model="checkAll">
+                    <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+                  </label>
+                  <div class="all text">全選</div>
+                  <div>
+                    <div><span class="text">合計：</span><span class="price">${{price}}</span></div>
+                    <div class="append">共{{quantity}}件</div>
+                  </div>
+                </div><a href="#" v-on:click="onBuy" class="button submit">結算</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-4" class="view tab">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="center fixed"></div>
+          </div>
+        </div>
+        <div class="pages navbar-through">
+          <div data-page="me" class="page">
+            <div class="page-content">
+              <div class="cover">
+                <div class="me">
+                  <div class="avatar"><i class="iconfont icon-geren"></i></div>
+                  <div class="title">{{user.name}}</div>
+                </div>
+              </div>
+              <div class="list-block">
+                <ul>
+                  <li><a href="order.html" class="item-link item-content">
+                      <div class="item-inner">
+                        <div class="text">我的訂單</div>
+                      </div></a></li>
+                  <li><a href="address.html" class="item-link item-content">
+                      <div class="item-inner">
+                        <div class="text">地址管理</div>
+                      </div></a></li>
+                </ul>
+              </div>
+              <div class="content-block-title"></div>
+              <div class="list-block">
+                <ul>
+                  <li><a href="setting.html" class="item-link item-content">
+                      <div class="item-inner">
+                        <div class="text">設置</div>
+                      </div></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="toolbar tabbar tabbar-labels">
+        <div class="toolbar-inner"><a href="#view-1" class="tab-link active"><i class="icon iconfont icon-home"></i><span class="tabbar-label">主頁</span></a><a href="#view-2" class="tab-link"><i class="iconfont icon-fenlei"></i><span class="tabbar-label">分類</span></a><a href="#view-3" class="tab-link"><i class="iconfont icon-gouwuche">
+              <!--span.badge 4--></i><span class="tabbar-label">購物車</span></a><a href="#view-4" class="tab-link"><i class="iconfont icon-geren"></i><span class="tabbar-label">我的</span></a></div>
+      </div>
+    </div>
+    <div class="popover popover-qrcode">
+      <div class="popover-angle"></div>
+      <div class="popover-inner">
+        <div class="content-block">
+          <div class="qrcode"></div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript " src="cordova.js "></script>
+    <script type="text/javascript" src="js/framework7.min.js"></script>
+    <script type="text/javascript " src="js/toast.js "></script>
+    <script type="text/javascript " src="js/kitchen-sink.ios.js "></script>
+  </body>
+</html>

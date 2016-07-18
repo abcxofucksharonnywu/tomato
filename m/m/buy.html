@@ -1,0 +1,75 @@
+
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="left"><a href="#" class="back link icon-only"><i class="iconfont icon-fanhui"></i></a></div>
+    <div class="center sliding">提交订单</div>
+  </div>
+</div>
+<div class="pages navbar-through">
+  <div data-page="buy" class="page no-tabbar">
+    <div class="page-content">
+      <div class="list-block address">
+        <ul>
+          <li><a id="" v-on:click="onAddressClick" class="item-link item-content">
+              <div class="item-media"><i class="iconfont icon-dingwei"></i></div>
+              <div v-if="order.address" class="item-inner">
+                <div class="item-title-row">
+                  <div class="subtitle">{{order.address.name}}</div>
+                  <div class="subtitle">{{order.address.phone}}</div>
+                </div>
+                <div class="text">{{order.address.content}}</div>
+              </div>
+              <div v-else="v-else" class="item-inner">
+                <div class="text">添加收貨地址</div>
+              </div></a></li>
+        </ul>
+      </div>
+      <div class="content-block-title text">費用明細</div>
+      <div class="list-block media-list goods">
+        <ul>
+          <li v-for="item in order.items"><a id="" v-on:click="onGoodsClick($event,item)" class="item-content">
+              <div class="item-media"><img id="" v-bind:src="item.image" onerror="this.src='img/bg_image.png'" class="lazy lazy-fadeIn ks-demo-lazy"/></div>
+              <div class="item-inner">
+                <div class="item-text text">{{item.title}}</div>
+                <div class="item-title-row">
+                  <div class="subtitle">${{item.price*item.quantity}}</div>
+                  <div class="hint">{{item.quantity}}份</div>
+                </div>
+              </div></a></li>
+        </ul>
+      </div>
+      <div class="content-block-title text">支付方式</div>
+      <div class="list-block pay">
+        <ul>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="text"><span class="text">貨到付款</span><span class="hint">（支持現金或者POS機）</span></div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="content-block-title text">配送方式</div>
+      <div class="list-block delivery">
+        <ul>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="text"><span class="text"> 配送時間</span><span class="hint">（接受訂單後40分鐘內到達）</span></div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="toolbar">
+      <div class="toolbar-inner">
+        <div class="total">
+          <div><span class="text">合計：</span><span class="price">${{order.price}}</span></div>
+          <div class="append">共{{order.quantity}}件</div>
+        </div><a id="" v-on:click="onCreateClick" class="button submit">确认下单</a>
+      </div>
+    </div>
+  </div>
+</div>

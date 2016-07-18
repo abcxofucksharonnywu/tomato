@@ -1,0 +1,77 @@
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui')
+        meta(name='apple-mobile-web-app-capable', content='yes')
+        meta(name='apple-mobile-web-app-status-bar-style', content='black')
+        link(rel='stylesheet', href='css/framework7.ios.min.css')
+        link(rel='stylesheet', href='css/framework7.ios.colors.min.css')
+        link(rel='stylesheet', href='css/iconfont.css')
+        link(rel='stylesheet', href='css/kitchen-sink.ios.css')
+        script(type='text/javascript ', src='js/jquery.min.js ')
+        script(type='text/javascript ', src='js/jquery.transit.min.js ')
+        script(type='text/javascript ', src='js/vue.min.js ')
+    body
+        .statusbar-overlay
+        .views
+            .view.view-main
+                .navbar
+                    .navbar-inner
+                        .center.fixed 活動頁
+                .pages.navbar-through
+                    .page(data-page="activity-preview")
+                        include activity-content
+        script(type='text/javascript ', src='cordova.js ')
+        script(type='text/javascript', src='js/framework7.min.js')
+        script.
+            var myApp = new Framework7({
+                modalTitle: 'Framework7',
+                animateNavBackIcon: true,
+            });
+            // Expose Internal DOM library
+            var $$ = Dom7;
+
+            // Add main view
+            var mainView = myApp.addView('.view-main', {
+                // Enable Dynamic Navbar for this view
+                dynamicNavbar: true,
+            });
+
+
+
+            var el = ".page[data-page='activity-preview'] "
+
+
+
+            var vue = new Vue({
+                el: el,
+                data: {
+                    activity: null
+                },
+                watch: {
+                    'activity': function (val, oldVal) {
+                        this.onRefresh()
+                    },
+                },
+                methods: {
+                    onClick: function (event) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                        console.log('fuck')
+                    },
+                    onRefresh: function () {
+                        var width = $(el + ".page-content").width()
+                        var ratio = width / 375.0
+                        $(el + ".page-content .banner").height(120 * ratio)
+                        $(el + ".page-content .multiRect >div").height(165 * ratio)
+                        $(el + ".page-content .rect >div").height(140 * ratio)
+                        $(el + ".page-content .double img").height((width - 1) / 2)
+                        myApp.initPageSwiper($$(el))
+                        $('.content').click(this.onClick)
+                    }
+                }
+            });
+
+
+

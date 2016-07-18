@@ -1,0 +1,52 @@
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui')
+        meta(name='apple-mobile-web-app-capable', content='yes')
+        meta(name='apple-mobile-web-app-status-bar-style', content='black')
+        link(rel='stylesheet', href='css/framework7.ios.min.css')
+        link(rel='stylesheet', href='css/framework7.ios.colors.min.css')
+        link(rel='stylesheet', href='css/iconfont.css')
+        link(rel='stylesheet', href='css/toast.css')
+        link(rel='stylesheet', href='css/kitchen-sink.ios.css')
+        script(type='text/javascript ', src='js/jquery.min.js ')
+        script(type='text/javascript ', src='js/jquery.transit.min.js ')
+        script(type='text/javascript ', src='js/jquery.qrcode.min.js ')
+        script(type='text/javascript ', src='js/vue.min.js ')
+    body
+        .statusbar-overlay
+        .views.tabs.tabbar-labels-through
+            .view.view-main.tab.active#view-1
+                include home
+            .view.tab#view-2
+                include category
+            .view.tab#view-3
+                include cart
+            .view.tab#view-4
+                include me
+            .toolbar.tabbar.tabbar-labels
+                .toolbar-inner
+                    a(href="#view-1").tab-link.active
+                        i.icon.iconfont.icon-home
+                        span.tabbar-label 主頁
+                    a(href="#view-2").tab-link
+                        i.iconfont.icon-fenlei
+                        span.tabbar-label 分類
+                    a(href="#view-3").tab-link
+                        i.iconfont.icon-gouwuche
+                            //span.badge 4
+                        span.tabbar-label 購物車
+                    a(href="#view-4").tab-link
+                        i.iconfont.icon-geren
+                        span.tabbar-label 我的
+        .popover.popover-qrcode
+            .popover-angle
+            .popover-inner
+                .content-block
+                    .qrcode
+        script(type='text/javascript ', src='cordova.js ')
+        script(type='text/javascript', src='js/framework7.min.js')
+        script(type='text/javascript ', src='js/toast.js ')
+        script(type='text/javascript ', src='js/kitchen-sink.ios.js ')
+

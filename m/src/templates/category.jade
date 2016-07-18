@@ -1,0 +1,32 @@
+.navbar
+    .navbar-inner
+        a.center.fixed.home(href='search.html')
+            i.iconfont.icon-sousuo
+            span.search.text 搜索熱門暢銷商品
+        .right
+            a.link.icon-only
+                i.iconfont.icon-iconfontsaoyisao
+.pages.navbar-through
+    .page(data-page="category")
+        .page-content
+            .list-block.category
+                ul
+                    li(v-for='category in categories' v-on:click='onItemClick($event,category)')
+                        label.label-radio.item-content
+                            // Checked by default
+                            input(type='radio', name='my-radio', value='Books' ,checked='checked', v-if='$index==0')
+                            input(type='radio', name='my-radio', value='Books', v-else)
+                            .item-inner
+                                .item-title {{category.title}}
+            .list-block.media-list.goods
+                ul
+                    li(v-for='goods in category.goodss')
+                        a.item-content(id='' v-on:click='onGoodsClick($event,goods)')
+                            .item-media
+                                img.lazy.lazy-fadeIn.ks-demo-lazy(id = '' v-bind:src='goods.images[0]' onerror="this.src='img/bg_image.png'")
+                            .item-inner
+                                .item-text.text {{goods.title}}
+                                .item-title-row
+                                    .price ${{goods.price}}
+                                    i.iconfont.icon-gouwuche.price(id='' v-on:click='onCartClick($event,goods)')
+

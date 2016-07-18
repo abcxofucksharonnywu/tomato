@@ -1,0 +1,38 @@
+
+<div class="navbar">
+  <div class="navbar-inner"><a href="search.html" class="center fixed home"><i class="iconfont icon-sousuo"></i><span class="search text">搜索熱門暢銷商品</span></a>
+    <div class="right"><a class="link icon-only"><i class="iconfont icon-iconfontsaoyisao"></i></a></div>
+  </div>
+</div>
+<div class="pages navbar-through">
+  <div data-page="category" class="page">
+    <div class="page-content">
+      <div class="list-block category">
+        <ul>
+          <li v-for="category in categories" v-on:click="onItemClick($event,category)">
+            <label class="label-radio item-content">
+              <!-- Checked by default-->
+              <input type="radio" name="my-radio" value="Books" checked="checked" v-if="$index==0"/>
+              <input type="radio" name="my-radio" value="Books" v-else="v-else"/>
+              <div class="item-inner">
+                <div class="item-title">{{category.title}}</div>
+              </div>
+            </label>
+          </li>
+        </ul>
+      </div>
+      <div class="list-block media-list goods">
+        <ul>
+          <li v-for="goods in category.goodss"><a id="" v-on:click="onGoodsClick($event,goods)" class="item-content">
+              <div class="item-media"><img id="" v-bind:src="goods.images[0]" onerror="this.src='img/bg_image.png'" class="lazy lazy-fadeIn ks-demo-lazy"/></div>
+              <div class="item-inner">
+                <div class="item-text text">{{goods.title}}</div>
+                <div class="item-title-row">
+                  <div class="price">${{goods.price}}</div><i id="" v-on:click="onCartClick($event,goods)" class="iconfont icon-gouwuche price"></i>
+                </div>
+              </div></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

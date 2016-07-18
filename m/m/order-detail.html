@@ -1,0 +1,96 @@
+
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="left"><a href="#" class="back link icon-only"><i class="iconfont icon-fanhui"></i></a></div>
+    <div class="center sliding">訂單詳情</div>
+  </div>
+</div>
+<div class="pages navbar-through">
+  <div data-page="order-detail" class="page no-tabbar">
+    <div class="page-content">
+      <div class="list-block media-list header">
+        <ul>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="date text"><span class="text">訂單日期：</span><span class="hint">{{order.date | date}}</span></div>
+                <div class="id text"><span class="text">訂單號：</span><span class="hint">{{order._id}}</span></div>
+                <div class="state text"><span class="text">訂單狀態：</span><span class="price">{{order.state=='receipt'?'待接單 ':order.state=='delivery'?'待收貨 ':order.state=='sign'?'待簽收':order.state=='completion'?'完成訂單':order.state=='canceled'?'已取消':''}}</span></div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="content-block-title text">收貨地址</div>
+      <div class="list-block media-list address">
+        <ul>
+          <li>
+            <div class="item-content">
+              <div class="item-media"><i class="iconfont icon-dingwei"></i></div>
+              <div class="item-inner">
+                <div class="item-title-row">
+                  <div class="subtitle">{{order.address.name}}</div>
+                  <div class="subtitle">{{order.address.phone}}</div>
+                </div>
+                <div class="text">{{order.address.content}}</div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="content-block-title text">費用明細</div>
+      <div class="list-block media-list goods">
+        <ul>
+          <li v-for="item in order.items"><a id="" v-on:click="onGoodsClick($event,item)" class="item-content">
+              <div class="item-media"><img id="" v-bind:src="item.image" onerror="this.src='img/bg_image.png'" class="lazy lazy-fadeIn ks-demo-lazy"/></div>
+              <div class="item-inner">
+                <div class="item-text text">{{item.title}}</div>
+                <div class="item-title-row">
+                  <div class="subtitle">${{item.price*item.quantity}}</div>
+                  <div class="hint">{{item.quantity}}份</div>
+                </div>
+              </div></a></li>
+        </ul>
+      </div>
+      <div class="content-block-title text">支付方式</div>
+      <div class="list-block pay">
+        <ul>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="text"><span class="text">貨到付款</span><span class="hint">（支持現金或者POS機）</span></div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="content-block-title text">配送方式</div>
+      <div class="list-block delivery">
+        <ul>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="text"><span class="text"> 配送時間</span><span class="hint">（接受訂單後40分鐘內到達）</span></div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="content-block-title text">訂單價格</div>
+      <div class="list-block order">
+        <ul>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="text"><span class="text">合計：</span><span class="price">${{order.price}}</span></div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div v-if="order.state!='completion'&amp;&amp;order.state!='canceled'" class="toolbar">
+      <div class="toolbar-inner"><a id="" v-on:click="onCancelClick" class="button submit">取消訂單</a></div>
+    </div>
+  </div>
+</div>

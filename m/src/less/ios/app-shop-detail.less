@@ -1,0 +1,34 @@
+@import url('_vars.less');
+
+.page[data-page='shop-detail'] {
+  .page-content {
+    background-color: @white;
+    .goods {
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+        overflow: hidden;
+        li {
+          position: relative;
+          .hairline(right, @divider);
+          width: 50%;
+          .item-content {
+            padding-left: 0px;
+            flex-direction: column;
+            .item-inner {
+              padding-right: @padding-4;
+              background: none;
+            }
+            img {
+              width: 100%;
+            }
+            .item-title-row {
+              margin-top: @padding-4;
+            }
+          }
+        }
+      }
+
+    }
+  }
+}

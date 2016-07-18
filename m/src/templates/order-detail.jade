@@ -1,0 +1,80 @@
+.navbar
+    .navbar-inner
+        .left
+            a(href="#").back.link.icon-only
+                i.iconfont.icon-fanhui
+        .center.sliding 訂單詳情
+.pages.navbar-through
+    .page.no-tabbar(data-page="order-detail")
+        .page-content
+            .list-block.media-list.header
+                ul
+                    li
+                        .item-content
+                            .item-inner
+                                .date.text
+                                    span.text 訂單日期：
+                                    span.hint {{order.date | date}}
+                                .id.text
+                                    span.text 訂單號：
+                                    span.hint {{order._id}}
+                                .state.text
+                                    span.text 訂單狀態：
+                                    span.price {{order.state=='receipt'?'待接單 ':order.state=='delivery'?'待收貨 ':order.state=='sign'?'待簽收':order.state=='completion'?'完成訂單':order.state=='canceled'?'已取消':''}}
+            .content-block-title.text 收貨地址
+            .list-block.media-list.address
+                ul
+                    li
+                        .item-content
+                            .item-media
+                                i.iconfont.icon-dingwei
+                            .item-inner
+                                .item-title-row
+                                    .subtitle {{order.address.name}}
+                                    .subtitle {{order.address.phone}}
+                                .text {{order.address.content}}
+            .content-block-title.text 費用明細
+            .list-block.media-list.goods
+                ul
+                    li(v-for='item in order.items')
+                        a.item-content(id='' v-on:click='onGoodsClick($event,item)')
+                            .item-media
+                                img.lazy.lazy-fadeIn.ks-demo-lazy(id='' v-bind:src='item.image' onerror="this.src='img/bg_image.png'")
+                            .item-inner
+                                .item-text.text {{item.title}}
+                                .item-title-row
+                                    .subtitle ${{item.price*item.quantity}}
+                                    .hint {{item.quantity}}份
+            .content-block-title.text 支付方式
+            .list-block.pay
+                ul
+                    li
+                        .item-content
+                            .item-inner
+                                .text
+                                    span.text 貨到付款
+                                    span.hint （支持現金或者POS機）
+            .content-block-title.text 配送方式
+            .list-block.delivery
+                ul
+                    li
+                        .item-content
+                            .item-inner
+                                .text
+                                    span.text  配送時間
+                                    span.hint （接受訂單後40分鐘內到達）
+            .content-block-title.text 訂單價格
+            .list-block.order
+                ul
+                    li
+                        .item-content
+                            .item-inner
+                                .text
+                                    span.text 合計：
+                                    span.price ${{order.price}}
+
+        .toolbar(v-if="order.state!='completion'&&order.state!='canceled'")
+            .toolbar-inner
+                a.button.submit(id='' v-on:click='onCancelClick')
+                    | 取消訂單
+

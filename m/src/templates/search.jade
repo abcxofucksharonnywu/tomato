@@ -1,0 +1,30 @@
+.navbar
+    .navbar-inner
+        .left
+            a(href="#").back.link.icon-only
+                i.iconfont.icon-fanhui
+        .center.fixed.search
+            i.iconfont.icon-sousuo
+            input.search.text(type='text' placeholder='請輸入搜索商品名')
+.pages.navbar-through
+    .page.no-tabbar(data-page="search")
+        .page-content
+            .search
+                .recent
+                    .row.hint
+                        i.iconfont.icon-sousuo 最近搜索
+                        i.iconfont.icon-shanchu(id='' v-on:click='onClear')
+                    .word.hint
+                        a.button.hint(v-for='search in searchs.recentSearchs'  v-on:click='onTextClick($event,search)') {{search.title}}
+                .hot
+                    .row.hint
+                        i.iconfont.icon-sousuo 熱門搜索
+                    .word.hint
+                        a.button.hint(v-for='search in searchs.hotSearchs' v-on:click='onTextClick($event,search)') {{search.title}}
+
+
+
+
+
+
+

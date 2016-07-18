@@ -83,6 +83,7 @@ m/node_modules
 public/.sass-cache
 public/scss
 .sass-cache
-m
-!m/src
-!m/m
+m/build
+m/examples
+m/kitchen-sink-ios
+m/kitchen-sink-material

@@ -1,0 +1,45 @@
+.page-content.pull-to-refresh-content
+    .pull-to-refresh-layer
+        .preloader
+        .pull-to-refresh-arrow
+    .list-block.media-list.goods(v-if='carts.length>0')
+        ul
+            li.swipeout(v-for='cart in carts')
+                .swipeout-content
+                    .item-content
+                        label.label-checkbox.item-content.check
+                            input(type='checkbox', name='ks-checkbox', value="{{cart._id}}" v-model='checks')
+                            .item-media
+                                i.icon.icon-form-checkbox
+                        a.item-content(id='' v-on:click='onGoodsClick($event,cart)')
+                            .item-media
+                                img.lazy.lazy-fadeIn.ks-demo-lazy(id='' v-bind:src='cart.image' onerror="this.src='img/bg_image.png'")
+                            .item-inner
+                                .item-text.text {{cart.title}}
+                                .item-title-row
+                                    .title ${{cart.price*cart.quantity}}
+                                    .quantity-content
+                                        .decrease.hint(id='' v-on:click='onQuantityDecrease($event,cart)') -
+                                        input.quantity.text(type='number' v-model='cart.quantity' v-on:click='onQuantityInput($event,cart)')
+                                        .increase.hint(id='' v-on:click='onQuantityIncrease($event,cart)') +
+                .swipeout-actions-right
+                    a.swipeout-delete(href='#' v-on:click = 'onItemDelete($event,cart)') 刪除
+    .empty(v-else)
+        img(src='img/icon_empty.png')
+        .des 空空如也~
+.toolbar(v-if='carts.length>0')
+    .toolbar-inner
+        .total
+            label.label-checkbox.item-content.check(id='' v-on:click='onCheckAll')
+                input(type='checkbox', name='ks-checkbox' v-model='checkAll')
+                .item-media
+                    i.icon.icon-form-checkbox
+            .all.text 全選
+            div
+                div
+                    span.text 合計：
+                    span.price ${{price}}
+                .append
+                    | 共{{quantity}}件
+        a.button.submit(href='#' v-on:click='onBuy')
+            | 結算

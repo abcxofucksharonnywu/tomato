@@ -1,0 +1,52 @@
+@import url('_vars.less');
+
+.view[data-page='me'] {
+  .navbar {
+    background-color: transparent;
+  }
+  .navbar:after {
+    background-color: transparent;
+
+  }
+}
+
+.page[data-page='me'] {
+  .page-content {
+    padding-top: 0px;
+    .cover {
+      height: 40%;
+      background-image: url('../img/bg_cover.jpg');
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .me {
+        flex-direction: column;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .avatar {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 70px;
+          width: 70px;
+          background-color: @white;
+          opacity: 0.9;
+          border-radius: 35px;
+          text-align: center;
+          .iconfont {
+            font-size: 30px;
+            color: @themeColor;
+          }
+        }
+        .title {
+          margin-top: @padding-2;
+          color: @white !important;
+        }
+      }
+
+    }
+  }
+
+}

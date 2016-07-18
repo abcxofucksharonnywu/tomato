@@ -1,0 +1,40 @@
+.navbar
+    .navbar-inner
+        .left
+            a(href="#").back.link.icon-only
+                i.iconfont.icon-fanhui
+        .right
+            a.link.open-popover(href='#', data-popover='.popover-qrcode')
+                i.iconfont.icon-erweima
+            a.link.icon-only.cart(href='cart-push.html')
+                i.iconfont.icon-gouwuche
+.pages.navbar-through
+    .page.no-tabbar(data-page="detail")
+        .page-content
+            .banner.swiper-container.swiper-init.ks-lazy-slider.swiper-container-horizontal(data-pagination='.swiper-pagination' )
+                .swiper-pagination.swiper-pagination-bullets
+                    span.swiper-pagination-bullet(v-for='img in goods.images')
+                .swiper-wrapper
+                    .swiper-slide(data-swiper-slide-index='{{$index}}' v-for='img in goods.images')
+                        img(src='{{img}}' v-on:click='onImageClick($event,$index)' onerror="this.src='img/bg_image.png'")
+            .content
+                .description
+                    p.title {{goods.title}}
+                    .row
+                        .title.price ${{goods.price}}
+                        .text 銷量：{{goods.sale}}
+                .category
+                    .row
+                        .col-50
+                            a.button.hint(href='#', data-panel='left' v-on:click='onCategoryClick') 同品類
+                        .col-50
+                            a.button.hint(href='#', data-panel='right' v-on:click='onShopClick') 同品牌
+        .toolbar
+            .toolbar-inner
+                input.quantity.price(type='number' v-model = 'goods.quantity')
+                a.button.submit(id='' v-on:click='onCartClick')
+                    | 加入購物車
+
+
+
+

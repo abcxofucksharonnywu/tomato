@@ -1,0 +1,38 @@
+@import url('_vars.less');
+
+.page[data-page='order'] {
+  ul {
+    background-color: inherit;
+  }
+  li {
+    margin-bottom: 10px;
+    background-color: @white;
+    .hairline(top, @divider);
+    .hairline(bottom, @divider);
+    a.item-link {
+      .item {
+        .item-header {
+          padding: 0px @padding-4;
+          height: 34px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .hairline(bottom, @divider);
+          position: relative;
+        }
+        .item-content {
+          img {
+            width: 40px;
+          }
+          .item-title-row {
+            margin-top: @padding-2;
+          }
+          .item-inner:after {
+            height: 0px;
+          }
+        }
+      }
+    }
+  }
+
+}

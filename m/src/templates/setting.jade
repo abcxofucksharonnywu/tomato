@@ -1,0 +1,41 @@
+.navbar
+    .navbar-inner
+        .left
+            a(href="#").back.link.icon-only
+                i.iconfont.icon-fanhui
+        .center.sliding 設置
+.pages.navbar-through
+    .page.no-tabbar(data-page="setting")
+        .page-content
+            .list-block
+                ul
+                    li
+                        a.item-link.item-content(href='setting-name.html')
+                            .item-inner
+                                .text 暱稱
+                                .hint {{user.name}}
+                    li
+                        a.item-link.item-content(href='setting-phone.html')
+                            .item-inner
+                                .text 手機號
+                                .hint {{user.phone}}
+                    //li
+                    //    a.item-link.item-content(href='setting-password.html')
+                    //        .item-inner
+                    //            .text 密碼
+                    //            .hint {{user.password==null?'':'******'}}
+            .content-block-title
+            .list-block
+                ul
+                    li
+                        a.item-link.item-content(href='setting-about.html')
+                            .item-inner
+                                .text 版本關於
+                    li
+                        a.item-link.item-content(href='setting.html')
+                            .item-inner
+                                .text 馬上評分
+                    li
+                        a.item-link.item-content(href='setting.html')
+                            .item-inner
+                                .text 反饋聯係

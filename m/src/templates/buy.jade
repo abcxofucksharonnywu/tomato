@@ -1,0 +1,64 @@
+.navbar
+    .navbar-inner
+        .left
+            a(href="#").back.link.icon-only
+                i.iconfont.icon-fanhui
+        .center.sliding 提交订单
+.pages.navbar-through
+    .page.no-tabbar(data-page="buy")
+        .page-content
+            .list-block.address
+                ul
+                    li
+                        a.item-link.item-content(id='' v-on:click = 'onAddressClick')
+                            .item-media
+                                i.iconfont.icon-dingwei
+                            .item-inner(v-if='order.address')
+                                .item-title-row
+                                    .subtitle {{order.address.name}}
+                                    .subtitle {{order.address.phone}}
+                                .text {{order.address.content}}
+                            .item-inner(v-else)
+                                .text 添加收貨地址
+            .content-block-title.text 費用明細
+            .list-block.media-list.goods
+                ul
+                    li(v-for='item in order.items')
+                        a.item-content(id='' v-on:click='onGoodsClick($event,item)')
+                            .item-media
+                                img.lazy.lazy-fadeIn.ks-demo-lazy(id='' v-bind:src='item.image' onerror="this.src='img/bg_image.png'")
+                            .item-inner
+                                .item-text.text {{item.title}}
+                                .item-title-row
+                                    .subtitle ${{item.price*item.quantity}}
+                                    .hint {{item.quantity}}份
+            .content-block-title.text 支付方式
+            .list-block.pay
+                ul
+                    li
+                        .item-content
+                            .item-inner
+                                .text
+                                    span.text 貨到付款
+                                    span.hint （支持現金或者POS機）
+            .content-block-title.text 配送方式
+            .list-block.delivery
+                ul
+                    li
+                        .item-content
+                            .item-inner
+                                .text
+                                    span.text  配送時間
+                                    span.hint （接受訂單後40分鐘內到達）
+
+        .toolbar
+            .toolbar-inner
+                .total
+                    div
+                        span.text 合計：
+                        span.price ${{order.price}}
+                    .append
+                        | 共{{order.quantity}}件
+                a.button.submit(id='' v-on:click='onCreateClick')
+                    | 确认下单
+

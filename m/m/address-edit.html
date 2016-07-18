@@ -1,0 +1,58 @@
+
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="left"><a href="#" class="back link icon-only"><i class="iconfont icon-fanhui"></i></a></div>
+    <div class="center sliding">編輯地址</div>
+    <div class="right edit"><a class="link icon-only"><i class="iconfont icon-dui"></i></a></div>
+  </div>
+</div>
+<div class="pages navbar-through">
+  <div data-page="address-edit" class="page no-tabbar">
+    <div class="page-content">
+      <div class="list-block">
+        <ul>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label text">收貨人</div>
+                <div class="item-input">
+                  <input type="text" placeholder="請輸入姓名" v-model="address.name" class="text"/>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label text">手機號</div>
+                <div class="item-input">
+                  <input type="text" placeholder="請輸入手機號" v-model="address.phone" class="text"/>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label text">郵政編碼</div>
+                <div class="item-input">
+                  <input type="text" placeholder="請輸入郵政編碼" v-model="address.post" class="text"/>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <div class="item-content">
+              <div class="item-inner">
+                <div class="item-title label text">詳細地址</div>
+                <div class="item-input">
+                  <input type="text" placeholder="請輸入詳細地址" v-model="address.content" class="text"/>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

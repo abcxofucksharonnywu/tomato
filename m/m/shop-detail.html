@@ -1,0 +1,29 @@
+
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="left"><a href="#" class="back link icon-only"><i class="iconfont icon-fanhui"></i></a></div>
+    <div class="center sliding">同品牌</div>
+    <div class="right"><a href="cart-push.html" class="link icon-only"><i class="iconfont icon-gouwuche"></i></a></div>
+  </div>
+</div>
+<div class="pages navbar-through">
+  <div data-page="shop-detail" class="page no-tabbar">
+    <div class="page-content">
+      <div v-if="goodss.length&gt;0" class="list-block media-list goods">
+        <ul>
+          <li v-for="goods in goodss"><a id="" v-on:click="onGoodsClick($event,goods)" class="item-content">
+              <div class="item-media"><img id="" v-bind:src="goods.images[0]" onerror="this.src='img/bg_image.png'" class="lazy lazy-fadeIn ks-demo-lazy"/></div>
+              <div class="item-inner">
+                <div class="item-text text">{{goods.title}}</div>
+                <div class="item-title-row">
+                  <div class="price">${{goods.price}}</div><i id="" v-on:click="onCartClick($event,goods)" class="iconfont icon-gouwuche price"></i>
+                </div>
+              </div></a></li>
+        </ul>
+      </div>
+      <div v-else="v-else" class="empty"><img src="img/icon_empty.png"/>
+        <div class="des">空空如也~</div>
+      </div>
+    </div>
+  </div>
+</div>

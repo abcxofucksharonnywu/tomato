@@ -1,0 +1,52 @@
+
+<div class="page-content pull-to-refresh-content">
+  <div class="pull-to-refresh-layer">
+    <div class="preloader"></div>
+    <div class="pull-to-refresh-arrow"></div>
+  </div>
+  <div v-if="carts.length&gt;0" class="list-block media-list goods">
+    <ul>
+      <li v-for="cart in carts" class="swipeout">
+        <div class="swipeout-content">
+          <div class="item-content">
+            <label class="label-checkbox item-content check">
+              <input type="checkbox" name="ks-checkbox" value="{{cart._id}}" v-model="checks"/>
+              <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+            </label><a id="" v-on:click="onGoodsClick($event,cart)" class="item-content">
+              <div class="item-media"><img id="" v-bind:src="cart.image" onerror="this.src='img/bg_image.png'" class="lazy lazy-fadeIn ks-demo-lazy"/></div>
+              <div class="item-inner">
+                <div class="item-text text">{{cart.title}}</div>
+                <div class="item-title-row">
+                  <div class="title">${{cart.price*cart.quantity}}</div>
+                  <div class="quantity-content">
+                    <div id="" v-on:click="onQuantityDecrease($event,cart)" class="decrease hint">-</div>
+                    <input type="number" v-model="cart.quantity" v-on:click="onQuantityInput($event,cart)" class="quantity text"/>
+                    <div id="" v-on:click="onQuantityIncrease($event,cart)" class="increase hint">+</div>
+                  </div>
+                </div>
+              </div></a>
+          </div>
+        </div>
+        <div class="swipeout-actions-right"><a href="#" v-on:click="onItemDelete($event,cart)" class="swipeout-delete">刪除</a></div>
+      </li>
+    </ul>
+  </div>
+  <div v-else="v-else" class="empty"><img src="img/icon_empty.png"/>
+    <div class="des">空空如也~</div>
+  </div>
+</div>
+<div v-if="carts.length&gt;0" class="toolbar">
+  <div class="toolbar-inner">
+    <div class="total">
+      <label id="" v-on:click="onCheckAll" class="label-checkbox item-content check">
+        <input type="checkbox" name="ks-checkbox" v-model="checkAll"/>
+        <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+      </label>
+      <div class="all text">全選</div>
+      <div>
+        <div><span class="text">合計：</span><span class="price">${{price}}</span></div>
+        <div class="append">共{{quantity}}件</div>
+      </div>
+    </div><a href="#" v-on:click="onBuy" class="button submit">結算</a>
+  </div>
+</div>

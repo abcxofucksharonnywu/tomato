@@ -1,0 +1,62 @@
+
+<div class="navbar">
+  <div class="navbar-inner"><a href="search.html" class="center fixed home"><i class="iconfont icon-sousuo"></i><span class="search text">搜索熱門暢銷商品</span></a>
+    <div class="right scan"><a class="link icon-only"><i class="iconfont icon-iconfontsaoyisao"></i></a></div>
+  </div>
+</div>
+<div class="pages navbar-through">
+  <div data-page="home" class="page">
+    <div class="page-content pull-to-refresh-content">
+      <div class="pull-to-refresh-layer">
+        <div class="preloader"></div>
+        <div class="pull-to-refresh-arrow"></div>
+      </div>
+      <iframe id="" v-bind:src="activity.url" frameborder="0" v-if="activity.type=='url'"></iframe>
+      <div v-if="activity.type!='url'&amp;&amp;activity.layouts.length&gt;0" class="list-block">
+        <ul>
+          <li v-for="layout in activity.layouts">
+            <div id="" v-bind:value="$index" class="content">
+              <div data-pagination=".swiper-pagination" data-loop="true" v-if="layout.type=='banner'" class="layout banner swiper-container swiper-init ks-demo-slider swiper-container-horizontal">
+                <div class="swiper-pagination swiper-pagination-bullets"><span v-for="item in layout.items" class="swiper-pagination-bullet"></span></div>
+                <div class="swiper-wrapper">
+                  <div id="" v-bind:data-swiper-slide-index="$index" v-for="item in layout.items" class="swiper-slide"><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="item.img" onerror="this.src='img/bg_image.png'"/></a></div>
+                </div>
+              </div>
+              <div v-if="layout.type=='multiRect'" class="layout multiRect">
+                <div>
+                  <div><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="layout.items[0].img" onerror="this.src='img/bg_image.png'"/></a></div>
+                  <div><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="layout.items[1].img" onerror="this.src='img/bg_image.png'"/></a></div>
+                </div>
+                <div>
+                  <div><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="layout.items[2].img" onerror="this.src='img/bg_image.png'"/></a></div>
+                  <div><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="layout.items[3].img" onerror="this.src='img/bg_image.png'"/></a></div>
+                  <div><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="layout.items[4].img" onerror="this.src='img/bg_image.png'"/></a></div>
+                </div>
+              </div>
+              <div v-if="layout.type=='rect'" class="layout rect">
+                <div><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="layout.items[0].img" onerror="this.src='img/bg_image.png'"/></a></div>
+              </div>
+              <div v-if="layout.type==='double'" class="layout double">
+                <div class="list-block media-list goods">
+                  <ul>
+                    <li v-for="item in layout.items"><a id="" v-on:click="onItemClick($event,item)" class="item-content">
+                        <div class="item-media"><img id="" v-bind:src="item.goods.images[0]" onerror="this.src='img/bg_image.png'" class="lazy lazy-fadeIn ks-demo-lazy"/></div>
+                        <div class="item-inner">
+                          <div class="item-text text">{{item.goods.title}}</div>
+                          <div class="item-title-row">
+                            <div class="price">${{item.goods.price}}</div><i id="" v-on:click="onCartClick($event,item.goods)" class="iconfont icon-gouwuche price"></i>
+                          </div>
+                        </div></a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div v-else="v-else" class="empty"><img src="img/icon_empty.png"/>
+        <div class="des">空空如也~</div>
+      </div>
+    </div>
+  </div>
+</div>

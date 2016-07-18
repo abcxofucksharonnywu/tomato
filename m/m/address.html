@@ -1,0 +1,36 @@
+
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="left"><a href="#" class="back link icon-only"><i class="iconfont icon-fanhui"></i></a></div>
+    <div class="center sliding">地址管理</div>
+    <div class="right add"><a class="link icon-only"><i class="iconfont icon-add"></i></a></div>
+  </div>
+</div>
+<div class="pages navbar-through">
+  <div data-page="address" class="page no-tabbar">
+    <div class="page-content pull-to-refresh-content">
+      <div class="pull-to-refresh-layer">
+        <div class="preloader"></div>
+        <div class="pull-to-refresh-arrow"></div>
+      </div>
+      <div v-if="addresses.length&gt;0" class="list-block media-list">
+        <ul>
+          <li v-for="address in addresses" class="swipeout">
+            <div class="swipeout-content"><a id="" v-on:click="onItemClick($event,address)" class="item-link item-content">
+                <div class="item-inner">
+                  <div class="item-title-row">
+                    <div class="subtitle">{{address.name}}</div>
+                    <div class="subtitle">{{address.phone}}</div>
+                  </div>
+                  <div class="text">{{address.content}}</div>
+                </div></a></div>
+            <div class="swipeout-actions-right"><a href="#" v-on:click="onItemEdit($event,address)" v-if="select" class="swipeout-edit">編輯</a><a href="#" v-on:click="onItemDelete($event,address)" class="swipeout-delete">刪除</a></div>
+          </li>
+        </ul>
+      </div>
+      <div v-else="v-else" class="empty"><img src="img/icon_empty.png"/>
+        <div class="des">空空如也~</div>
+      </div>
+    </div>
+  </div>
+</div>

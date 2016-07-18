@@ -1,0 +1,37 @@
+.navbar
+    .navbar-inner
+        .left
+            a(href="#").back.link.icon-only
+                i.iconfont.icon-fanhui
+        .center.sliding 我的訂單
+.pages.navbar-through
+    .page.no-tabbar(data-page="order")
+        .page-content.pull-to-refresh-content
+            .pull-to-refresh-layer
+                .preloader
+                .pull-to-refresh-arrow
+            .list-block.media-list.goods(v-if='orders.length>0')
+                ul
+                    li(v-for='order in orders')
+                        a.item-link(id='' v-on:click='onItemClick($event,order)')
+                            .item
+                                .item-header
+                                    .subtitle 訂單號：{{order._id}}
+                                    .price {{order.state=='receipt'?'待接單 ':order.state=='delivery'?'待收貨 ':order.state=='sign'?'待簽收':order.state=='completion'?'完成訂單':order.state=='canceled'?'已取消':''}}
+                                .item-content
+                                    .item-media
+                                        img.lazy.lazy-fadeIn.ks-demo-lazy(id = '' v-bind:src='order.items[0].image' onerror="this.src='img/bg_image.png'")
+                                    .item-inner
+                                        .item-title-row
+                                            .item-text.text {{order.items[0].title}}
+                                            .hint {{order.date | time}}
+                                        .item-title-row
+                                            .subtitle
+                                                span.subtitle 合計：
+                                                span.price ${{order.price}}
+                                            .hint 共{{order.quantity}}份
+            .empty(v-else)
+                img(src='img/icon_empty.png')
+                .des 空空如也~
+
+
