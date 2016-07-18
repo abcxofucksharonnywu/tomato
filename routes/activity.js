@@ -5,7 +5,7 @@ var service = require('../services/service')
 router.get('/', function (req, res, next) {
     var user = req.session.user
     if (user.permission && user.permission.contains('activity')) {
-        service.activity.find({}, {sort: {date: 1}}, function (err, doc) {
+        service.activity.find({}, {}, function (err, doc) {
             if (!err) {
                 res.render('activity', {
                         activities: doc
@@ -99,7 +99,11 @@ router.get('/query', function (req, res, next) {
     if (name) {
         service.activity.findOne({name: name}, function (err, doc) {
             if (!err) {
-                res.send({code: 200, content: doc})
+                if (doc) {
+                    res.send({code: 200, content: doc})
+                } else {
+                    res.send({code: 400, msg: "活動獲取失敗"})
+                }
             } else {
                 res.send({code: 400, msg: err.message})
             }

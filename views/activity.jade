@@ -254,7 +254,7 @@ script.
                     console.log('info')
                     var index = $(event.target).attr('value')
                     this.activity = this.activities[index]
-                    if (this.activity != 'url') {
+                    if (this.activity.type == 'layout') {
                         this.activity.url = 'http://' + window.location.host + '/m/activity-preview.html'
                     }
                     $(event.target).tab('show')
@@ -293,6 +293,7 @@ script.
                         }
                     }
                     this.activity.type = 'layout'
+                    this.activity.url = 'http://' + window.location.host + '/m/activity-preview.html'
                     this.activity.layouts = [];
                     var vue = this
                     showLoading()
@@ -326,7 +327,7 @@ script.
                     event.preventDefault()
                     var vue = this;
                     showLoading()
-                    $.post('/activity/delete', this.activity, function (result) {
+                    $.get('/activity/delete', {name: this.activity.name}, function (result) {
                         dismissLoading()
                         if (result.code == 200) {
                             $('#modal-activity-delete').modal('hide')
@@ -544,6 +545,7 @@ script.
                 },
                 upload: function (event) {
                     event.preventDefault()
+                    showLoading()
                     var img = $(event.target)
                     var input = $(event.target).siblings('input')
                     var index = $(event.target).attr('value')
@@ -571,8 +573,10 @@ script.
                                         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                                         console.log('Upload is ' + progress + '% done');
                                     }, function (error) {
+                                        dismissLoading()
                                         showTips(error.message)
                                     }, function () {
+                                        dismissLoading()
                                         // Upload completed successfully, now we can get the download URL
                                         item.img = uploadTask.snapshot.downloadURL;
                                     });

@@ -45,11 +45,14 @@ router.post('/login', function (req, res, next) {
         if (name && password) {
             service.user_manager.findOne({name: name, password: password}, function (err, doc) {
                 if (!err) {
-                    var user = doc
-                    req.session.user = user
-                    res.send({code: 302, url: '/'})
+                    if (doc) {
+                        req.session.user = doc
+                        res.send({code: 302, url: '/'})
+                    } else {
+                        res.send({code: 400, msg: "帐号不存在"})
+                    }
                 } else {
-                    res.send({code: 400, msg: "帐号不存在"})
+                    res.send({code: 400, msg: "帳號或者密碼錯誤,登錄失敗"})
                 }
             })
         } else {

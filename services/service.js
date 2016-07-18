@@ -1,3 +1,4 @@
+var request = require('request');
 var service = {}
 service.db = require('monk')('localhost/tomato')
 var model = {
@@ -38,6 +39,7 @@ var model = {
     date: ''
 }
 service.goods = service.db.get('goods')
+service.goods.index('goodsId', {unique: true}) // unique
 
 var model = {
     userId: '',
@@ -89,7 +91,6 @@ var model = {
 service.activity = service.db.get('activity')
 service.activity.index('title', {unique: true}) // unique
 service.activity.index('name', {unique: true}) // unique
-service.activity.index('url', {unique: true}) // unique
 
 var model = {
     name: '',
@@ -126,6 +127,42 @@ Array.prototype.contains = function (obj) {
         }
     }
     return false;
+}
+
+service.sendMessage = function (obj, callback) {
+    service.user.findOne({_id: obj.uid}, function (err, doc) {
+        if (!err && doc) {
+            request({
+                url: 'https://fcm.googleapis.com/fcm/send',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'key=AIzaSyAS8xSCp-xKaIV8jIjN6M7a8Nb6fI2HHro'
+                },
+                postData: {
+                    to: doc.device,
+                    notification: {
+                        title: obj.title,
+                        text: obj.text
+                    },
+                    data: {
+                        type: obj.type,
+                        content: obj.content
+                    }
+                }
+            }, function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    console.log('sendMessage success')
+                } else {
+                    console.log('sendMessage error')
+                }
+                callback(error, response, body)
+            });
+        } else {
+            console.log('sendMessage error')
+            callback(null, null, null)
+        }
+    });
+
 }
 
 module.exports = service
