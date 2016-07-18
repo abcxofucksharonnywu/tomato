@@ -151,7 +151,7 @@ service.sendMessage = function (obj, callback) {
                 }
             }, function (error, response, body) {
                 if (!error && response.statusCode == 200) {
-                    console.log('sendMessage success'+response+body)
+                    console.log('sendMessage success'+JSON.stringify(response))
                 } else {
                     console.log('sendMessage error' + error.message)
                 }
