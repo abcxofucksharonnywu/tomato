@@ -139,7 +139,7 @@ service.sendMessage = function (obj, callback) {
                     'Authorization': 'key=AIzaSyAS8xSCp-xKaIV8jIjN6M7a8Nb6fI2HHro'
                 },
                 postData: {
-                    to: doc.device,
+                    to: doc.token,
                     notification: {
                         title: obj.title,
                         text: obj.text

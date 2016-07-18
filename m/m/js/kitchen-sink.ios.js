@@ -45,7 +45,7 @@ var view4 = myApp.addView('#view-4', {
 });
 
 
-var host = 'http://localhost:3000'
+var host = 'http://www.dajitogo.com:3000'
 
 Date.prototype.format = function (format) {
     var o = {
@@ -311,43 +311,47 @@ function toActivity(el, name) {
     myApp.pullToRefreshTrigger(ptrContent)
 }
 
+function toScan() {
+    scan.recognize(function (doc) {
+        if (doc.indexOf('{') != -1 && doc.indexOf('}') != -1) {
+            var obj = JSON.parse(doc)
+            if (obj.type == 'goods') {
+                toDetail({
+                    goodsId: obj.content
+                }, true)
+            } else if (obj.type == 'order') {
+                myApp.getCurrentView().router.load({
+                    url: 'order.html'
+                })
+            } else if (obj.type == 'order-detail') {
+                myApp.getCurrentView().router.load({
+                    url: 'order-detail.html',
+                    query: {order: obj.content}
+                })
+            } else if (obj.type == 'url') {
+                myApp.getCurrentView().router.load({
+                    url: 'web.html',
+                    query: {url: obj.content, name: '網頁'}
+                })
+            }
+        } else if (doc.indexOf('http') != -1 || doc.indexOf('https') != -1) {
+            myApp.getCurrentView().router.load({
+                url: 'web.html',
+                query: {url: doc, name: '網頁'}
+            })
+        }
+
+    }, function (error) {
+
+    })
+}
+
 myApp.onPageInit('home', function (page) {
     console.log('home init')
     toActivity(generatePageId('home'), 'home')
     $(".view[data-page='home']  .right.scan").click(function (event) {
         event.preventDefault()
-        scan.recognize(function (doc) {
-            if (doc.indexOf('{') != -1 && doc.indexOf('}') != -1) {
-                var obj = JSON.parse(doc)
-                if (obj.type == 'goods') {
-                    toDetail({
-                        goodsId: obj.content
-                    }, true)
-                } else if (obj.type == 'order') {
-                    myApp.getCurrentView().router.load({
-                        url: 'order.html'
-                    })
-                } else if (obj.type == 'order-detail') {
-                    myApp.getCurrentView().router.load({
-                        url: 'order-detail.html',
-                        query: {order: obj.content}
-                    })
-                } else if (obj.type == 'url') {
-                    myApp.getCurrentView().router.load({
-                        url: 'web.html',
-                        query: {url: obj.content, name: '網頁'}
-                    })
-                }
-            } else if (doc.indexOf('http') != -1 || doc.indexOf('https') != -1) {
-                myApp.getCurrentView().router.load({
-                    url: 'web.html',
-                    query: {url: doc, name: '網頁'}
-                })
-            }
-
-        }, function (error) {
-
-        })
+        toScan()
     })
 }).trigger()
 
@@ -569,6 +573,11 @@ var onCategoryPageInit = myApp.onPageInit('category', function (page) {
             toast(result.msg);;
         }
     });
+
+    $(".view[data-page='category']  .right.scan").click(function (event) {
+        event.preventDefault()
+        toScan()
+    })
 
 })
 
