@@ -153,13 +153,19 @@ service.sendMessage = function (obj, callback) {
                 if (!error && response.statusCode == 200) {
                     console.log('sendMessage success')
                 } else {
-                    console.log('sendMessage error')
+                    console.log('sendMessage error'+error)
                 }
-                callback(error, response, body)
+                if(callback){
+                    callback(error, response, body)
+                }
+
             });
         } else {
             console.log('sendMessage error')
-            callback(null, null, null)
+            if(callback){
+                callback(null, null, null)
+            }
+
         }
     });
 
