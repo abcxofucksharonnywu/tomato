@@ -130,6 +130,7 @@ Array.prototype.contains = function (obj) {
 }
 
 service.sendMessage = function (obj, callback) {
+    console.log(obj.text)
     service.user.findOne({_id: obj.uid}, function (err, doc) {
         if (!err && doc) {
             request({

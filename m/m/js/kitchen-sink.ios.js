@@ -45,7 +45,7 @@ var view4 = myApp.addView('#view-4', {
 });
 
 
-var host = 'http://www.dajitogo.com:3000/'
+var host = 'http://www.dajitogo.com:3000'
 
 Date.prototype.format = function (format) {
     var o = {
