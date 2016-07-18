@@ -139,7 +139,7 @@ service.sendMessage = function (obj, callback) {
                     'Authorization': 'key=AIzaSyAS8xSCp-xKaIV8jIjN6M7a8Nb6fI2HHro'
                 },
                 postData: {
-                    "to": doc.token,
+                    "to": "fo32rH6homI:APA91bFifr_5dNRvvDAXEoY3z7aaclBNjvFyY4xxOd6DYgw5bv2Xno_HRd4HX5Kz97Rw1sCvxddLP06Fzw7h-tWnliexV78H_BPprCOM1_YKXL36sYvsbs43dQiKS-94CsFS_wfGxtIm",
                     "notification": {
                         "title": obj.title,
                         "text": obj.text
