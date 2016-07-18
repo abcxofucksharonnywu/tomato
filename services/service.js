@@ -133,20 +133,21 @@ service.sendMessage = function (obj, callback) {
     service.user.findOne({_id: obj.uid}, function (err, doc) {
         if (!err && doc) {
             request({
+                method: 'POST',
                 url: 'https://fcm.googleapis.com/fcm/send',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'key=AIzaSyAS8xSCp-xKaIV8jIjN6M7a8Nb6fI2HHro'
                 },
-                postData: {
-                    "to": "fo32rH6homI:APA91bFifr_5dNRvvDAXEoY3z7aaclBNjvFyY4xxOd6DYgw5bv2Xno_HRd4HX5Kz97Rw1sCvxddLP06Fzw7h-tWnliexV78H_BPprCOM1_YKXL36sYvsbs43dQiKS-94CsFS_wfGxtIm",
-                    "notification": {
-                        "title": obj.title,
-                        "text": obj.text
+                json: {
+                    to: doc.token,
+                    notification: {
+                        title: obj.title,
+                        text: obj.text
                     },
-                    "data": {
-                        "type": obj.type,
-                        "content": obj.content
+                    data: {
+                        type: obj.type,
+                        content: obj.content
                     }
                 }
             }, function (error, response, body) {
