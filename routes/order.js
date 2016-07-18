@@ -76,7 +76,7 @@ router.post('/edit/state', function (req, res, next) {
                 service.sendMessage({
                     uid: order.uid,
                     title: '訂單通知',
-                    text: '訂單號:' + order._id + '狀態已經修改為' + (order.state == 'receipt' ? '待接單 ' : order.state == 'delivery' ? '待收貨 ' : order.state == 'sign' ? '待簽收' : order.state == 'completion' ? '完成訂單' : order.state == 'canceled' ? '已取消' : ''),
+                    text: '訂單狀態:' + (order.state == 'receipt' ? '待接單 ' : order.state == 'delivery' ? '待收貨 ' : order.state == 'sign' ? '待簽收' : order.state == 'completion' ? '完成訂單' : order.state == 'canceled' ? '已取消' : ''),
                     type: 'order-detail',
                     content: order._id
                 })
