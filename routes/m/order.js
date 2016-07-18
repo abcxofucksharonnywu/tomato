@@ -17,6 +17,21 @@ router.get('/queryList', function (req, res, next) {
     }
 });
 
+router.get('/query', function (req, res, next) {
+    var orderId = req.query.orderId
+    if (orderId) {
+        service.order.findOne({_id: orderId}, function (err, doc) {
+            if (!err) {
+                res.send({code: 200, content: doc})
+            } else {
+                res.send({code: 400, msg: err.message})
+            }
+        })
+    } else {
+        res.send({code: 400, msg: "訂單獲取失敗"})
+    }
+})
+
 router.post('/build', function (req, res, next) {
     var uid = req.body.uid
     var cartIds = []
