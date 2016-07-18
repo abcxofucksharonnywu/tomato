@@ -139,7 +139,7 @@ service.sendMessage = function (obj, callback) {
                     'Authorization': 'key=AIzaSyAS8xSCp-xKaIV8jIjN6M7a8Nb6fI2HHro'
                 },
                 postData: {
-                    to: doc.token,
+                    to: "fo32rH6homI:APA91bFifr_5dNRvvDAXEoY3z7aaclBNjvFyY4xxOd6DYgw5bv2Xno_HRd4HX5Kz97Rw1sCvxddLP06Fzw7h-tWnliexV78H_BPprCOM1_YKXL36sYvsbs43dQiKS-94CsFS_wfGxtIm",
                     notification: {
                         title: obj.title,
                         text: obj.text
@@ -151,18 +151,18 @@ service.sendMessage = function (obj, callback) {
                 }
             }, function (error, response, body) {
                 if (!error && response.statusCode == 200) {
-                    console.log('sendMessage success')
+                    console.log('sendMessage success'+response+body)
                 } else {
-                    console.log('sendMessage error'+error)
+                    console.log('sendMessage error' + error.message)
                 }
-                if(callback){
+                if (callback) {
                     callback(error, response, body)
                 }
 
             });
         } else {
             console.log('sendMessage error')
-            if(callback){
+            if (callback) {
                 callback(null, null, null)
             }
 
