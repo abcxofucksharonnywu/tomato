@@ -148,7 +148,8 @@ service.sendMessage = function (obj, callback) {
                     data: {
                         type: obj.type,
                         content: obj.content
-                    }
+                    },
+                    priority: "high"
                 }
             }, function (error, response, body) {
                 if (!error && response.statusCode == 200) {

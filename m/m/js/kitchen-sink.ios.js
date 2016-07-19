@@ -45,8 +45,8 @@ var view4 = myApp.addView('#view-4', {
 });
 
 
-// var host = 'http://www.dajitogo.com:3000'
-var host = 'http://localhost:3000'
+var host = 'http://www.dajitogo.com:3000'
+// var host = 'http://localhost:3000'
 
 Date.prototype.format = function (format) {
     var o = {
@@ -533,9 +533,7 @@ var onCategoryPageInit = myApp.onPageInit('category', function (page) {
                 var vue = this
                 vue.category = category
                 if (!(vue.category.goodss.length > 0)) {
-                    if (event) {
-                        myApp.showIndicator()
-                    }
+                    myApp.showIndicator()
                     $.get(host + "/m/goods/queryList", {
                         categoryId: vue.category.categoryId,
                         uid: user._id
@@ -547,9 +545,7 @@ var onCategoryPageInit = myApp.onPageInit('category', function (page) {
                             toast(result.msg);
                             ;
                         }
-                        if (event) {
-                            myApp.hideIndicator()
-                        }
+                        myApp.hideIndicator()
                     });
                 }
             },
@@ -564,6 +560,7 @@ var onCategoryPageInit = myApp.onPageInit('category', function (page) {
             }
         }
     })
+    myApp.showIndicator()
     $.get(host + "/m/category/queryList", {uid: user._id}, function (result) {
         if (result.code == 200) {
             vue.categories = result.content
@@ -572,7 +569,6 @@ var onCategoryPageInit = myApp.onPageInit('category', function (page) {
             console.log("category load");
         } else {
             toast(result.msg);
-            ;
         }
     });
 
@@ -917,7 +913,7 @@ myApp.onPageInit('buy', function (page) {
                 }, true)
             },
             onAddressSelect: function (address) {
-                this.$set('order.address',address)
+                this.$set('order.address', address)
             }
 
         }
