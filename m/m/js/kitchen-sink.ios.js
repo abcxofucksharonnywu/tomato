@@ -153,44 +153,52 @@ function userInit() {
 
 function userTokenInit(token) {
     console.log("user token init");
-    if (user._id && !user.token) {
+    if (user._id && token != user.token) {
         $.get(host + '/m/user/token', {uid: user._id, token: token}, function (result) {
             if (result.code == 200) {
                 storeUser(result.content)
                 console.log("user token");
             } else {
                 toast(result.msg);
-                ;
             }
         })
     }
 }
 
-function notification(doc) {
-    myApp.addNotification({
-        title: doc.title,
-        message: doc.text,
-        media: '<i class="icon icon-logo"></i>',
-        onClick: function (event) {
-            myApp.closeNotification(event.currentTarget)
-            if (doc.type == 'goods') {
-                toDetail({
-                    goodsId: doc.content
-                }, true)
-            } else if (doc.type == 'order') {
-                myApp.getCurrentView().router.load({
-                    url: 'order.html'
-                })
-            } else if (doc.type == 'order-detail') {
-                toOrderDetail({_id: doc.content}, null, true)
-            } else if (doc.type == 'url') {
-                myApp.getCurrentView().router.load({
-                    url: 'web.html',
-                    query: {url: doc.content, name: '網頁'}
-                })
-            }
+function notification(doc, show) {
+    function go(doc) {
+        if (doc.type == 'goods') {
+            toDetail({
+                goodsId: doc.content
+            }, true)
+        } else if (doc.type == 'order') {
+            myApp.getCurrentView().router.load({
+                url: 'order.html'
+            })
+        } else if (doc.type == 'order-detail') {
+            toOrderDetail({_id: doc.content}, null, true)
+        } else if (doc.type == 'url') {
+            myApp.getCurrentView().router.load({
+                url: 'web.html',
+                query: {url: doc.content, name: '網頁'}
+            })
         }
-    });
+    }
+
+    if (show) {
+        myApp.addNotification({
+            title: doc.title,
+            message: doc.text,
+            media: '<i class="icon icon-logo"></i>',
+            onClick: function (event) {
+                myApp.closeNotification(event.currentTarget)
+                go(doc)
+            }
+        });
+    } else {
+        go(doc)
+    }
+
 }
 
 if (isApp) {
@@ -269,7 +277,7 @@ function toActivity(el, name) {
             onItemClick: function (event, item) {
                 event.preventDefault()
                 if (item.type == 'goods') {
-                    toDetail(item.goods, false)
+                    toDetail(item.goods, true)
                 } else {
                     myApp.getCurrentView().router.load({
                         url: 'activity.html',
@@ -551,7 +559,7 @@ var onCategoryPageInit = myApp.onPageInit('category', function (page) {
             },
             onGoodsClick: function (event, goods) {
                 event.preventDefault()
-                toDetail(goods, false)
+                toDetail(goods, true)
             },
             onCartClick: function (event, goods) {
                 event.preventDefault()
@@ -650,7 +658,7 @@ myApp.onPageInit('search-detail', function (page) {
         methods: {
             onGoodsClick: function (event, goods) {
                 event.preventDefault()
-                toDetail(goods, false)
+                toDetail(goods, true)
             },
             onCartClick: function (event, goods) {
                 event.preventDefault()
@@ -701,7 +709,7 @@ myApp.onPageInit('category-detail', function (page) {
         methods: {
             onGoodsClick: function (event, goods) {
                 event.preventDefault()
-                toDetail(goods, false)
+                toDetail(goods, true)
             },
             onCartClick: function (event, goods) {
                 event.preventDefault()
@@ -742,7 +750,7 @@ myApp.onPageInit('shop-detail', function (page) {
         methods: {
             onGoodsClick: function (event, goods) {
                 event.preventDefault()
-                toDetail(goods, false)
+                toDetail(goods, true)
             },
             onCartClick: function (event, goods) {
                 event.preventDefault()
@@ -945,7 +953,7 @@ myApp.onPageInit('order', function (page) {
         methods: {
             onItemClick: function (event, order) {
                 event.preventDefault()
-                toOrderDetail(order, this.onRefresh, false)
+                toOrderDetail(order, this.onRefresh, true)
             },
             onRefresh: function (order) {
                 var ptrContent = $$(pageId + " .pull-to-refresh-content");
