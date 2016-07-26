@@ -96,7 +96,7 @@ router.get('/cancel', function (req, res, next) {
             if (!err) {
                 var order = doc
                 order.state = 'canceled'
-                service.io.emit('order-receipt', {
+                service.io.emit('order-' + order.state, {
                     order: order,
                     type: order.state
                 })

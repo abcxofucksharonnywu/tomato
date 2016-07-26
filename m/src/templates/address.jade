@@ -27,5 +27,6 @@
                             a.swipeout-edit(href='#' v-on:click = 'onItemEdit($event,address)' v-if='select') 編輯
                             a.swipeout-delete(href='#' v-on:click = 'onItemDelete($event,address)') 刪除
             .empty(v-else)
-                img(src='img/icon_empty.png')
+                .img
+                    img(src='img/icon_empty.png')
                 .des 空空如也~

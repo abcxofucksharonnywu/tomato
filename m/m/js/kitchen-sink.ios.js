@@ -201,9 +201,18 @@ function notification(doc, show) {
 
 }
 
+
 if (isApp) {
     document.addEventListener("deviceready", onDeviceReady, false);
     function onDeviceReady() {
+        document.addEventListener("backbutton", function (event) {
+            myApp.hideIndicator()
+            if (myApp.getCurrentView().history.length > 1) {
+                myApp.getCurrentView().router.back()
+            } else {
+                navigator.app.exitApp()
+            }
+        }, false);
         userInit()
     }
 } else {
@@ -248,11 +257,17 @@ function generatePageId(pageName) {
 }
 
 $.ajaxSetup({
+    beforeSend: function (jqXHR, settings) {
+        jqXHR.url = settings.url;
+    },
     error: function (xhr, status, error) {
         console.log(xhr.statusText)
         myApp.hideIndicator()
         myApp.pullToRefreshDone($$('.pull-to-refresh-content'));
         toast(xhr.statusText == 'error' ? '網絡請求失敗' : xhr.statusText)
+        if (xhr.url.indexOf('/m/category/queryList') != -1) {
+            view2Init = false
+        }
     }
 });
 
@@ -576,6 +591,7 @@ var onCategoryPageInit = myApp.onPageInit('category', function (page) {
             $(".navbar .search.text").text(result.extra.search)
             console.log("category load");
         } else {
+            view2Init = false
             toast(result.msg);
         }
     });

@@ -25,7 +25,8 @@
                 .swipeout-actions-right
                     a.swipeout-delete(href='#' v-on:click = 'onItemDelete($event,cart)') 刪除
     .empty(v-else)
-        img(src='img/icon_empty.png')
+        .img
+            img(src='img/icon_empty.png')
         .des 空空如也~
 .toolbar(v-if='carts.length>0')
     .toolbar-inner

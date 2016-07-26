@@ -31,7 +31,8 @@
                                                 span.price ${{order.price}}
                                             .hint 共{{order.quantity}}份
             .empty(v-else)
-                img(src='img/icon_empty.png')
+                .img
+                    img(src='img/icon_empty.png')
                 .des 空空如也~
 
 

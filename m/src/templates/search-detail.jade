@@ -21,7 +21,8 @@
                                     .price ${{goods.price}}
                                     i.iconfont.icon-gouwuche.price(id = '' v-on:click='onCartClick($event,goods)')
             .empty(v-else)
-                img(src='img/icon_empty.png')
+                .img
+                    img(src='img/icon_empty.png')
                 .des 空空如也~
 
 
