@@ -95,8 +95,9 @@ router.get('/cancel', function (req, res, next) {
         service.order.findAndModify({_id: orderId}, {$set: {state: 'canceled'}}, function (err, doc) {
             if (!err) {
                 var order = doc
+                var state = order.state
                 order.state = 'canceled'
-                service.io.emit('order-' + order.state, {
+                service.io.emit('order-' + state, {
                     order: order,
                     type: order.state
                 })

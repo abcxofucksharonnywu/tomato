@@ -1012,12 +1012,13 @@ myApp.onPageInit('order-detail', function (page) {
                 var vue = this
                 $.get(host + "/m/order/cancel", {uid: user._id, orderId: this.order._id}, function (result) {
                     if (result.code == 200) {
-                        page.query.callback(vue.order)
+                        if(page.query.callback){
+                            page.query.callback(vue.order)
+                        }
                         myApp.getCurrentView().router.back()
                         console.log("order cancel");
                     } else {
                         toast(result.msg);
-                        ;
                     }
                     myApp.hideIndicator()
                 });
