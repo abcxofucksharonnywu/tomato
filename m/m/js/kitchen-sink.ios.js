@@ -207,10 +207,13 @@ if (isApp) {
     function onDeviceReady() {
         document.addEventListener("backbutton", function (event) {
             myApp.hideIndicator()
-            if (myApp.getCurrentView().history.length > 1) {
-                myApp.getCurrentView().router.back()
-            } else {
-                navigator.app.exitApp()
+            var modal = myApp.closeModal()
+            if (!modal) {
+                if (myApp.getCurrentView().history.length > 1) {
+                    myApp.getCurrentView().router.back()
+                } else {
+                    navigator.app.exitApp()
+                }
             }
         }, false);
         userInit()
@@ -1012,7 +1015,7 @@ myApp.onPageInit('order-detail', function (page) {
                 var vue = this
                 $.get(host + "/m/order/cancel", {uid: user._id, orderId: this.order._id}, function (result) {
                     if (result.code == 200) {
-                        if(page.query.callback){
+                        if (page.query.callback) {
                             page.query.callback(vue.order)
                         }
                         myApp.getCurrentView().router.back()
@@ -1200,7 +1203,7 @@ function toAddCart(goods) {
             toast('添加購物車成功')
         } else {
             toast(result.msg);
-            ;
+
         }
         myApp.hideIndicator()
     });
