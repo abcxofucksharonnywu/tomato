@@ -926,25 +926,31 @@ myApp.onPageInit('buy', function (page) {
             onCreateClick: function (event) {
                 event.preventDefault()
                 if (this.order.address) {
-                    myApp.showIndicator()
-                    $.post(host + "/m/order/create", {
-                        uid: user._id,
-                        order: JSON.stringify(this.order)
-                    }, function (result) {
-                        if (result.code == 200) {
-                            myApp.getCurrentView().router.back({
-                                animatePages: false
-                            })
-                            myApp.getCurrentView().router.load({
-                                url: 'order.html'
-                            })
-                            console.log("buy create load");
-                        } else {
-                            toast(result.msg);
-                            ;
-                        }
-                        myApp.hideIndicator()
-                    });
+                    if (this.order.items.length > 0) {
+                        myApp.showIndicator()
+                        var vue = this
+                        $.post(host + "/m/order/create", {
+                            uid: user._id,
+                            order: JSON.stringify(this.order)
+                        }, function (result) {
+                            if (result.code == 200) {
+                                gVue.badge3 = vue.order.items.length
+                                myApp.getCurrentView().router.back({
+                                    animatePages: false
+                                })
+                                myApp.getCurrentView().router.load({
+                                    url: 'order.html'
+                                })
+                                console.log("buy create load");
+                            } else {
+                                toast(result.msg);
+
+                            }
+                            myApp.hideIndicator()
+                        });
+                    } else {
+                        toast('請選擇商品')
+                    }
                 } else {
                     toast('請選擇收貨地址')
                 }
