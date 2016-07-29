@@ -24,17 +24,17 @@
               </div>
               <div v-if="layout.type=='multiRect'" class="layout multiRect">
                 <div>
-                  <div><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="layout.items[0].img" onerror="this.src='img/bg_image.png'"/></a></div>
-                  <div><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="layout.items[1].img" onerror="this.src='img/bg_image.png'"/></a></div>
+                  <div><a id="" v-on:click="onItemClick($event,layout.items[0])"><img id="" v-bind:src="layout.items[0].img" onerror="this.src='img/bg_image.png'"/></a></div>
+                  <div><a id="" v-on:click="onItemClick($event,layout.items[1])"><img id="" v-bind:src="layout.items[1].img" onerror="this.src='img/bg_image.png'"/></a></div>
                 </div>
                 <div>
-                  <div><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="layout.items[2].img" onerror="this.src='img/bg_image.png'"/></a></div>
-                  <div><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="layout.items[3].img" onerror="this.src='img/bg_image.png'"/></a></div>
-                  <div><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="layout.items[4].img" onerror="this.src='img/bg_image.png'"/></a></div>
+                  <div><a id="" v-on:click="onItemClick($event,layout.items[2])"><img id="" v-bind:src="layout.items[2].img" onerror="this.src='img/bg_image.png'"/></a></div>
+                  <div><a id="" v-on:click="onItemClick($event,layout.items[3])"><img id="" v-bind:src="layout.items[3].img" onerror="this.src='img/bg_image.png'"/></a></div>
+                  <div><a id="" v-on:click="onItemClick($event,layout.items[4])"><img id="" v-bind:src="layout.items[4].img" onerror="this.src='img/bg_image.png'"/></a></div>
                 </div>
               </div>
               <div v-if="layout.type=='rect'" class="layout rect">
-                <div><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="layout.items[0].img" onerror="this.src='img/bg_image.png'"/></a></div>
+                <div><a id="" v-on:click="onItemClick($event,layout.items[0])"><img id="" v-bind:src="layout.items[0].img" onerror="this.src='img/bg_image.png'"/></a></div>
               </div>
               <div v-if="layout.type==='double'" class="layout double">
                 <div class="list-block media-list goods">
