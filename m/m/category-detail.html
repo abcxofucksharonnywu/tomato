@@ -16,7 +16,8 @@
               <div class="item-inner">
                 <div class="item-text text">{{goods.title}}</div>
                 <div class="item-title-row">
-                  <div class="price">${{goods.price}}</div><i id="" v-on:click="onCartClick($event,goods)" class="iconfont icon-gouwuche price"></i>
+                  <div class="price">${{goods.price}}</div>
+                  <div id="" v-on:click="onCartClick($event,goods)" class="add-cart"><i class="iconfont icon-gouwuche price"></i></div>
                 </div>
               </div></a></li>
         </ul>

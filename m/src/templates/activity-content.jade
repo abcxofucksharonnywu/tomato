@@ -47,7 +47,8 @@
                                             .item-text.text {{item.goods.title}}
                                             .item-title-row
                                                 .price ${{item.goods.price}}
-                                                i.iconfont.icon-gouwuche.price(id = '' v-on:click='onCartClick($event,item.goods)')
+                                                .add-cart(id = '' v-on:click='onCartClick($event,item.goods)')
+                                                    i.iconfont.icon-gouwuche.price
 
     .empty(v-else)
         .img

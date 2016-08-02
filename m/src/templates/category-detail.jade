@@ -20,7 +20,8 @@
                                 .item-text.text {{goods.title}}
                                 .item-title-row
                                     .price ${{goods.price}}
-                                    i.iconfont.icon-gouwuche.price(id = '' v-on:click='onCartClick($event,goods)')
+                                    .add-cart(id = '' v-on:click='onCartClick($event,goods)')
+                                        i.iconfont.icon-gouwuche.price
             .empty(v-else)
                 .img
                     img(src='img/icon_empty.png')

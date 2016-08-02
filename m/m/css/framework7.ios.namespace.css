@@ -2246,6 +2246,15 @@ html:not(.watch-active-state) .framework7 .searchbar.searchbar-active .searchbar
   white-space: normal !important;
   -webkit-line-clamp: initial !important;
 }
+.framework7 .add-cart {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 30px !important;
+  height: 30px !important;
+  margin-top: -6px;
+  margin-right: -6px;
+}
 .framework7 .submit {
   display: flex !important;
   justify-content: center !important;
@@ -9268,7 +9277,7 @@ html.pixel-ratio-3 .framework7 .page[data-page='activity-preview'] .page-content
   background: none;
 }
 .framework7 .page[data-page='category'] .page-content .goods .item-content img {
-  width: 60px;
+  width: 70px;
 }
 .framework7 .page[data-page='category'] .page-content .goods .item-content .item-title-row {
   margin-top: 9px;
