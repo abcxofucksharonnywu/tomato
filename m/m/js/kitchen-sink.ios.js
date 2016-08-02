@@ -1224,7 +1224,7 @@ myApp.onPageInit('address-edit', function (page) {
 })
 
 
-function toAddCart(goods) {
+function toAddCart(goods, callback) {
     myApp.showIndicator()
     var cart = {
         uid: user._id,
@@ -1242,6 +1242,9 @@ function toAddCart(goods) {
         } else {
             toast(result.msg);
 
+        }
+        if (callback) {
+            callback(result.code == 200)
         }
         myApp.hideIndicator()
     });
@@ -1299,7 +1302,11 @@ myApp.onPageInit('detail', function (page) {
             },
             onCartClick: function (event) {
                 event.preventDefault()
-                toAddCart(this.goods)
+                toAddCart(this.goods, function (success) {
+                    if (success) {
+                        myApp.getCurrentView().router.back()
+                    }
+                })
             }
 
         }
