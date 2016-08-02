@@ -1025,6 +1025,14 @@ myApp.onPageInit('order', function (page) {
     });
     myApp.pullToRefreshTrigger(ptrContent)
 
+    $(".view[data-page='order']  .right.home").click(function (event) {
+        event.preventDefault()
+        myApp.getCurrentView().router.back({
+            url: 'index.html',
+            force: true
+        })
+    })
+
 })
 
 
