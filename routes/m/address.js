@@ -41,13 +41,17 @@ router.post('/add', function (req, res, next) {
     var address = req.body
     if (address && address.uid) {
         address.date = Date.now()
-        service.address.insert(address, function (err, doc) {
-            if (!err) {
-                res.send({code: 200, content: doc})
-            } else {
-                res.send({code: 400, msg: err.message})
-            }
-        })
+        if (address.post.indexOf('11354') != -1 || address.post.indexOf('11355') != -1) {
+            service.address.insert(address, function (err, doc) {
+                if (!err) {
+                    res.send({code: 200, content: doc})
+                } else {
+                    res.send({code: 400, msg: err.message})
+                }
+            })
+        } else {
+            res.send({code: 400, msg: "添加地址失敗,暫時只支持配送郵區11354和11355"})
+        }
     } else {
         res.send({code: 400, msg: "添加地址失敗"})
     }
@@ -57,13 +61,17 @@ router.post('/edit', function (req, res, next) {
     var address = req.body
     if (address) {
         address.date = Date.now()
-        service.address.findAndModify({_id: address._id}, address, function (err, doc) {
-            if (!err) {
-                res.send({code: 200, content: address})
-            } else {
-                res.send({code: 400, msg: err.message})
-            }
-        })
+        if (address.post.indexOf('11354') != -1 || address.post.indexOf('11355') != -1) {
+            service.address.findAndModify({_id: address._id}, address, function (err, doc) {
+                if (!err) {
+                    res.send({code: 200, content: address})
+                } else {
+                    res.send({code: 400, msg: err.message})
+                }
+            })
+        } else {
+            res.send({code: 400, msg: "添加地址失敗,暫時只支持配送郵區11354和11355"})
+        }
     } else {
         res.send({code: 400, msg: "保存地址失敗"})
     }

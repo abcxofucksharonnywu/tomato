@@ -1182,7 +1182,7 @@ myApp.onPageInit('address-edit', function (page) {
     });
     $(".view[data-page='address-edit']  .right.edit").click(function (event) {
         event.preventDefault()
-        var nameReg = /^.{1,30}$/;
+        var nameReg = /^.{1,50}$/;
         if (!nameReg.test(vue.address.name)) {
             toast('請輸入30字內名字');
             return
