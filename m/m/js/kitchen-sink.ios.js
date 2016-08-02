@@ -1182,29 +1182,31 @@ myApp.onPageInit('address-edit', function (page) {
     });
     $(".view[data-page='address-edit']  .right.edit").click(function (event) {
         event.preventDefault()
-        // var nameReg = /^.{1,30}$/;
-        // if (!nameReg.test(vue.address.name)) {
-        //     toast('請輸入30字內名字');
-        //     return
-        // }
-        //
+        var nameReg = /^.{1,30}$/;
+        if (!nameReg.test(vue.address.name)) {
+            toast('請輸入30字內名字');
+            return
+        }
+
         // var phoneReg = /^(\+97[\s]{0,1}[\-]{0,1}[\s]{0,1}1|0)50[\s]{0,1}[\-]{0,1}[\s]{0,1}[1-9]{1}[0-9]{6}$/;
-        // if (!phoneReg.test(vue.address.phone)) {
-        //     toast('請輸入有效手機號');
-        //     return
-        // }
-        //
+        var phoneReg = /^.{1,50}$/;
+        if (!phoneReg.test(vue.address.phone)) {
+            toast('請輸入有效手機號');
+            return
+        }
+
         // var postReg = /^[0-9]{5}(?:-[0-9]{4})?$/;
-        // if (!postReg.test(vue.address.post)) {
-        //     toast('請輸入有效郵政編碼');
-        //     return
-        // }
-        //
-        // var contentReg = /^.{1,200}$/;
-        // if (!contentReg.test(vue.address.content)) {
-        //     toast('請輸入大於5個字的有效詳細地址');
-        //     return
-        // }
+        var postReg = /^.{1,50}$/;
+        if (!postReg.test(vue.address.post)) {
+            toast('請輸入有效郵政編碼');
+            return
+        }
+
+        var contentReg = /^.{5,300}$/;
+        if (!contentReg.test(vue.address.content)) {
+            toast('請輸入大於5個字的有效詳細地址');
+            return
+        }
 
         myApp.showIndicator();
         $.post(host + (vue.address._id ? '/m/address/edit' : '/m/address/add'), vue.address, function (result) {

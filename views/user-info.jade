@@ -38,7 +38,7 @@ script.
                 editPhone: function (event) {
                     event.preventDefault()
                     var phone = this.user.phone;
-                    var phoneReg = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+                    var phoneReg = /^.{1,50}$/;
                     if (!phoneReg.test(phone)) {
                         showTips('請輸入有效手機號碼');
                         return;

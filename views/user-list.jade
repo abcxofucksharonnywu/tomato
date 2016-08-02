@@ -127,7 +127,7 @@ script.
                 add: function (event) {
                     event.preventDefault()
                     console.log(this.user)
-                    var phoneReg = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+                    var phoneReg = /^.{1,50}$/;
                     var passwordReg = /^[0-9a-zA-Z]{6,12}$/;
                     if (this.user.name.length > 0
                             && this.user.realName.length > 0
@@ -150,7 +150,7 @@ script.
                 },
                 edit: function (event) {
                     event.preventDefault()
-                    var phoneReg = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+                    var phoneReg = /^.{1,50}$/;
                     var passwordReg = /^[0-9a-zA-Z]{6,12}$/;
                     if (this.user.name.length > 0
                             && this.user.realName.length > 0
