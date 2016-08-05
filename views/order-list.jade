@@ -120,7 +120,9 @@ script.
                             var index = $(event.target).attr('value')
                             this.order = this.orders[index]
                             if (this.order.state == 'receipt') {
-                                $('#order-list li:nth-child(' + (parseInt(index) + 1) + ')').print()
+                                $('#order-list li:nth-child(' + (parseInt(index) + 1) + ')').print({
+                                    timeout: 400
+                                })
                             }
                             this.order.state = this.nextType
                             this.changeOrderState(event, this.order)
