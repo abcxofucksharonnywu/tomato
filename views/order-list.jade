@@ -48,9 +48,10 @@ div(class='tab-content')
                     div
                         b 合計總價:&nbsp;&nbsp;
                         big(style='color:#FD1C7A') ${{order.price}}
-                    div(v-if="type!='completion'&&type!='canceled'")
+                    div(class='state-btn' v-if="type!='completion'&&type!='canceled'")
                         button.btn.btn-secondary(type='button'  data-toggle='modal' v-on:click='cancelOrderModal' data-target='#modal-order-cancel' value='{{$index}}') 取消
                         button.btn.btn-primary(type='button' style='margin-left:10px;'  v-on:click='confirmOrder' value='{{$index}}') 確定
+
 
 script.
     (function () {
@@ -118,9 +119,11 @@ script.
                             event.preventDefault()
                             var index = $(event.target).attr('value')
                             this.order = this.orders[index]
+                            if (this.order.state == 'receipt') {
+                                $('#order-list li:nth-child(' + (parseInt(index) + 1) + ')').print()
+                            }
                             this.order.state = this.nextType
                             this.changeOrderState(event, this.order)
-
                         }
 
                     }
