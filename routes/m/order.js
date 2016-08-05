@@ -5,7 +5,7 @@ var service = require('../../services/service')
 router.get('/queryList', function (req, res, next) {
     var uid = req.query.uid
     if (uid) {
-        service.order.find({uid: uid}, {sort: {date: -1}}, function (err, doc) {
+        service.order.find({uid: uid}, {sort: {date: -1}, limit: 5}, function (err, doc) {
             if (!err) {
                 res.send({code: 200, content: doc})
             } else {
