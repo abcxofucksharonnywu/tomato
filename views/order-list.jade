@@ -43,7 +43,7 @@ div(class='tab-content')
                                     td {{item.title}}
                                     td {{item.quantity}}x{{item.price}}
                                     td
-                                        span(style='color:#FD1C7A') ${{item.quantity*item.price}}
+                                        span(style='color:#FD1C7A') ${{(item.quantity*item.price).toFixed(2)}}
                 div(class='card-footer')
                     div
                         b 合計總價:&nbsp;&nbsp;

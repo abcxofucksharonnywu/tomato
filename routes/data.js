@@ -431,7 +431,7 @@ function getGoodss(pageIndex, goodss, res) {
                     categoryId: o.Category.id,
                     categoryName: o.Category.name,
                     title: obj.name,
-                    price: parseFloat(obj.price)+'',
+                    price: parseFloat(obj.price).toFixed(2)+'',
                     quantity: '1',
                     sale: '1',
                     shop: o.ItemDetail[0] ? o.ItemDetail[0].value : '',

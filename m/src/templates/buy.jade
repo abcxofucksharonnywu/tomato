@@ -30,7 +30,7 @@
                             .item-inner
                                 .item-text.text {{item.title}}
                                 .item-title-row
-                                    .price ${{item.price*item.quantity}}
+                                    .price ${{(item.price*item.quantity).toFixed(2)}}
                                     .hint {{item.quantity}}份
             .content-block-title.text 支付方式
             .list-block.pay

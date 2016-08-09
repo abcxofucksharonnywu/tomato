@@ -149,7 +149,7 @@
                           <div class="item-inner">
                             <div class="item-text text">{{cart.title}}</div>
                             <div class="item-title-row">
-                              <div class="price">${{cart.price*cart.quantity}}</div>
+                              <div class="price">${{(cart.price*cart.quantity).toFixed(2)}}</div>
                               <div class="quantity-content">
                                 <div id="" v-on:click="onQuantityDecrease($event,cart)" class="decrease hint">-</div>
                                 <input type="number" v-model="cart.quantity" v-on:click="onQuantityInput($event,cart)" class="quantity text">

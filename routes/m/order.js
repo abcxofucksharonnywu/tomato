@@ -53,7 +53,7 @@ router.post('/build', function (req, res, next) {
                     doc.forEach(function (cart) {
                         order.items.push(cart)
                         order.quantity = parseInt(order.quantity) + parseInt(cart.quantity)
-                        order.price = parseFloat(order.price) + cart.price * cart.quantity
+                        order.price = (parseFloat(order.price) + cart.price * cart.quantity).toFixed(2)
                     })
                     res.send({code: 200, content: order})
                 } else {

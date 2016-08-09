@@ -436,7 +436,7 @@ function toCart(el) {
                 var vue = this
                 this.carts.forEach(function (cart) {
                     if ($.inArray(cart._id, vue.checks) >= 0) {
-                        price = parseFloat(price) + cart.price * cart.quantity
+                        price = (parseFloat(price) + cart.price * cart.quantity).toFixed(2)
                         quantity = parseInt(quantity) + parseInt(cart.quantity)
                     }
                 })
