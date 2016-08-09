@@ -301,7 +301,17 @@ function toActivity(el, name) {
                     $(el + " .page-content .rect >div").height(140 * ratio)
                     $(el + " .page-content .double img").height((width - 1) / 2)
                     myApp.initPageSwiper($$(el))
-                },100)
+                    var swipers = $$(el + " .page-content .banner")
+                    for (var i = 0; i < swipers.length; i++) {
+                        loop(swipers[i])
+                    }
+                    function loop(swiper) {
+                        setTimeout(function () {
+                            swiper.swiper.slideNext();
+                            loop(swiper)
+                        }, 5000)
+                    }
+                }, 100)
 
             },
         },
@@ -1186,27 +1196,27 @@ myApp.onPageInit('address-edit', function (page) {
     $(".view[data-page='address-edit']  .right.edit").click(function (event) {
         event.preventDefault()
         var nameReg = /^.{1,50}$/;
-        if (vue.address.name==null||!nameReg.test(vue.address.name)) {
+        if (vue.address.name == null || !nameReg.test(vue.address.name)) {
             toast('請輸入30字內名字');
             return
         }
 
         // var phoneReg = /^(\+97[\s]{0,1}[\-]{0,1}[\s]{0,1}1|0)50[\s]{0,1}[\-]{0,1}[\s]{0,1}[1-9]{1}[0-9]{6}$/;
         var phoneReg = /^.{1,50}$/;
-        if (vue.address.phone==null||!phoneReg.test(vue.address.phone)) {
+        if (vue.address.phone == null || !phoneReg.test(vue.address.phone)) {
             toast('請輸入有效手機號');
             return
         }
 
         // var postReg = /^[0-9]{5}(?:-[0-9]{4})?$/;
         var postReg = /^.{1,50}$/;
-        if (vue.address.post==null||!postReg.test(vue.address.post)) {
+        if (vue.address.post == null || !postReg.test(vue.address.post)) {
             toast('請輸入有效郵政編碼');
             return
         }
 
         var contentReg = /^.{5,300}$/;
-        if (vue.address.content==null||!contentReg.test(vue.address.content)) {
+        if (vue.address.content == null || !contentReg.test(vue.address.content)) {
             toast('請輸入大於5個字的有效詳細地址');
             return
         }
