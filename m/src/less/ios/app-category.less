@@ -53,11 +53,20 @@
       overflow: scroll;
       .item-content {
         .item-inner {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
           padding-right: @padding-4;
           background: none;
+          .item-text{
+            word-break: break-all;
+          }
+          .item-title-row{
+            width: 100%;
+          }
         }
-        img {
-          width: 70px;
+        .item-media {
+          width: 30%;
         }
         .item-title-row {
           margin-top: @padding-2;

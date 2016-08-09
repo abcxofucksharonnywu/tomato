@@ -21,11 +21,19 @@
           position: relative;
         }
         .item-content {
-          img {
-            width: 40px;
+          .item-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            .item-text {
+              word-break: break-all;
+            }
+            .item-title-row {
+              width: 100%;
+            }
           }
-          .item-title-row {
-            margin-top: @padding-2;
+          .item-media {
+            width: 18%;
           }
           .item-inner:after {
             height: 0px;
