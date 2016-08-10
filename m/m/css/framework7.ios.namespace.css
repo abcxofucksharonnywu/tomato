@@ -8991,7 +8991,7 @@ html.pixel-ratio-3 .framework7 .page[data-page='activity-preview'] .page-content
 .framework7 .page[data-page='home'] .page-content > .list-block > ul .banner,
 .framework7 .page[data-page='activity'] .page-content > .list-block > ul .banner,
 .framework7 .page[data-page='activity-preview'] .page-content > .list-block > ul .banner {
-  height: 120px;
+  height: 140px;
 }
 .framework7 .page[data-page='home'] .page-content > .list-block > ul .banner a,
 .framework7 .page[data-page='activity'] .page-content > .list-block > ul .banner a,

@@ -8989,7 +8989,7 @@ html.pixel-ratio-3 .page[data-page='activity-preview'] .page-content > .list-blo
 .page[data-page='home'] .page-content > .list-block > ul .banner,
 .page[data-page='activity'] .page-content > .list-block > ul .banner,
 .page[data-page='activity-preview'] .page-content > .list-block > ul .banner {
-  height: 120px;
+  height: 140px;
 }
 .page[data-page='home'] .page-content > .list-block > ul .banner a,
 .page[data-page='activity'] .page-content > .list-block > ul .banner a,
