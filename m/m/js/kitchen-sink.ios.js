@@ -296,7 +296,7 @@ function toActivity(el, name) {
                 setTimeout(function () {
                     var width = $(el + " .page-content").width()
                     var ratio = width / 375.0
-                    $(el + " .page-content .banner").height(120 * ratio)
+                    $(el + " .page-content .banner").height(140 * ratio)
                     $(el + " .page-content .multiRect >div").height(165 * ratio)
                     $(el + " .page-content .rect >div").height(140 * ratio)
                     $(el + " .page-content .double img").height((width - 1) / 2)
@@ -1044,6 +1044,10 @@ myApp.onPageInit('order', function (page) {
             url: 'index.html',
             force: true
         })
+        setTimeout(function () {
+            $(".tab-link.home")[0].click()
+        },600)
+
     })
 
 })
