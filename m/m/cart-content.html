@@ -18,9 +18,9 @@
                 <div class="item-text text">{{cart.title}}</div>
                 <div class="item-title-row">
                   <div class="price">${{(cart.price*cart.quantity).toFixed(2)}}</div>
-                  <div class="quantity-content">
+                  <div id="" v-on:click="onQuantityContent($event,cart)" class="quantity-content">
                     <div id="" v-on:click="onQuantityDecrease($event,cart)" class="decrease hint">-</div>
-                    <input type="number" v-model="cart.quantity" v-on:click="onQuantityInput($event,cart)" class="quantity text"/>
+                    <input type="number" v-model="cart.quantity" v-on:keyup.enter="onQuantityInput($event,cart)" class="quantity text"/>
                     <div id="" v-on:click="onQuantityIncrease($event,cart)" class="increase hint">+</div>
                   </div>
                 </div>

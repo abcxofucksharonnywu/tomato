@@ -18,9 +18,9 @@
                                 .item-text.text {{cart.title}}
                                 .item-title-row
                                     .price ${{(cart.price*cart.quantity).toFixed(2)}}
-                                    .quantity-content
+                                    .quantity-content(id='' v-on:click='onQuantityContent($event,cart)')
                                         .decrease.hint(id='' v-on:click='onQuantityDecrease($event,cart)') -
-                                        input.quantity.text(type='number' v-model='cart.quantity' v-on:click='onQuantityInput($event,cart)')
+                                        input.quantity.text(type='number' v-model='cart.quantity' v-on:keyup.enter='onQuantityInput($event,cart)')
                                         .increase.hint(id='' v-on:click='onQuantityIncrease($event,cart)') +
                 .swipeout-actions-right
                     a.swipeout-delete(href='#' v-on:click = 'onItemDelete($event,cart)') 刪除

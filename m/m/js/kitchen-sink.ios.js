@@ -468,6 +468,10 @@ function toCart(el) {
                     quantity: '1'
                 }, true)
             },
+            onQuantityContent: function (event, cart) {
+                event.preventDefault()
+                event.stopPropagation()
+            },
             onQuantityInput: function (event, cart) {
                 this.onQuantity(event, cart)
 
@@ -481,9 +485,12 @@ function toCart(el) {
                 this.onQuantity(event, cart)
             },
             onQuantity: function (event, cart) {
-                event.preventDefault()
-                event.stopPropagation()
                 var vue = this
+                if (cart.quantity < 1) {
+                    toast('商品數量至少1件')
+                    cart.quantity = 1
+                    return
+                }
                 myApp.showIndicator()
                 $.post(host + "/m/cart/edit", cart, function (result) {
                     if (result.code == 200) {
@@ -658,7 +665,6 @@ myApp.onPageInit('search', function (page) {
                         console.log("search clear load");
                     } else {
                         toast(result.msg);
-                        ;
                     }
                     myApp.hideIndicator()
                 });
@@ -1046,7 +1052,7 @@ myApp.onPageInit('order', function (page) {
         })
         setTimeout(function () {
             $(".tab-link.home")[0].click()
-        },600)
+        }, 600)
 
     })
 
