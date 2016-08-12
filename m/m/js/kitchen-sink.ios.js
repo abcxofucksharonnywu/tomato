@@ -45,8 +45,8 @@ var view4 = myApp.addView('#view-4', {
 });
 
 
-var host = 'http://www.dajitogo.com:3000'
-// var host = 'http://localhost:3000'
+// var host = 'http://www.dajitogo.com:3000'
+var host = 'http://localhost:3000'
 
 Date.prototype.format = function (format) {
     var o = {
@@ -1063,20 +1063,23 @@ myApp.onPageInit('order-detail', function (page) {
         methods: {
             onCancelClick: function (event) {
                 event.preventDefault()
-                myApp.showIndicator()
                 var vue = this
-                $.get(host + "/m/order/cancel", {uid: user._id, orderId: this.order._id}, function (result) {
-                    if (result.code == 200) {
-                        if (page.query.callback) {
-                            page.query.callback(vue.order)
+                myApp.confirm('一旦取消無法恢復', '取消訂單', function () {
+                    myApp.showIndicator()
+                    $.get(host + "/m/order/cancel", {uid: user._id, orderId: vue.order._id}, function (result) {
+                        if (result.code == 200) {
+                            if (page.query.callback) {
+                                page.query.callback(vue.order)
+                            }
+                            myApp.getCurrentView().router.back()
+                            console.log("order cancel");
+                        } else {
+                            toast(result.msg);
                         }
-                        myApp.getCurrentView().router.back()
-                        console.log("order cancel");
-                    } else {
-                        toast(result.msg);
-                    }
-                    myApp.hideIndicator()
+                        myApp.hideIndicator()
+                    });
                 });
+
             },
             onGoodsClick: function (event, item) {
                 event.preventDefault()
