@@ -10,7 +10,7 @@
  * 
  * Licensed under MIT
  * 
- * Released on: August 13, 2016
+ * Released on: August 18, 2016
  */
 (function () {
 
@@ -13324,11 +13324,11 @@
             initialSlide: 0,
             speed: 300,
             // autoplay
-            autoplay: false,
-            autoplayDisableOnInteraction: true,
+            autoplay: 3000,
+            autoplayDisableOnInteraction: false,
             autoplayStopOnLast: false,
             // To support iOS's swipe-to-go-back gesture (when being used in-app, with UIWebView).
-            iOSEdgeSwipeDetection: false,
+            iOSEdgeSwipeDetection: true,
             iOSEdgeSwipeThreshold: 20,
             // Free mode
             freeMode: false,
@@ -13895,16 +13895,24 @@
                 autoplay();
             }
             else {
-                s.wrapper.transitionEnd(function () {
-                    if (!s) return;
-                    s.autoplayPaused = false;
-                    if (!s.autoplaying) {
-                        s.stopAutoplay();
-                    }
-                    else {
-                        autoplay();
-                    }
-                });
+                if (!s) return;
+                s.autoplayPaused = false;
+                if (!s.autoplaying) {
+                    s.stopAutoplay();
+                }
+                else {
+                    autoplay();
+                }
+                // s.wrapper.transitionEnd(function () {
+                //     if (!s) return;
+                //     s.autoplayPaused = false;
+                //     if (!s.autoplaying) {
+                //         s.stopAutoplay();
+                //     }
+                //     else {
+                //         autoplay();
+                //     }
+                // });
             }
         };
         /*=========================
@@ -15203,10 +15211,14 @@
                 s.setWrapperTransition(speed);
                 if (!s.animating) {
                     s.animating = true;
-                    s.wrapper.transitionEnd(function () {
+                    setTimeout(function () {
                         if (!s) return;
                         s.onTransitionEnd(runCallbacks);
-                    });
+                    },1000)
+                    // s.wrapper.transitionEnd(function () {
+                    //     if (!s) return;
+                    //     s.onTransitionEnd(runCallbacks);
+                    // });
                 }
         
             }
