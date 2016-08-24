@@ -1292,12 +1292,12 @@ myApp.onPageInit('detail', function (page) {
         },
         methods: {
             onImageClick: function (event, index) {
-                var myPhotoBrowserPopup = myApp.photoBrowser({
-                    photos: this.goods.images,
-                    initialSlide: index,
-                    type: 'popup'
-                });
-                myPhotoBrowserPopup.open();
+                // var myPhotoBrowserPopup = myApp.photoBrowser({
+                //     photos: this.goods.images,
+                //     initialSlide: index,
+                //     type: 'popup'
+                // });
+                // myPhotoBrowserPopup.open();
             },
             onCategoryClick: function (event) {
                 event.preventDefault()

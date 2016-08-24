@@ -424,7 +424,7 @@ function getGoodss(pageIndex, goodss, res) {
                 var objImages = o.Image
                 var images = []
                 objImages.forEach(function (image) {
-                    images.push(image.url_medium)
+                    images.push(image.url_original)
                 })
                 goodss.push({
                     goodsId: obj.id,
@@ -479,7 +479,7 @@ function getGoodss(pageIndex, goodss, res) {
     //             var images = []
     //             for (var j in objImages) {
     //                 var image = objImages[j]
-    //                 images.push(image.url_medium)
+    //                 images.push(image.url_original)
     //             }
     //             goodss.push({
     //                 goodsId: obj.id,
