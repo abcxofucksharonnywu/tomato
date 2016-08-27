@@ -103,24 +103,43 @@ router.post('/create', function (req, res, next) {
 router.get('/cancel', function (req, res, next) {
     var orderId = req.query.orderId
     if (orderId) {
-        service.order.findAndModify({_id: orderId}, {$set: {state: 'canceled'}}, function (err, doc) {
+        service.order.findOne({_id: orderId}, function (err, doc) {
             if (!err) {
-                var order = doc
-                var state = order.state
-                order.state = 'canceled'
-                service.io.emit('order-' + state, {
-                    order: order,
-                    type: order.state
-                })
-                service.io.emit('order-canceled', {
-                    order: order,
-                    type: order.state
-                })
-                res.send({code: 200, content: doc})
+                if (doc.state == 'receipt' || doc.state == 'delivery') {
+                    service.order.findAndModify({_id: orderId}, {$set: {state: 'canceled'}}, function (err, doc) {
+                        if (!err) {
+                            var order = doc
+                            var state = order.state
+                            order.state = 'canceled'
+                            service.io.emit('order-' + state, {
+                                order: order,
+                                type: order.state
+                            })
+                            service.io.emit('order-canceled', {
+                                order: order,
+                                type: order.state
+                            })
+                            res.send({code: 200, content: doc})
+                        } else {
+                            res.send({code: 400, msg: err.message})
+                        }
+                    })
+                } else {
+                    var msg = '訂單無法取消'
+                    if (doc.state == 'sign') {
+                        msg = '訂單已經配送中,無法取消'
+                    } else if (doc.state == 'completion') {
+                        msg = '訂單已經完成,無法取消'
+                    } else if (doc.state == 'canceled') {
+                        msg = '訂單已經取消了'
+                    }
+                    res.send({code: 400, msg: msg})
+                }
             } else {
                 res.send({code: 400, msg: err.message})
             }
         })
+
     } else {
         res.send({code: 400, msg: '取消訂單失敗'})
     }

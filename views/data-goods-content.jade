@@ -3,11 +3,13 @@ table.list
         tr
             th 商品名
             th 商品價格
+            th 商品销量
             th 商品分類
             th 商品日期
         tr(class='goods-item' v-for='goods in goodss')
             td {{goods.title}}
             td ${{goods.price}}
+            td {{goods.sale}}
             td {{goods.categoryName}}
             td {{goods.date | date}}
 script.

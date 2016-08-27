@@ -63,34 +63,43 @@ router.post('/edit/state', function (req, res, next) {
             if (!err) {
                 if (order.state == 'completion') {
                     order.items.forEach(function (item) {
-                        service.goods.findAndModify({goodsId: item.goodsId}, {$set: {sale: item.quantity}}, function (err, doc) {
-                            if (err) {
-                                console.log(err.message)
-                            }
-                        })
-                        request('http://e707ee91696535003b3778cbd5f00e5863f45d04:x@app917.salesbinder.com/api/items/' + item.goodsId + '.json', function (error, response, body) {
-                            if (!error && response.statusCode == 200) {
-                                var json = JSON.parse(body)
-                                var quantity = json.Item.quantity - item.quantity
-                                request({
-                                    method: 'PUT',
-                                    url: 'http://e707ee91696535003b3778cbd5f00e5863f45d04:x@app917.salesbinder.com/api/items/' + item.goodsId + '.json',
-                                    json: {
-                                        "Item": {
-                                            "quantity": quantity.toFixed(2) + ""
-                                        }
+                        service.goods.findOne({goodsId: item.goodsId}, function (err, doc) {
+                            if (!err && doc) {
+                                var quantity = parseInt(doc.sale) + parseInt(item.quantity)
+                                service.goods.findAndModify({goodsId: item.goodsId}, {$set: {sale: quantity}}, function (err, doc) {
+                                    if (err) {
+                                        console.log(err.message)
                                     }
-                                }, function (error, response, body) {
-                                    if (!error && (response.statusCode == 200||response.statusCode == 302)) {
-                                        console.log('quantity success')
+                                })
+                                request('http://e707ee91696535003b3778cbd5f00e5863f45d04:x@app917.salesbinder.com/api/items/' + item.goodsId + '.json', function (error, response, body) {
+                                    if (!error && response.statusCode == 200) {
+                                        var json = JSON.parse(body)
+                                        var quantity = json.Item.quantity - item.quantity
+                                        request({
+                                            method: 'PUT',
+                                            url: 'http://e707ee91696535003b3778cbd5f00e5863f45d04:x@app917.salesbinder.com/api/items/' + item.goodsId + '.json',
+                                            json: {
+                                                "Item": {
+                                                    "quantity": quantity.toFixed(2) + ""
+                                                }
+                                            }
+                                        }, function (error, response, body) {
+                                            if (!error && (response.statusCode == 200 || response.statusCode == 302)) {
+                                                console.log('quantity success')
+                                            } else {
+                                                console.log('quantity error')
+                                            }
+                                        });
                                     } else {
                                         console.log('quantity error')
                                     }
-                                });
+                                })
                             } else {
-                                console.log('quantity error')
+                                console.log('sale error')
                             }
+
                         })
+
 
                     })
                 }

@@ -242,7 +242,7 @@ router.get('/user/content', function (req, res, next) {
 router.get('/goods', function (req, res, next) {
     service.goods.count({}, function (err, count) {
         if (!err) {
-            service.goods.find({}, {sort: {date: -1}, limit: PAGE_SIZE}, function (err, doc) {
+            service.goods.find({}, {sort: {sale: 1}, limit: PAGE_SIZE}, function (err, doc) {
                 if (!err) {
                     res.render('data-goods', {
                             count: Math.ceil(count / PAGE_SIZE),
@@ -447,7 +447,15 @@ function getGoodss(pageIndex, goodss, res) {
                     (function (goods) {
                         service.goods.findOne({goodsId: goods.goodsId}, function (err, doc) {
                             if (doc) {
-                                service.goods.findAndModify({goodsId: goods.goodsId}, goods, function (err, doc) {
+                                doc.categoryId = goods.categoryId
+                                doc.categoryName = goods.categoryName
+                                doc.title = goods.title
+                                doc.price = goods.price
+                                doc.quantity = goods.quantity
+                                doc.shop = goods.shop
+                                doc.images = goods.images
+                                doc.date = goods.date
+                                service.goods.findAndModify({goodsId: goods.goodsId}, doc, function (err, doc) {
                                     if (err) {
                                         console.log('goods findAndModify error' + err.message)
                                     }

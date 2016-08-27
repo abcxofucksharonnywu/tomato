@@ -73,7 +73,7 @@
                                     span.text 合計：
                                     span.price ${{order.price}}
 
-        .toolbar(v-if="order.state!='completion'&&order.state!='canceled'")
+        .toolbar(v-if="order.state!='sign'&&order.state!='completion'&&order.state!='canceled'")
             .toolbar-inner
                 a.button.submit(id='' v-on:click='onCancelClick')
                     | 取消訂單
