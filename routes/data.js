@@ -354,7 +354,9 @@ function getCategories(pageIndex, categories, res) {
             if (pageIndex < json.pages) {
                 getCategories(++pageIndex, categories, res)
             } else {
+                var ids = []
                 categories.forEach(function (category) {
+                    ids.push(category.categoryId);
                     (function (category) {
                         service.category.findOne({categoryId: category.categoryId}, function (err, doc) {
                             if (doc) {
@@ -373,45 +375,18 @@ function getCategories(pageIndex, categories, res) {
                         })
                     })(category)
                 })
+                service.category.remove({'categoryId': {$nin: ids}}, function (err, doc) {
+                    if (err) {
+                        console.log('category delete error' + err.message)
+                    } else {
+                        console.log('category delete success')
+                    }
+                })
             }
         } else {
             res.send({code: 400, msg: "分類同步失敗"})
         }
     })
-    // request('http://e707ee91696535003b3778cbd5f00e5863f45d04:x@app917.salesbinder.com/api/categories.json?page=' + pageIndex, function (error, response, body) {
-    //     if (!error && response.statusCode == 200) {
-    //         var json = JSON.parse(body)
-    //         var mCategories = json.Categories
-    //         for (var index in mCategories) {
-    //             var obj = mCategories[index].Category
-    //             categories.push({
-    //                 categoryId: obj.id,
-    //                 title: obj.name,
-    //                 goodss: [],
-    //                 date: new Date(obj.created).getTime()
-    //             })
-    //         }
-    //         if (pageIndex < json.pages) {
-    //             getCategories(++pageIndex, categories, res)
-    //         } else {
-    //             service.category.remove({}, function (err, doc) {
-    //                 if (!err) {
-    //                     service.category.insert(categories, function (err, doc) {
-    //                         if (err) {
-    //                             console.log('category insert error' + err.message)
-    //                         }
-    //                     })
-    //                 } else {
-    //                     res.send({code: 400, msg: err.message})
-    //                 }
-    //
-    //             })
-    //
-    //         }
-    //     } else {
-    //         res.send({code: 400, msg: "分類同步失敗"})
-    //     }
-    // })
 }
 
 function getGoodss(pageIndex, goodss, res) {
@@ -431,7 +406,7 @@ function getGoodss(pageIndex, goodss, res) {
                     categoryId: o.Category.id,
                     categoryName: o.Category.name,
                     title: obj.name,
-                    price: parseFloat(obj.price).toFixed(2)+'',
+                    price: parseFloat(obj.price).toFixed(2) + '',
                     quantity: '1',
                     sale: '1',
                     shop: o.ItemDetail[0] ? o.ItemDetail[0].value : '',
@@ -443,7 +418,9 @@ function getGoodss(pageIndex, goodss, res) {
             if (pageIndex < json.pages) {
                 getGoodss(++pageIndex, goodss, res)
             } else {
+                var ids = []
                 goodss.forEach(function (goods) {
+                    ids.push(goods.goodsId);
                     (function (goods) {
                         service.goods.findOne({goodsId: goods.goodsId}, function (err, doc) {
                             if (doc) {
@@ -470,6 +447,14 @@ function getGoodss(pageIndex, goodss, res) {
                         })
                     })(goods)
                 })
+                service.goods.remove({'goodsId': {$nin: ids}}, function (err, doc) {
+                    if (err) {
+                        console.log('goods delete error' + err.message)
+                    } else {
+                        console.log('goods delete success')
+                    }
+                })
+
                 res.send({code: 200})
             }
         } else {
@@ -477,51 +462,7 @@ function getGoodss(pageIndex, goodss, res) {
         }
     })
 
-    // request('http://e707ee91696535003b3778cbd5f00e5863f45d04:x@app917.salesbinder.com/api/items.json?page=' + pageIndex, function (error, response, body) {
-    //     if (!error && response.statusCode == 200) {
-    //         var json = JSON.parse(body)
-    //         var mGoodss = json.Items
-    //         for (var index in mGoodss) {
-    //             var obj = mGoodss[index].Item
-    //             var objImages = mGoodss[index].Image
-    //             var images = []
-    //             for (var j in objImages) {
-    //                 var image = objImages[j]
-    //                 images.push(image.url_original)
-    //             }
-    //             goodss.push({
-    //                 goodsId: obj.id,
-    //                 categoryId: mGoodss[index].Category.id,
-    //                 title: obj.name,
-    //                 price: obj.price,
-    //                 quantity: '1',
-    //                 sale: '1',
-    //                 images: images,
-    //                 date: new Date(obj.created).getTime()
-    //             })
-    //         }
-    //         if (pageIndex < json.pages) {
-    //             getGoodss(++pageIndex, goodss, res)
-    //         } else {
-    //             service.goods.remove({}, function (err, doc) {
-    //                 if (!err) {
-    //                     service.goods.insert(goodss, function (err, doc) {
-    //                         if (!err) {
-    //                             res.send({code: 200})
-    //                         } else {
-    //                             res.send({code: 400, msg: err.message})
-    //                         }
-    //                     })
-    //                 } else {
-    //                     res.send({code: 400, msg: err.message})
-    //                 }
-    //
-    //             })
-    //         }
-    //     } else {
-    //         res.send({code: 400, msg: "商品同步失敗"})
-    //     }
-    // })
+
 }
 
 module.exports = router
