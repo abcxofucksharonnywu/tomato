@@ -48,6 +48,11 @@ var view4 = myApp.addView('#view-4', {
 var host = 'http://www.dajitogo.com:3000'
 //var host = 'http://localhost:3000'
 
+
+var view2Init = false
+var view3Init = false
+var view4Init = false
+
 Date.prototype.format = function (format) {
     var o = {
         "M+": this.getMonth() + 1, //month
@@ -125,6 +130,14 @@ function storeUser(obj) {
     setItem("user", JSON.stringify(user))
 }
 
+var onHomePageInit = myApp.onPageInit('home', function (page) {
+    console.log('home init')
+    toActivity(generatePageId('home'), 'home')
+    $(".view[data-page='home']  .right.scan").click(function (event) {
+        event.preventDefault()
+        toScan()
+    })
+})
 
 function userInit() {
     getItem('user', function (doc) {
@@ -232,9 +245,7 @@ if (isApp) {
 }
 
 
-var view2Init = false
-var view3Init = false
-var view4Init = false
+
 $(".tab-link").click(function (event) {
     event.preventDefault()
     var href = $(event.currentTarget).attr('href')
@@ -293,8 +304,7 @@ function toActivity(el, name) {
         },
         watch: {
             'activity': function (val, oldVal) {
-//                var width = $(el + " .page-content").width()
-                var width = device.width
+                var width = isApp?device.width:$(el + " .page-content").width()
                 var ratio = width / 375.0
                 $(el + " .page-content .banner").height(140 * ratio)
                 $(el + " .page-content .multiRect >div").height(165 * ratio)
@@ -381,14 +391,7 @@ function toScan() {
     })
 }
 
-var onHomePageInit = myApp.onPageInit('home', function (page) {
-    console.log('home init')
-    toActivity(generatePageId('home'), 'home')
-    $(".view[data-page='home']  .right.scan").click(function (event) {
-        event.preventDefault()
-        toScan()
-    })
-})
+
 
 myApp.onPageInit('web', function (page) {
     console.log('web init')

@@ -73,7 +73,7 @@
                   </li>
                 </ul>
               </div>
-              <div v-else class="empty">
+              <div v-else v-if="activity==null||activity.type==null||activity.type!='url'" class="empty">
                 <div class="img"><img src="img/icon_empty.png"></div>
                 <div class="des">空空如也~</div>
               </div>

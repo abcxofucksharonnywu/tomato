@@ -50,7 +50,7 @@
                                                 .add-cart(id = '' v-on:click='onCartClick($event,item.goods)')
                                                     i.iconfont.icon-gouwuche.price
 
-    .empty(v-else)
+    .empty(v-else v-if="activity==null||activity.type==null||activity.type!='url'")
         .img
             img(src='img/icon_empty.png')
         .des 空空如也~
