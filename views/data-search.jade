@@ -1,0 +1,8 @@
+b 搜索數據
+div(class='tab-content')
+    .input-group
+        input.form-control(type='text' placeholder='請輸入关键字')
+        span.input-group-btn
+            button.btn.btn-primary(type='button' v-on:click='onSearch') 搜索
+    #data-search-list
+        include data-search-list

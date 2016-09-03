@@ -6,11 +6,14 @@ div(id='data-left' class='content-left')
             a( class='nav-link' data-toggle='tab' href='#data-user') 用戶數據
         li(class='nav-item')
             a( class='nav-link' data-toggle='tab' href='#data-goods') 商品數據
+        li(class='nav-item')
+            a( class='nav-link' data-toggle='tab' href='#data-search') 搜索數據
 div(id='data-right' class='content-right')
     div( class='tab-content')
         div( class='tab-pane  active' id='data-order' role='tabpanel')
         div( class='tab-pane ' id='data-user' role='tabpanel')
         div( class='tab-pane ' id='data-goods' role='tabpanel')
+        div( class='tab-pane ' id='data-search' role='tabpanel')
 script.
     (function () {
         $('#data-left a').click(function (e) {

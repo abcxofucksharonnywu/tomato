@@ -330,6 +330,115 @@ router.get('/goods/content', function (req, res, next) {
     })
 })
 
+
+router.get('/search', function (req, res, next) {
+    service.search.col.aggregate({
+        $group: {
+            _id: '$title',
+            date: {$max: '$date'},
+            count: {$sum: 1}
+        }
+    }, {$sort: {count: -1}}, function (err, doc) {
+        if (!err) {
+            var searchs = []
+            doc.forEach(function (item) {
+                searchs.push({title: item._id, date: item.date, count: item.count})
+            })
+            res.render('data-search', {
+                    count: Math.ceil(searchs.length / PAGE_SIZE),
+                    searchs: searchs.slice(0, PAGE_SIZE)
+                }, function (err, output) {
+                    if (!err) {
+                        res.json({
+                            code: 200, content: output
+                        })
+                    } else {
+                        res.send({code: 400, msg: err.message})
+                    }
+                }
+            )
+        } else {
+            res.send({code: 400, msg: err.message})
+        }
+
+    })
+
+})
+
+
+router.get('/search/list', function (req, res, next) {
+    var text = req.query.search
+    var query = text ? {title: {'$regex': '.*' + text + '.*'}} : {}
+    service.search.col.aggregate({$match: query}, {
+        $group: {
+            _id: '$title',
+            date: {$max:'$date'},
+            count: {$sum: 1}
+        }
+    }, {$sort: {count: -1}}, function (err, doc) {
+        if (!err) {
+            var searchs = []
+            doc.forEach(function (item) {
+                searchs.push({title: item._id, date: item.date, count: item.count})
+            })
+            res.render('data-search-list', {
+                    count: Math.ceil(searchs.length / PAGE_SIZE),
+                    searchs: searchs.slice(0, PAGE_SIZE)
+                }, function (err, output) {
+                    if (!err) {
+                        res.json({
+                            code: 200, content: output
+                        })
+                    } else {
+                        res.send({code: 400, msg: err.message})
+                    }
+                }
+            )
+        } else {
+            res.send({code: 400, msg: err.message})
+        }
+
+    })
+
+})
+
+router.get('/search/content', function (req, res, next) {
+    var index = req.query.index;
+    var text = req.query.search
+    var query = text ? {title: {'$regex': '.*' + text + '.*'}} : {}
+    service.search.col.aggregate({$match: query}, {
+        $group: {
+            _id: '$title',
+            date: {$max:'$date'},
+            count: {$sum: 1}
+        }
+    }, {$sort: {count: -1}}, {$skip: (index - 1) * PAGE_SIZE}, {$limit: PAGE_SIZE}, function (err, doc) {
+        if (!err) {
+            var searchs = []
+            doc.forEach(function (item) {
+                searchs.push({title: item._id, date: item.date, count: item.count})
+            })
+            res.render('data-search-content', {
+                    searchs: searchs
+                }, function (err, output) {
+                    if (!err) {
+                        res.json({
+                            code: 200, content: output
+                        })
+                    } else {
+                        res.send({code: 400, msg: err.message})
+                    }
+                }
+            )
+        } else {
+            res.send({code: 400, msg: err.message})
+        }
+
+    })
+
+})
+
+
 router.get('/goods/sync', function (req, res, next) {
     var categories = []
     getCategories(1, categories, res)

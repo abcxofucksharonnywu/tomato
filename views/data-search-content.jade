@@ -1,0 +1,23 @@
+table.list
+    tbody
+        tr
+            th 关键字
+            th 次数
+            th 日期
+        tr(class='search-item' v-for='search in searchs')
+            td {{search.title}}
+            td {{search.count}}
+            td {{search.date | date}}
+script.
+    (function () {
+        Vue.filter('date', function (value) {
+            return new Date(parseInt(value)).format('yyyy年MM月dd日 hh時mm分ss秒')
+        })
+        var vue = new Vue({
+            el: '#data-search-content',
+            data: {
+                searchs: !{JSON.stringify(searchs)}
+            },
+            methods: {}
+        });
+    }())
