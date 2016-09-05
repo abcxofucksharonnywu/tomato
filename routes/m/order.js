@@ -22,7 +22,11 @@ router.get('/query', function (req, res, next) {
     if (orderId) {
         service.order.findOne({_id: orderId}, function (err, doc) {
             if (!err) {
-                res.send({code: 200, content: doc})
+                res.send({
+                    code: 200,
+                    content: doc,
+                    extra: {pay: {text: '貨到付款', hint: '（支持現金或者POS機）'}, delivery: {text: '配送時間', hint: '（接受訂單後40分鐘內到達）'}}
+                })
             } else {
                 res.send({code: 400, msg: err.message})
             }
