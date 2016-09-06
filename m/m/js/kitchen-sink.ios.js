@@ -45,7 +45,7 @@ var view4 = myApp.addView('#view-4', {
 });
 
 
-var host = 'http://www.dajitogo.com:3000'
+var host = 'http://www.dajitogo.com'
 // var host = 'http://localhost:3000'
 
 
@@ -849,7 +849,12 @@ myApp.onPageInit('setting', function (page) {
         data: {
             user: user
         },
-        methods: {}
+        methods: {
+            onStoreClick: function (event) {
+                event.preventDefault()
+                if (isApp) firebase.store()
+            }
+        }
     });
 
 })
