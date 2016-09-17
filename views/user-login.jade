@@ -37,11 +37,11 @@ block content
                         event.preventDefault()
                         var nameReg = /[0-9a-zA-Z]{3,12}/;
                         var passwordReg = /^[0-9a-zA-Z]{6,12}$/;
-                        if (!nameReg.test(this.name)) {
+                        if (this.name==null||!nameReg.test(this.name)) {
                             showTips('請輸入3-12位的數字或字母用戶名');
                             return;
                         }
-                        if (!passwordReg.test(this.password)) {
+                        if (this.password==null||!passwordReg.test(this.password)) {
                             showTips('請輸入6-12位的數字或字母密碼');
                             return;
                         }

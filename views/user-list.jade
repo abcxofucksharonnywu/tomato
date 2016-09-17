@@ -131,8 +131,8 @@ script.
                     var passwordReg = /^[0-9a-zA-Z]{6,12}$/;
                     if (this.user.name.length > 0
                             && this.user.realName.length > 0
-                            && phoneReg.test(this.user.phone)
-                            && passwordReg.test(this.user.password)) {
+                            && (this.user.phone != null &&phoneReg.test(this.user.phone))
+                            && (this.user.password != null && passwordReg.test(this.user.password))) {
                         $.post('/user/add', this.user, function (result) {
                             if (result.code == 200) {
                                 $('.model-close').click()
@@ -154,8 +154,8 @@ script.
                     var passwordReg = /^[0-9a-zA-Z]{6,12}$/;
                     if (this.user.name.length > 0
                             && this.user.realName.length > 0
-                            && phoneReg.test(this.user.phone)
-                            && passwordReg.test(this.user.password)) {
+                            && (this.user.phone!=null&&phoneReg.test(this.user.phone))
+                            && (this.user.password!=null&&passwordReg.test(this.user.password))) {
                         showLoading()
                         $.post('/user/edit', this.user, function (result) {
                             dismissLoading()

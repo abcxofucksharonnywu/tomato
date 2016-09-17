@@ -39,7 +39,7 @@ script.
                     event.preventDefault()
                     var phone = this.user.phone;
                     var phoneReg = /^.{1,50}$/;
-                    if (!phoneReg.test(phone)) {
+                    if (phone==null||!phoneReg.test(phone)) {
                         showTips('請輸入有效手機號碼');
                         return;
                     }

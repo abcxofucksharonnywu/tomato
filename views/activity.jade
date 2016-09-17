@@ -268,19 +268,19 @@ script.
                 add: function (event) {
                     event.preventDefault()
                     var titleReg = /^.{1,12}$/;
-                    if (!titleReg.test(this.activity.title)) {
+                    if (this.activity.title == null||!titleReg.test(this.activity.title)) {
                         showTips('請輸入12字內標題');
                         return
                     }
 
                     var nameReg = /^.{1,30}$/;
-                    if (!nameReg.test(this.activity.name)) {
-                        showTips('請輸入12字內標題');
+                    if (this.activity.name == null||!nameReg.test(this.activity.name)) {
+                        showTips('請輸入30字內英文單詞');
                         return
                     }
 
                     var contentReg = /^.{1,30}$/;
-                    if (!contentReg.test(this.activity.content)) {
+                    if (this.activity.content == null||!contentReg.test(this.activity.content)) {
                         showTips('請輸入30字內活動描述');
                         return
                     }
