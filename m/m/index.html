@@ -39,7 +39,9 @@
                       <div data-pagination=".swiper-pagination" data-loop="true" v-if="layout.type=='banner'" class="layout banner swiper-container swiper-init ks-demo-slider swiper-container-horizontal">
                         <div class="swiper-pagination swiper-pagination-bullets"><span v-for="item in layout.items" class="swiper-pagination-bullet"></span></div>
                         <div class="swiper-wrapper">
+                          <div id="" v-bind:data-swiper-slide-index="layout.items.length-1" class="swiper-slide swiper-slide-duplicate xx"><a id="" v-on:click="onItemClick($event,layout.items[layout.items.length-1])"><img id="" v-bind:src="layout.items[layout.items.length-1].img" onerror="this.src='img/bg_image.png'"></a></div>
                           <div id="" v-bind:data-swiper-slide-index="$index" v-for="item in layout.items" class="swiper-slide"><a id="" v-on:click="onItemClick($event,item)"><img id="" v-bind:src="item.img" onerror="this.src='img/bg_image.png'"></a></div>
+                          <div id="" v-bind:data-swiper-slide-index="0" class="swiper-slide swiper-slide-duplicate aa"><a id="" v-on:click="onItemClick($event,layout.items[0])"><img id="" v-bind:src="layout.items[0].img" onerror="this.src='img/bg_image.png'"></a></div>
                         </div>
                       </div>
                       <div v-if="layout.type=='multiRect'" class="layout multiRect">
