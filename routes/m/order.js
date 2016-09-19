@@ -74,30 +74,35 @@ router.post('/build', function (req, res, next) {
 router.post('/create', function (req, res, next) {
     var order = JSON.parse(req.body.order)
     if (order) {
-        order.state = 'receipt'
-        order.date = Date.now()
-        service.order.insert(order, function (err, doc) {
-            if (!err) {
-                var goodsIds = []
-                order.items.forEach(function (item) {
-                    goodsIds.push(item.goodsId)
-                })
-                service.cart.remove({
-                    goodsId: {$in: goodsIds}
-                }, function (err, doc) {
-                    if (err) {
-                        console.log('創建訂單刪除購物車商品失敗:' + err.message)
-                    }
-                    service.io.emit('order-' + order.state, {
-                        order: order,
-                        type: order.state
+        if (order.price >= 10) {
+            order.state = 'receipt'
+            order.date = Date.now()
+            service.order.insert(order, function (err, doc) {
+                if (!err) {
+                    var goodsIds = []
+                    order.items.forEach(function (item) {
+                        goodsIds.push(item.goodsId)
                     })
-                    res.send({code: 200, content: doc})
-                })
-            } else {
-                res.send({code: 400, msg: err.message})
-            }
-        })
+                    service.cart.remove({
+                        goodsId: {$in: goodsIds}
+                    }, function (err, doc) {
+                        if (err) {
+                            console.log('創建訂單刪除購物車商品失敗:' + err.message)
+                        }
+                        service.io.emit('order-' + order.state, {
+                            order: order,
+                            type: order.state
+                        })
+                        res.send({code: 200, content: doc})
+                    })
+                } else {
+                    res.send({code: 400, msg: err.message})
+                }
+            })
+        } else {
+            res.send({code: 400, msg: "訂單總價低於10元不支持配送"})
+        }
+
     } else {
         res.send({code: 400, msg: '創建訂單失敗'})
     }
