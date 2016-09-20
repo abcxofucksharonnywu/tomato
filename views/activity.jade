@@ -273,7 +273,7 @@ script.
                         return
                     }
 
-                    var nameReg = /^.{1,30}$/;
+                    var nameReg = /^[a-zA-Z]{1,30}$/;
                     if (this.activity.name == null||!nameReg.test(this.activity.name)) {
                         showTips('請輸入30字內英文單詞');
                         return
