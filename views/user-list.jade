@@ -13,16 +13,16 @@ div(class='tab-content')
                             tr
                                 td 用戶名:
                                 td
-                                    input( type='text' class='form-control' id='name' name='name' placeholder='請輸入3-12位數字字母用戶名' v-model='user.name' v-bind:disabled="type!='add'" )
+                                    input( type='text' class='form-control' id='name' name='name' placeholder='e.g. kerryfeng' v-model='user.name' v-bind:disabled="type!='add'" )
 
                             tr
                                 td 員工名:
                                 td
-                                    input( type='text' class='form-control' id='realName' name='realName' placeholder='請輸入綁定員工名' v-model='user.realName')
+                                    input( type='text' class='form-control' id='realName' name='realName' placeholder='e.g. huayuefeng' v-model='user.realName')
                             tr
                                 td 密碼:
                                 td
-                                    input( type='password' class='form-control' id='password' name='password' placeholder='請輸入6-12位密碼' v-model='user.password')
+                                    input( type='password' class='form-control' id='password' name='password' placeholder='e.g. password' v-model='user.password')
                             tr
                                 td 使用權限:
                                 td
@@ -41,11 +41,11 @@ div(class='tab-content')
                             tr
                                 td 帳號類型:
                                 td
-                                    input( type='text' class='form-control' id='type' name='type' placeholder='請輸入帳號類型' v-model='user.type' disabled='true')
+                                    input( type='text' class='form-control' id='type' name='type' placeholder='e.g. staff' v-model='user.type' disabled='true')
                             tr
                                 td 手機號碼:
                                 td
-                                    input( type='text' class='form-control' id='phone' name='phone' placeholder='請輸入手機號碼' v-model='user.phone')
+                                    input( type='text' class='form-control' id='phone' name='phone' placeholder='e.g. 626(123)321090' v-model='user.phone')
                 .modal-footer
                     button.model-close.btn.btn-secondary(type='button' data-dismiss='modal') 關閉
                     button.btn.btn-primary(type='button'  v-on:click='add'  v-if="type=='add'") 保存
@@ -63,7 +63,7 @@ div(class='tab-content')
                     button.model-close.btn.btn-secondary(type='button' data-dismiss='modal') 關閉
                     button.btn.btn-primary(type='button' v-on:click='delete') 刪除
     .input-group
-        input.form-control(type='text' placeholder='輸入搜索用戶名' v-model='search')
+        input.form-control(type='text' placeholder='請輸入用戶名 e.g. kerryfeng' v-model='search')
         span.input-group-btn
             button.btn.btn-primary(type='button' data-toggle='modal' v-on:click='addModel' data-target='#modal-user-edit') 新建
     table.list

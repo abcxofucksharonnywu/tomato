@@ -116,7 +116,7 @@
                     span(aria-hidden='true') ×
                 h4.modal-title 綁定商品
             .modal-body
-                input( type='text' class='form-control' v-on:keyup.enter='search'  placeholder='請輸入商品名稱後鍵入Enter')
+                input( type='text' class='form-control' v-on:keyup.enter='search'  placeholder='請輸入商品名稱後鍵入Enter e.g. 萬歲玉米油')
                 ul
                     li(v-for='goods in goodss')
                         .goods
@@ -139,15 +139,15 @@
                         tr
                             td 活動標題:
                             td
-                                input( type='text' class='form-control'  v-model='activity.title' placeholder='請輸入12字內標題')
+                                input( type='text' class='form-control'  v-model='activity.title' placeholder='e.g. 萬歲玉米油')
                         tr
                             td 活動名稱:
                             td
-                                input( type='text' class='form-control'  v-model='activity.name' placeholder='請輸入單個小寫英文單詞')
+                                input( type='text' class='form-control'  v-model='activity.name' placeholder='e.g. wansuiOil')
                         tr
                             td 活動描述:
                             td
-                                input( type='text' class='form-control'  v-model='activity.content' placeholder='請輸入30字內活動描述')
+                                input( type='text' class='form-control'  v-model='activity.content' placeholder='e.g. 萬歲秋季促銷活動')
             .modal-footer
                 button.model-close.btn.btn-secondary(type='button' data-dismiss='modal' v-on:click='cancel') 關閉
                 button.btn.btn-primary(type='button'  v-on:click='add') 確認

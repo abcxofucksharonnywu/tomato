@@ -13,7 +13,7 @@ div(class='tab-content')
                     button.model-close.btn.btn-secondary(type='button' data-dismiss='modal') 關閉
                     button.btn.btn-primary(type='button' v-on:click='cancelOrder') 確認
     .input-group
-        input.form-control(type='text' placeholder='輸入搜索手機號碼' v-model='search')
+        input.form-control(type='text' placeholder='輸入搜索手機號碼 e.g. 626(123)321090' v-model='search')
     ul(id='order-list')
         li(class='order-item' v-for="order in orders | filterBy search in 'address.phone'")
             div(class='card')

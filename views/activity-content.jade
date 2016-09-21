@@ -12,7 +12,7 @@ div(class='tab-content')
                 |       自定義Url
         .input-group
             span
-                input.form-control(type='text' placeholder='輸入自定義Url' v-model='activity.url' v-bind:disabled="activity.type!='url'" )
+                input.form-control(type='text' placeholder='e.g. http://www.baidu.com' v-model='activity.url' v-bind:disabled="activity.type!='url'" )
             span.input-group-btn
                 button.btn.btn-primary(type='button' v-on:click='edit') 保存活動
     .phone-layout
