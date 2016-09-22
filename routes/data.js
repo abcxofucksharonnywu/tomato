@@ -457,7 +457,7 @@ function getCategories(pageIndex, categories, res) {
                     categoryId: obj.id,
                     title: obj.name,
                     goodss: [],
-                    date: new Date(obj.created).getTime()
+                    date: Date.now()+categories.length
                 })
             })
             if (pageIndex < json.pages) {
@@ -520,7 +520,7 @@ function getGoodss(pageIndex, goodss, res) {
                     sale: '1',
                     shop: o.ItemDetail[0] ? o.ItemDetail[0].value : '',
                     images: images,
-                    date: new Date(obj.created).getTime()
+                    date: Date.now()+goodss.length
                 })
             })
 
